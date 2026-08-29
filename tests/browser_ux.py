@@ -44,9 +44,11 @@ def main():
         boot(page)
         assert page.title()=='DarkRoom'
         fixtures=ROOT/'tests'/'fixtures'/'photos'
-        page.set_input_files('#fileInput',[{'name':f.name,'mimeType':'image/jpeg','buffer':f.read_bytes()} for f in sorted(fixtures.glob('*.jpg'))])
-        page.wait_for_function("document.querySelectorAll('.photo-card').length===3",timeout=15000)
-        assert page.evaluate("photos.length") == 3
+        files=[{'name':'sample.png','mimeType':'image/png','buffer':sample_png(7)}]
+        files += [{'name':f.name,'mimeType':'image/jpeg','buffer':f.read_bytes()} for f in sorted(fixtures.glob('*.jpg'))]
+        page.set_input_files('#fileInput',files)
+        page.wait_for_function("document.querySelectorAll('.photo-card').length===4",timeout=15000)
+        assert page.evaluate("photos.length") == 4
         assert page.evaluate("photos.every(p=>!!p.thumbnailBlob)")
         thumb=page.locator('.photo-card').first.locator('img')
         page.wait_for_function("document.querySelector('.photo-card img')?.naturalWidth>0")
@@ -54,6 +56,8 @@ def main():
         page.wait_for_function("document.querySelector('.photo-card img')?.naturalWidth>0",timeout=5000)
         page.screenshot(path=str(out/'library-desktop.png'),full_page=True)
         page.locator('.photo-card').first.click();page.wait_for_selector('#editor:not(.hidden)');page.wait_for_function("document.querySelector('#editorCanvas').width>10")
+        png_avg=page.evaluate("()=>{const c=document.querySelector('#editorCanvas'),d=c.getContext('2d').getImageData(0,0,c.width,c.height).data;let n=0;for(let i=0;i<d.length;i+=Math.max(4,Math.floor(d.length/4000/4)*4))n+=d[i]+d[i+1]+d[i+2];return n/Math.max(1,d.length/Math.max(4,Math.floor(d.length/4000/4)*4))/3}")
+        assert png_avg>5, f'PNG preview unexpectedly black: {png_avg}'
         exposure=page.locator('[data-edit="exposure"]').first
         for value in range(-80,81,8):
             exposure.evaluate("(el, value) => { el.value = value; el.dispatchEvent(new Event('input', {bubbles: true})); }", value)
@@ -106,7 +110,7 @@ def main():
             page.wait_for_timeout(500)
         assert 'Focus' in page.locator('#compareLeftMeta').inner_text(), (page.locator('#compareLeftMeta').inner_text(),errors)
         page.screenshot(path=str(out/'compare-desktop.png'),full_page=True);page.click('#closeCompare')
-        page.click('#batchDone');page.locator('.photo-card').first.click();page.evaluate("try { if (document.fullscreenElement) document.exitFullscreen().catch(() => {}); } catch (_) {}")
+        page.click('#batchDone');page.locator('.photo-card').nth(1).click();page.evaluate("try { if (document.fullscreenElement) document.exitFullscreen().catch(() => {}); } catch (_) {}")
         page.set_viewport_size({'width':390,'height':844});page.wait_for_timeout(250)
         geo=page.evaluate("""()=>{const p=document.querySelector('#photoViewport').getBoundingClientRect(),t=document.querySelector('.editor-panel').getBoundingClientRect();return {photoRight:p.right,toolsLeft:t.left,toolsWidth:t.width,button:getComputedStyle(document.querySelector('#mobileFullscreenBtn')).display}}""")
         assert geo['toolsLeft'] >= geo['photoRight']-2 and geo['toolsWidth']>120 and geo['button']!='none'
@@ -117,8 +121,8 @@ def main():
         page.click('#mobileFullscreenBtn')
         page.click('#closeEditor');page.wait_for_function("document.querySelector('#editor').classList.contains('hidden')")
         page.on('dialog',lambda dialog: dialog.accept())
-        page.click('#selectPhotosBtn');page.locator('.photo-card').first.click();page.click('#batchDelete');page.wait_for_function("photos.length===2")
-        assert page.locator('.photo-card').count()==2
+        page.click('#selectPhotosBtn');page.locator('.photo-card').first.click();page.click('#batchDelete');page.wait_for_function("photos.length===3")
+        assert page.locator('.photo-card').count()==3
         if errors: raise AssertionError('Browser page errors: '+repr(errors))
         print('Browser UX tests passed: import/data flow, fixed right rail, modes, accordion, zoom/fullscreen, masks, dodge/burn, remove, layers, sky, culling/compare, mobile layout.')
         browser.close()
