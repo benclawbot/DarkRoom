@@ -49,6 +49,11 @@ def main():
         assert page.evaluate("photos.every(p=>!!p.thumbnailBlob)")
         page.screenshot(path=str(out/'library-desktop.png'),full_page=True)
         page.locator('.photo-card').first.click();page.wait_for_selector('#editor:not(.hidden)');page.wait_for_function("document.querySelector('#editorCanvas').width>10")
+        exposure=page.locator('[data-edit="exposure"]').first
+        for value in range(-80,81,8):
+            exposure.evaluate("(el, value) => { el.value = value; el.dispatchEvent(new Event('input', {bubbles: true})); }", value)
+        page.wait_for_timeout(500)
+        assert page.evaluate("()=>{const c=document.querySelector('#editorCanvas'),d=c.getContext('2d').getImageData(0,0,c.width,c.height).data;let n=0;for(let i=0;i<d.length;i+=Math.max(4,Math.floor(d.length/4000/4)*4))n+=d[i]+d[i+1]+d[i+2];return n/Math.max(1,d.length/Math.max(4,Math.floor(d.length/4000/4)*4))/3}") > 5
         geo=page.evaluate("""()=>{const p=document.querySelector('#photoViewport').getBoundingClientRect(),t=document.querySelector('.editor-panel').getBoundingClientRect();return {photoRight:p.right,toolsLeft:t.left,toolsWidth:t.width}}""")
         assert geo['toolsLeft'] >= geo['photoRight']-2 and geo['toolsWidth']>250
         overlays=page.evaluate("()=>['maskOverlay','diagnosticOverlay'].map(id=>getComputedStyle(document.getElementById(id)).backgroundColor)")
