@@ -96,7 +96,7 @@ def main():
             page.wait_for_timeout(500)
         assert 'Focus' in page.locator('#compareLeftMeta').inner_text(), (page.locator('#compareLeftMeta').inner_text(),errors)
         page.screenshot(path=str(out/'compare-desktop.png'),full_page=True);page.click('#closeCompare')
-        page.click('#batchDone');page.locator('.photo-card').first.click();page.evaluate("document.exitFullscreen?.()")
+        page.click('#batchDone');page.locator('.photo-card').first.click();page.evaluate("try { if (document.fullscreenElement) document.exitFullscreen().catch(() => {}); } catch (_) {}")
         page.set_viewport_size({'width':390,'height':844});page.wait_for_timeout(250)
         geo=page.evaluate("""()=>{const p=document.querySelector('#photoViewport').getBoundingClientRect(),t=document.querySelector('.editor-panel').getBoundingClientRect();return {photoRight:p.right,toolsLeft:t.left,toolsWidth:t.width,button:getComputedStyle(document.querySelector('#mobileFullscreenBtn')).display}}""")
         assert geo['toolsLeft'] >= geo['photoRight']-2 and geo['toolsWidth']>120 and geo['button']!='none'
