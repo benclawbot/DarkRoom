@@ -31,6 +31,7 @@ jobs:
       - run: python tests/preview_race.py
       - run: python tests/tone_curve_ux.py
       - run: python tests/mobile_zoom.py
+      - run: python tests/render_performance.py
       - run: python tests/supplied_images_ux.py
 
   deploy:
