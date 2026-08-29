@@ -455,13 +455,13 @@ Every push to `main` runs the static and browser UX checks first. When all three
 Release `1.0.0` is validated with:
 
 - JavaScript syntax checks across all runtime modules.
-- **172** bound control references checked.
+- **178** bound control references checked, including synchronized numeric/range inputs and direct tone-curve controls.
 - Quick / Advanced / Pro state-machine tests.
 - Right-side tool rail and collapsible-section tests.
 - Fullscreen/Focus View checks.
-- Pixel-engine tests for tone, HSL, grading, masks, dodge/burn/local edits, smart masks, detail, portrait, restoration, relighting, remove/clone/generative operations.
+- Pixel-engine tests for tone, HSL, grading, direct point curves, masks, dodge/burn/local edits, smart masks, detail, portrait, restoration, relighting, remove/clone/generative operations.
 - Professional engine tests for layers, LUT, quality analysis, red-eye/frequency processing, HDR/noise/focus merges, and TIFF encoding.
-- End-to-end Playwright UX workflow on desktop and 390×844 mobile viewport, including right-side tools, accordions, Auto Crop, split comparison, local painting, layers, sky replacement, compare/culling, and fullscreen.
+- End-to-end Playwright UX workflow on desktop and 390×844 mobile viewport, including PNG/WebP import, non-black Retouch previews with thumbnail fallback, point-curve add/drag/reset, right-side tools, accordions, Auto Crop, split comparison, local painting, layers, sky replacement, compare/culling, and fullscreen.
 
 ## Known constraints
 
