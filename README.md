@@ -16,6 +16,7 @@ There is **no account system and no cloud photo storage**. Imported originals, r
 - **Nondestructive:** originals remain untouched; edits are stored as parameters, masks, layers, and operations.
 - **Progressive disclosure:** Quick, Advanced, and Pro modes expose increasing complexity without changing the underlying edit graph.
 - **Photo-first layout:** the image stays in the primary workspace; editing tools remain on the **right side** of the picture on desktop and mobile.
+- **Synchronized mobile zoom:** toolbar zoom, pinch-to-zoom, and one-finger panning move the visible preview and editing overlays together.
 - **One renderer:** preview and export use the same processing graph.
 - **Graceful capability fallback:** heavy AI features prefer WebGPU, fall back where possible, and never block ordinary editing.
 - **Upgrade-safe previews:** older library records are repaired on refresh when their cached thumbnail is missing, while the original blob remains the editing source.
@@ -466,7 +467,7 @@ Release `1.0.0` is validated with:
 - Pixel-engine tests for tone, HSL, grading, smooth direct point curves, masks, dodge/burn/local edits, smart masks, detail, portrait, restoration, relighting, remove/clone/generative operations.
 - Professional engine tests for layers, LUT, quality analysis, red-eye/frequency processing, HDR/noise/focus merges, and TIFF encoding.
 - End-to-end Playwright UX workflow on desktop and 390×844 mobile viewport, including all three supplied photos, PNG/WebP import, non-black default and Retouch previews, overlapping-render race coverage, smooth point-curve add/drag/reset, right-side tools, accordions, Auto Crop, local painting, layers, sky replacement, compare/culling, fullscreen, and local-only deletion.
-- Service-worker upgrade coverage verifies stale application-shell caches are removed before the current renderer is reused.
+- Service-worker upgrade coverage verifies stale application-shell caches are removed and JavaScript/CSS runtime assets refresh from the network before cached copies are reused.
 - Legacy-library recovery coverage verifies a valid original with a missing thumbnail is rebuilt before the library/editor are shown.
 
 ## Known constraints
