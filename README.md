@@ -18,6 +18,7 @@ There is **no account system and no cloud photo storage**. Imported originals, r
 - **Photo-first layout:** the image stays in the primary workspace; editing tools remain on the **right side** of the picture on desktop and mobile.
 - **One renderer:** preview and export use the same processing graph.
 - **Graceful capability fallback:** heavy AI features prefer WebGPU, fall back where possible, and never block ordinary editing.
+- **Upgrade-safe previews:** older library records are repaired on refresh when their cached thumbnail is missing, while the original blob remains the editing source.
 
 ## Screenshots
 
@@ -462,6 +463,7 @@ Release `1.0.0` is validated with:
 - Pixel-engine tests for tone, HSL, grading, direct point curves, masks, dodge/burn/local edits, smart masks, detail, portrait, restoration, relighting, remove/clone/generative operations.
 - Professional engine tests for layers, LUT, quality analysis, red-eye/frequency processing, HDR/noise/focus merges, and TIFF encoding.
 - End-to-end Playwright UX workflow on desktop and 390×844 mobile viewport, including PNG/WebP import, non-black Retouch previews with source-image and thumbnail fallbacks, persisted edit-state sanitization, point-curve add/drag/reset, right-side tools, accordions, Auto Crop, split comparison, local painting, layers, sky replacement, compare/culling, and fullscreen.
+- Legacy-library recovery coverage verifies a valid original with a missing thumbnail is rebuilt before the library/editor are shown.
 
 ## Known constraints
 
