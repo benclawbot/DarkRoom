@@ -29,31 +29,12 @@ def page_with_photo(browser, filename, viewport):
     return context, page
 
 
-def save_capture(page, name):
+def save_capture(page, name, full_page=True):
     png = TMP / f"{name}.png"
     webp = OUT / f"{name}.webp"
     page.wait_for_timeout(750)
     page.evaluate("() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)))")
-    page.evaluate("() => document.querySelectorAll('canvas').forEach(canvas => canvas.toDataURL('image/png'))")
-    page.wait_for_timeout(150)
-    if name.startswith("editor"):
-        page.evaluate("""async()=>{
-          const canvas=document.querySelector('#editorCanvas');
-          const wrap=document.querySelector('#canvasWrap');
-          if(!canvas||!wrap)return;
-          const image=document.createElement('img');
-          image.className='readme-capture-image';
-          image.alt='';
-          image.src=canvas.toDataURL('image/png');
-          image.style.cssText='position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none;z-index:20;background:#050505';
-          wrap.appendChild(image);
-          await image.decode();
-          canvas.dataset.readmeHidden='1';
-          canvas.style.visibility='hidden';
-        }""")
-    page.screenshot(path=str(png), full_page=True)
-    if name.startswith("editor"):
-        page.evaluate("""()=>{const image=document.querySelector('.readme-capture-image');if(image)image.remove();const canvas=document.querySelector('#editorCanvas');if(canvas?.dataset.readmeHidden){canvas.style.visibility='';delete canvas.dataset.readmeHidden}}""")
+    page.screenshot(path=str(png), full_page=full_page)
     with Image.open(png) as image:
         image.convert("RGB").save(webp, "WEBP", quality=92, method=6)
 
@@ -82,12 +63,12 @@ def main():
 
         context, page = page_with_photo(browser, "race-car.jpg", {"width": 1440, "height": 900})
         open_editor(page, "pro")
-        save_capture(page, "editor-desktop")
+        save_capture(page, "editor-desktop", full_page=False)
         context.close()
 
         context, page = page_with_photo(browser, "white-dunes.jpg", {"width": 390, "height": 844})
         open_editor(page, "advanced")
-        save_capture(page, "editor-mobile")
+        save_capture(page, "editor-mobile", full_page=False)
         context.close()
 
         context, page = page_with_photo(browser, "mountain-sunset.jpg", {"width": 1440, "height": 900})

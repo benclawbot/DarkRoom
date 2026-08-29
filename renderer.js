@@ -8,7 +8,10 @@ async function decodeImage(blob){if(!blob)throw new Error('Photo data is unavail
 let renderFallbackNoticeFor=null;
 async function decodePhotoImage(blob){const primary=blob||photoBlob(currentPhoto);try{return await decodeImage(primary)}catch(primaryError){const fallback=currentPhoto?.thumbnailBlob;if(!fallback||fallback===primary)throw primaryError;try{const image=await decodeImage(fallback);if(renderFallbackNoticeFor!==currentPhoto?.id){renderFallbackNoticeFor=currentPhoto?.id;toast('Original preview unavailable — using the local thumbnail')}return image}catch{throw primaryError}}}
 function releaseImage(image){image?.close?.();if(image?.__darkroomObjectUrl)URL.revokeObjectURL(image.__darkroomObjectUrl)}
-function setEditorFallback(active){const stage=$('#photoViewport'),img=$('#editorFallbackImage');if(!stage||!img)return;stage.classList.toggle('preview-fallback',!!active);const source=photoBlob(currentPhoto);if(!active||!source){img.classList.remove('active');img.removeAttribute('src');img.dataset.photoId='';return}img.classList.add('active');if(img.dataset.photoId===currentPhoto.id)return;const photoId=currentPhoto.id;img.dataset.photoId=photoId;img.dataset.source='original';img.onerror=()=>{if(img.dataset.photoId!==photoId)return;if(img.dataset.source==='thumbnail'||!currentPhoto?.thumbnailBlob)return;img.dataset.source='thumbnail';img.src=blobUrl(currentPhoto,true)};img.src=blobUrl(currentPhoto,false)}
+function releaseRenderedPreview(img){if(img?._renderedUrl){URL.revokeObjectURL(img._renderedUrl);img._renderedUrl=''}}
+function setPreviewBackground(img,src){if(!img)return;if(src){img.style.backgroundImage=`url("${src}")`;img.style.backgroundSize='contain';img.style.backgroundPosition='center';img.style.backgroundRepeat='no-repeat';img.dataset.previewSrc=src}else{img.style.backgroundImage='none';img.dataset.previewSrc=''}}
+function setEditorFallback(active){const stage=$('#photoViewport'),img=$('#editorFallbackImage'),canvas=$('#editorCanvas');if(!stage||!img)return;stage.classList.toggle('preview-fallback',!!active);if(!active){releaseRenderedPreview(img);img.classList.remove('active');setPreviewBackground(img,'');img.dataset.photoId='';img.dataset.source='';if(canvas){canvas.style.removeProperty('visibility');canvas.style.removeProperty('background');delete canvas.dataset.renderedPreview}return}releaseRenderedPreview(img);if(canvas){canvas.style.visibility='hidden';canvas.style.background='transparent';delete canvas.dataset.renderedPreview}const source=photoBlob(currentPhoto);if(!source){img.classList.remove('active');setPreviewBackground(img,'');img.dataset.photoId='';return}img.classList.add('active');if(img.dataset.photoId===currentPhoto.id&&img.dataset.source==='original')return;const photoId=currentPhoto.id;img.dataset.photoId=photoId;img.dataset.source='original';setPreviewBackground(img,blobUrl(currentPhoto,false))}
+async function syncRenderedPreview(canvas){const stage=$('#photoViewport'),img=$('#editorFallbackImage'),photoId=currentPhoto?.id;if(!stage||!img||canvas?.id!=='editorCanvas'||!canvas.width||!canvas.height||!photoId)return;let blob=null;try{blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/png'))}catch{}if(photoId!==currentPhoto?.id)return;releaseRenderedPreview(img);const src=blob?URL.createObjectURL(blob):canvas.toDataURL('image/png');if(blob)img._renderedUrl=src;const preload=new Image();preload.src=src;try{await preload.decode()}catch{}if(photoId!==currentPhoto?.id)return;img.dataset.photoId=photoId;img.dataset.source='rendered';setPreviewBackground(img,src);img.classList.add('active');stage.classList.remove('preview-fallback');canvas.dataset.renderedPreview='1';canvas.style.display='block';canvas.style.visibility='hidden';canvas.style.background='transparent';await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)))}
 async function applySkyReplacement(source,e){if(!currentPhoto?.skyReplacementId)return source;const ref=photos.find(p=>p.id===currentPhoto.skyReplacementId);if(!ref)return source;const bmp=await decodeImage(photoBlob(ref)),sky=document.createElement('canvas');sky.width=source.width;sky.height=source.height;const sx=sky.getContext('2d',{alpha:false}),scale=Math.max(source.width/bmp.width,source.height/bmp.height),dw=bmp.width*scale,dh=bmp.height*scale;sx.drawImage(bmp,(source.width-dw)/2,(source.height-dh)/2,dw,dh);releaseImage(bmp);const ctx=source.getContext('2d',{alpha:false}),base=ctx.getImageData(0,0,source.width,source.height),sd=sx.getImageData(0,0,sky.width,sky.height).data,mask=DarkRoomEngine.smartMaskRaster(base.data,source.width,source.height,'sky'),opacity=DarkRoomEngine.clamp((e.skyReplacementOpacity??100)/100);for(let i=0;i<base.data.length;i+=4){const m=(mask.data[i/4]||0)/255*opacity;base.data[i]=DarkRoomEngine.mix(base.data[i],sd[i],m);base.data[i+1]=DarkRoomEngine.mix(base.data[i+1],sd[i+1],m);base.data[i+2]=DarkRoomEngine.mix(base.data[i+2],sd[i+2],m)}ctx.putImageData(base,0,0);return source}
 
 
@@ -32,8 +35,10 @@ function renderDiagnosticOverlay(){const overlay=$('#diagnosticOverlay'),base=$(
 
 function renderMaskOverlay(){const overlay=$('#maskOverlay'),base=$('#editorCanvas');if(!overlay||!base||!base.width)return;overlay.width=base.width;overlay.height=base.height;const x=overlay.getContext('2d'),mask=(currentPhoto?.localEdits||[]).find(m=>m.id===activeLocalId);x.clearRect(0,0,overlay.width,overlay.height);if(!mask||beforeMode||photoOnly)return;const w=Math.min(360,overlay.width),h=Math.max(1,Math.round(overlay.height*w/overlay.width)),small=document.createElement('canvas');small.width=w;small.height=h;const s=small.getContext('2d');s.drawImage(base,0,0,w,h);const src=s.getImageData(0,0,w,h).data,img=s.createImageData(w,h),palette={red:[235,65,90],green:[65,220,115],blue:[65,145,240],white:[240,240,240]},col=palette[localStorage.getItem('darkroom-mask-color')||'red']||palette.red;for(let yy=0;yy<h;yy++)for(let xx=0;xx<w;xx++){const i=(yy*w+xx)*4,r=src[i],g=src[i+1],b=src[i+2],l=(.2126*r+.7152*g+.0722*b)/255,v=DarkRoomEngine.maskValue(mask,xx/Math.max(1,w-1),yy/Math.max(1,h-1),r,g,b,l);img.data[i]=col[0];img.data[i+1]=col[1];img.data[i+2]=col[2];img.data[i+3]=Math.round(v*125)}s.putImageData(img,0,0);x.drawImage(small,0,0,overlay.width,overlay.height)}
 function drawMaskOverlay(){renderMaskOverlay()}
+const renderMaskOverlayBase=renderMaskOverlay;renderMaskOverlay=function(){renderMaskOverlayBase();const overlay=$('#maskOverlay'),mask=(currentPhoto?.localEdits||[]).find(m=>m.id===activeLocalId);overlay?.classList.toggle('has-content',!!mask&&!beforeMode&&!photoOnly)};
+const renderDiagnosticOverlayBase=renderDiagnosticOverlay;renderDiagnosticOverlay=function(){renderDiagnosticOverlayBase();const overlay=$('#diagnosticOverlay');overlay?.classList.toggle('has-content',!!diagnosticOverlay&&diagnosticOverlay!=='none'&&!photoOnly)};
 function updateCompositionOverlay(){const o=$('#compositionOverlay');if(!o)return;o.className='composition-overlay '+(compositionOverlay||'none')}
-function applyTransform(){const w=$('#canvasWrap');w.style.transform=`translate(${panX}px,${panY}px) scale(${zoom})`;$('#zoomLabel').textContent=Math.round(zoom*100)+'%'}
+function applyTransform(){const w=$('#canvasWrap');if(w)w.style.transform=zoom===1&&panX===0&&panY===0?'none':`translate(${panX}px,${panY}px) scale(${zoom})`;$('#zoomLabel').textContent=Math.round(zoom*100)+'%'}
 async function updateBeforeSplit(){const c=$('#beforeSplitCanvas'),range=$('#beforeSplitRange'),divider=$('#beforeSplitDivider');if(!c||!range||!divider)return;if(!beforeSplit||!currentPhoto){c.classList.remove('active');range.classList.add('hidden');divider.classList.add('hidden');return}const tmp=document.createElement('canvas');await renderCanvas(tmp,1400,true);const base=$('#editorCanvas');c.width=base.width;c.height=base.height;const x=c.getContext('2d',{alpha:false});x.drawImage(tmp,0,0,c.width,c.height);c.classList.add('active');range.classList.remove('hidden');divider.classList.remove('hidden');applyBeforeSplitClip()}
 function applyBeforeSplitClip(){const c=$('#beforeSplitCanvas'),d=$('#beforeSplitDivider');if(!c||!d)return;const p=Math.max(5,Math.min(95,beforeSplitPct));c.style.clipPath=`inset(0 ${100-p}% 0 0)`;d.style.left=p+'%'}
 function resetZoom(){zoom=1;panX=panY=0;applyTransform()}
@@ -52,7 +57,7 @@ renderCanvasNow=async function(canvas,maxSize=1400,forceOriginal=false){
     console.error('Render failed',error);
     if(photoId!==currentPhoto?.id)return;
     if(canvas?.id==='editorCanvas'&&await renderThumbnailFallback(canvas,maxSize)){
-      setEditorFallback(false);toast('Original preview unavailable — showing the local thumbnail');
+      await syncRenderedPreview(canvas);toast('Original preview unavailable — showing the local thumbnail');
     }else if(canvas?.id==='editorCanvas'){
       setEditorFallback(true);toast('Could not decode this image — showing the original preview');
     }
@@ -60,17 +65,17 @@ renderCanvasNow=async function(canvas,maxSize=1400,forceOriginal=false){
   }
   if(photoId!==currentPhoto?.id)return;
   if(forceOriginal||canvas?.id!=='editorCanvas'||!canvas.width||!canvas.height){
-    if(canvas?.id==='editorCanvas')setEditorFallback(false);
+    if(canvas?.id==='editorCanvas')await syncRenderedPreview(canvas);
     return;
   }
   const data=canvas.getContext('2d').getImageData(0,0,Math.min(canvas.width,160),Math.min(canvas.height,160)).data;
   let sum=0;for(let i=0;i<data.length;i+=4)sum+=data[i]+data[i+1]+data[i+2];
   if(sum<3*data.length/4){
     const recovered=await renderThumbnailFallback(canvas,maxSize);
-    if(recovered){setEditorFallback(false);toast('Preview is empty — showing the local thumbnail');return}
+    if(recovered){await syncRenderedPreview(canvas);toast('Preview is empty — showing the local thumbnail');return}
     toast('Preview is empty — showing the untouched photo');
     await renderCanvasNowBase(canvas,maxSize,true);
   }
-  setEditorFallback(false);
+  await syncRenderedPreview(canvas);
 }
 const renderCanvasStatusBase=renderCanvas;renderCanvas=function(canvas,maxSize=1400,forceOriginal=false){const status=$('#renderStatus');const isEditor=canvas?.id==='editorCanvas';if(isEditor&&status){status.classList.remove('hidden');status.textContent='Rendering preview…';canvas.setAttribute('aria-busy','true')}const result=renderCanvasStatusBase(canvas,maxSize,forceOriginal);return Promise.resolve(result).finally(()=>{if(isEditor&&status){status.classList.add('hidden');canvas.removeAttribute('aria-busy')}})};

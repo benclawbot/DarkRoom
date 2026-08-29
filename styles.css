@@ -65,7 +65,7 @@
 #toolTabs.tool-accordion .tool-section-body .accordion:last-child{margin-bottom:0}
 #controls.hidden{display:none!important}
 @media(max-width:760px){.editor-panel{grid-template-rows:30px minmax(0,1fr) auto!important}#toolTabs.tool-accordion{height:auto!important;display:block!important}.tool-section-header{height:36px!important}}
-.editor-image-fallback{display:none;position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none;background:#000;z-index:0}.editor-image-fallback.active{display:block}.canvas-wrap{position:relative;z-index:1}.editor-stage.preview-fallback #editorCanvas{visibility:hidden}
+.editor-image-fallback{display:none;position:absolute;inset:0;width:100%;height:100%;pointer-events:none;background:#000 center/contain no-repeat;z-index:0}.editor-image-fallback.active{display:block}.canvas-wrap{position:relative;z-index:1}.editor-stage.preview-fallback #editorCanvas{visibility:hidden}
 
 /* v7 professional workflow additions */
 .lut-tools,.layer-actions,.merge-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}.layer-swatch{background:linear-gradient(135deg,#707070,#303030)!important}.layer-actions{margin:8px 0}.quality-badge{position:absolute;left:7px;top:7px;z-index:4;background:rgba(0,0,0,.72);border:1px solid rgba(255,255,255,.25);border-radius:3px;padding:2px 5px;font-size:9px;color:#eee}.compare-view{position:fixed;inset:0;z-index:260;background:#090909;display:grid;grid-template-rows:48px minmax(0,1fr)}.compare-view header{display:flex;align-items:center;gap:12px;padding:0 14px;border-bottom:1px solid #333;background:#171717}.compare-view header span{color:#888;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.compare-view header button{margin-left:auto;border:1px solid #444;background:#242424;color:#ddd;border-radius:3px;padding:6px 10px}.compare-grid{min-height:0;display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#333}.compare-grid figure{margin:0;min-width:0;min-height:0;background:#0c0c0c;display:grid;grid-template-rows:minmax(0,1fr) 44px;place-items:center}.compare-grid canvas{max-width:100%;max-height:calc(100vh - 94px);object-fit:contain}.compare-grid figcaption{align-self:stretch;width:100%;padding:10px;background:#171717;color:#a5a5a5;font-size:10px;text-align:center}.merge-grid button{border:1px solid #3b3b3b;background:#252525;color:#ddd;border-radius:3px;padding:10px;cursor:pointer}.merge-grid button:hover{background:#303030}
@@ -136,3 +136,11 @@
 @media(max-width:760px){.panel-header{min-height:106px!important;padding:5px 6px!important}.panel-header .histogram-block canvas{height:58px!important;min-height:58px}}
 @media(max-width:760px){.editor-panel{grid-template-rows:auto minmax(0,1fr) 0 38px!important}}
 .render-status{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:12;padding:8px 12px;border:1px solid #444;border-radius:5px;background:rgba(20,20,20,.9);color:#ddd;font-size:11px;pointer-events:none;box-shadow:0 8px 25px rgba(0,0,0,.35)}
+
+/* The rendered image layer is a reliable compositor surface on browsers that
+   occasionally capture a 2D canvas as black. Canvas-backed overlays remain above it. */
+.canvas-wrap>#editorCanvas{position:relative;z-index:0}
+#maskOverlay,#diagnosticOverlay{display:none}
+#maskOverlay.has-content,#diagnosticOverlay.has-content{display:block}
+.editor-stage .before-split-canvas{display:none}
+.editor-stage .before-split-canvas.active{display:block}
