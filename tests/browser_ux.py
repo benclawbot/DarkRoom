@@ -48,6 +48,10 @@ def main():
         page.wait_for_function("document.querySelectorAll('.photo-card').length===3",timeout=15000)
         assert page.evaluate("photos.length") == 3
         assert page.evaluate("photos.every(p=>!!p.thumbnailBlob)")
+        thumb=page.locator('.photo-card').first.locator('img')
+        page.wait_for_function("document.querySelector('.photo-card img')?.naturalWidth>0")
+        thumb.evaluate("el=>{el.src='blob:darkroom-invalid-thumbnail'}")
+        page.wait_for_function("document.querySelector('.photo-card img')?.naturalWidth>0",timeout=5000)
         page.screenshot(path=str(out/'library-desktop.png'),full_page=True)
         page.locator('.photo-card').first.click();page.wait_for_selector('#editor:not(.hidden)');page.wait_for_function("document.querySelector('#editorCanvas').width>10")
         exposure=page.locator('[data-edit="exposure"]').first
@@ -107,6 +111,10 @@ def main():
         geo=page.evaluate("""()=>{const p=document.querySelector('#photoViewport').getBoundingClientRect(),t=document.querySelector('.editor-panel').getBoundingClientRect();return {photoRight:p.right,toolsLeft:t.left,toolsWidth:t.width,button:getComputedStyle(document.querySelector('#mobileFullscreenBtn')).display}}""")
         assert geo['toolsLeft'] >= geo['photoRight']-2 and geo['toolsWidth']>120 and geo['button']!='none'
         page.screenshot(path=str(out/'editor-mobile.png'),full_page=True);page.click('#mobileFullscreenBtn');assert 'photo-only' in (page.locator('#editor').get_attribute('class') or '');page.click('#mobileFullscreenBtn')
+        page.click('#closeEditor');page.wait_for_function("document.querySelector('#editor').classList.contains('hidden')")
+        page.on('dialog',lambda dialog: dialog.accept())
+        page.click('#selectPhotosBtn');page.locator('.photo-card').first.click();page.click('#batchDelete');page.wait_for_function("photos.length===2")
+        assert page.locator('.photo-card').count()==2
         if errors: raise AssertionError('Browser page errors: '+repr(errors))
         print('Browser UX tests passed: import/data flow, fixed right rail, modes, accordion, zoom/fullscreen, masks, dodge/burn, remove, layers, sky, culling/compare, mobile layout.')
         browser.close()

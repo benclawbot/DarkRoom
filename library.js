@@ -37,3 +37,27 @@ async function panoramaMerge(list){const cs=await Promise.all(list.map(p=>bitmap
 async function batchCombinePhotos(mode){const list=selectedPhotos();if(list.length<2)return toast('Select at least two photos');toast(`${mode==='hdr'?'HDR merging':mode==='focus'?'Focus stacking':mode==='noise'?'Noise stacking':'Building panorama'} locally…`);try{const canvas=mode==='hdr'?await hdrMerge(list):mode==='focus'?await focusStack(list):mode==='noise'?await noiseStack(list):await panoramaMerge(list),name=`DarkRoom-${mode}-${new Date().toISOString().replace(/[:.]/g,'-')}.jpg`;await saveDerivedCanvas(canvas,name);toast(`${mode==='hdr'?'HDR merge':mode==='focus'?'Focus stack':mode==='noise'?'Noise stack':'Panorama'} created`)}catch(e){console.error(e);toast('Could not combine selected photos')}}
 async function updateStorage(){const photoBytes=photos.reduce((n,p)=>n+(p.size||0),0);let q=0,u=0,persisted=false;try{const e=await navigator.storage.estimate();q=e.quota||0;u=e.usage||0;persisted=await navigator.storage.persisted?.()||false}catch{}const pct=q?Math.min(100,u/q*100):0;$('#storageBig').textContent=fmtBytes(photoBytes);$('#photoStorage').textContent=fmtBytes(photoBytes);$('#quotaStorage').textContent=q?fmtBytes(Math.max(0,q-u)):'Browser controlled';$('#storageMode').textContent=persisted?'Persistent local storage':'Browser-managed local storage';$('#usageBar').style.width=pct+'%';$('#sideMeter').style.width=pct+'%';$('#sideStorage').textContent=`${fmtBytes(photoBytes)} stored locally`;$('#donut').style.background=`conic-gradient(#d8d8d8 ${pct*3.6}deg,#2b2b2b 0)`}
 function route(r){currentRoute=r;if(selectionMode)setSelectionMode(false);$$('.view').forEach(v=>v.classList.remove('active'));if(r==='home')$('#homeView').classList.add('active');else if(r==='albums')$('#albumsView').classList.add('active');else if(r==='storage')$('#storageView').classList.add('active');else $('#libraryView').classList.add('active');render()}
+function bindPhotoImageFallbacks(){
+  $$('#photoGrid img, #albumGrid img').forEach(img=>{
+    img.onerror=()=>{
+      const card=img.closest('[data-photo]');
+      const photo=card&&photos.find(p=>p.id===card.dataset.photo);
+      if(photo&&!img.dataset.originalFallback){img.dataset.originalFallback='1';img.src=blobUrl(photo,false);return}
+      img.classList.add('image-missing');
+      card?.classList.add('image-missing');
+    };
+  });
+}
+if(typeof MutationObserver!=='undefined')new MutationObserver(bindPhotoImageFallbacks).observe(document.body,{childList:true,subtree:true});
+async function batchDelete(){
+  const list=selectedPhotos();
+  if(!list.length)return;
+  if(!confirm(`Remove ${list.length} photo${list.length===1?'':'s'} from DarkRoom? The original files on your device will not be deleted.`))return;
+  for(const p of list)await del('photos',p.id);
+  selectedPhotoIds.clear();
+  selectionMode=false;
+  $('#selectPhotosBtn').classList.remove('active');
+  await refreshData();
+  updateBatchBar();
+  toast(`${list.length} photo${list.length===1?'':'s'} removed from DarkRoom`);
+}

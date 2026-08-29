@@ -7,7 +7,7 @@ const changed=(a,b)=>a.some((v,i)=>v!==b[i]);
 // Global tone / color pipeline
 const neutral=E.applyTonePixel(100,120,140,{gamma:100,gradeBlending:50});assert(neutral.every(Number.isFinite));
 const bright=E.applyTonePixel(100,100,100,{exposure:50,gamma:100});assert(bright[0]>100,'exposure should brighten');
-const sat=E.applyTonePixel(180,100,90,{saturation:-100,gamma:100});assert(Math.max(...sat)-Math.min(...sat)<90,'desaturation should reduce channel spread');
+const sat=E.applyTonePixel(180,100,90,{saturation:-100,gamma:100});assert(Math.max(...sat)-Math.min(...sat)===0,'saturation -100 must produce true black and white');
 const redHue=E.applyTonePixel(210,50,45,{hueRed:80,gamma:100});assert(Math.abs(redHue[1]-50)>2||Math.abs(redHue[2]-45)>2,'HSL hue should alter red-band color');
 const redLum=E.applyTonePixel(210,50,45,{lumRed:80,gamma:100});assert(redLum.reduce((a,b)=>a+b,0)>305,'HSL luminance should brighten red band');
 const graded=E.applyTonePixel(80,80,80,{gradeShadowHue:220,gradeShadowSat:80,gradeBlending:70,gamma:100});assert(changed(graded,[80,80,80]),'color grading should alter shadow color');

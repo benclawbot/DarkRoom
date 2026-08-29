@@ -1,4 +1,5 @@
 function bind(){
+ $('#batchDelete').onclick=batchDelete;
  $$('[data-route]').forEach(b=>b.onclick=()=>route(b.dataset.route));
  $('#storageBtn').onclick=()=>route('storage');['#importTop','#sideAdd','#emptyImport','#mobileAdd','#homeImport'].forEach(s=>{const n=$(s);if(n)n.onclick=()=>$('#fileInput').click()});
  $('#fileInput').onchange=e=>{importFiles(e.target.files);e.target.value=''};$('#searchInput').oninput=()=>{if(!['library','recent','favorites','flagged','album'].includes(currentRoute))route('library');else renderPhotos()};

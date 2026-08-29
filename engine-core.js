@@ -19,10 +19,11 @@ function applyTonePixel(r,g,b,e={}){
  const contrast=1+(e.contrast||0)/100*.72+(e.localContrast||0)/100*.12;R=(R-.5)*contrast+.5;G=(G-.5)*contrast+.5;B=(B-.5)*contrast+.5;
  const gamma=Math.max(.35,Math.min(2.5,(e.gamma??100)/100));R=Math.pow(clamp(R),1/gamma);G=Math.pow(clamp(G),1/gamma);B=Math.pow(clamp(B),1/gamma);
  l=.2126*R+.7152*G+.0722*B;const target=curveLuma(clamp(l),e),ratio=l>.001?target/l:1;R*=ratio;G*=ratio;B*=ratio;
- let [h,s,li]=rgbToHsl(clamp(R)*255,clamp(G)*255,clamp(B)*255);const band=hueBand(h),satAdj=(e['sat'+band]||0)/100,hueAdj=(e['hue'+band]||0)/100,lumAdj=(e['lum'+band]||0)/100,globalSat=(e.saturation||0)/100,vib=(e.vibrance||0)/100*(1-s);h+=hueAdj*45;s=clamp(s*(1+globalSat*.85+satAdj*.7)+vib*.45);li=clamp(li+lumAdj*.22);[R,G,B]=hslToRgb(h,s,li).map(v=>v/255);
+ let [h,s,li]=rgbToHsl(clamp(R)*255,clamp(G)*255,clamp(B)*255);const band=hueBand(h),satAdj=(e['sat'+band]||0)/100,hueAdj=(e['hue'+band]||0)/100,lumAdj=(e['lum'+band]||0)/100,globalSat=(e.saturation||0)/100,vib=(e.vibrance||0)/100*(1-s);h+=hueAdj*45;if(globalSat<=-1)s=0;else s=clamp(s*(1+globalSat*.85+satAdj*.7)+vib*.45);li=clamp(li+lumAdj*.22);[R,G,B]=hslToRgb(h,s,li).map(v=>v/255);
  const deh=(e.dehaze||0)/100,clar=(e.clarity||0)/100,texture=(e.texture||0)/100,lc=(e.localContrast||0)/100;const cc=1+deh*.28+clar*.12+texture*.06+lc*.15;R=(R-.5)*cc+.5-deh*.025;G=(G-.5)*cc+.5-deh*.025;B=(B-.5)*cc+.5-deh*.025;
  [R,G,B]=grade(clamp(R)*255,clamp(G)*255,clamp(B)*255,clamp(li),e).map(v=>v/255);
  const fade=(e.fade||0)/100;if(fade>0){R=mix(R,.5,fade*.16);G=mix(G,.5,fade*.16);B=mix(B,.5,fade*.16)}
+ if(globalSat<=-1){const mono=clamp(.2126*R+.7152*G+.0722*B);R=G=B=mono}
  return[clamp(R)*255,clamp(G)*255,clamp(B)*255];
 }
 function localAdjustPixel(r,g,b,a,strength){if(!strength)return[r,g,b];const e={gamma:100,gradeBlending:50};for(const [k,v] of Object.entries(a||{}))e[k]=typeof v==='number'?v*strength:v;return applyTonePixel(r,g,b,e)}
