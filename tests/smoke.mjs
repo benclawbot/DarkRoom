@@ -26,12 +26,15 @@ assert(js.includes("$('#mobileFullscreenBtn').onclick=()=>togglePhotoOnly()"),'M
 assert(js.includes('requestFullscreen')&&css.includes('.editor.photo-only'),'Native/CSS fullscreen visualization missing');
 assert(js.includes('selectionMode')&&js.includes('batchExport')&&js.includes('batchMutate'),'Multi-photo selection/batch editing missing');
 assert(html.includes('id="demoImport"')&&js.includes('loadDemoPhotos')&&js.includes('docs/assets/examples/'),'Bundled in-app demo set missing');
+assert(html.includes('.dng')&&js.includes("imageExts")&&js.includes("No supported images selected"),'Image format picker and fallback validation missing');
 assert(html.includes('class="histogram-block"')&&html.includes('aria-label="RGB histogram"'),'Labeled RGB histogram block missing');
+assert(html.includes('id="histogramReadout"')&&js.includes('histogramReadout'),'Histogram clipping readout missing');
+assert(js.includes('class="control-number"')&&js.includes('data-control-number'),'Precise numeric slider entry missing');
 assert(js.includes("type==='dodge'")&&js.includes("type==='burn'")&&js.includes('setPaintMode'),'Dodge/burn local editing missing');
 assert(js.includes('generateSmartMask')&&js.includes('smartMaskRaster'),'Smart masks missing');
 assert(js.includes('createHealOperation')&&(js.includes('DarkRoomEngine.inpaint')||js.includes('E.inpaint')),'Content-aware removal missing');
 assert(js.includes('matchReferenceLook')&&js.includes('matchLook'),'Reference look matching missing');
 assert((js.includes('DarkRoomEngine.applyTonePixel')||js.includes('E.applyTonePixel'))&&js.includes('detailProcess')&&js.includes('portraitProcess'),'Pixel/detail/portrait engine integration missing');
 assert(js.includes('compositionOverlay')&&css.includes('.composition-thirds'),'Composition guides missing');
-assert(sw.includes('darkroom-v13')&&sw.includes('engine-core.js')&&sw.includes('generative-runtime.js')&&sw.includes('docs/assets/examples/'),'Service worker v13 assets missing');
+assert(sw.includes('darkroom-v14')&&sw.includes('engine-core.js')&&sw.includes('generative-runtime.js')&&sw.includes('docs/assets/examples/'),'Service worker v14 assets missing');
 console.log(`Static UX/feature checks passed (${new Set(direct).size} control references verified).`);

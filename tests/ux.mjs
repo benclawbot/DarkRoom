@@ -3,6 +3,7 @@ const read=f=>fs.readFileSync(new URL('../'+f,import.meta.url),'utf8');
 const html=read('index.html'),css=read('styles.css'),core=read('core.js'),editor=read('editor.js'),app=read('app.js'),lib=read('library.js'),renderer=read('renderer.js'),ai=read('ai-runtime.js');
 assert(html.includes('rel="icon"')&&html.includes('href="icon.svg"'),'aperture favicon must be declared');
 assert(css.includes('::-webkit-slider-thumb')&&css.includes('::-moz-range-thumb'),'range controls must have custom track and knob styling');
+assert(css.includes('.control-number')&&css.includes('.histogram-readout'),'numeric values and histogram readout styling missing');
 assert(html.includes('id="batchDelete"')&&lib.includes('async function batchDelete'),'library must expose local-only photo deletion');
 assert(lib.includes('img.onerror')&&lib.includes('blobUrl(photo,false)'),'thumbnail failures must fall back to the original blob');
 // Progressive disclosure

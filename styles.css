@@ -78,6 +78,18 @@
 .preset-save{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px;margin-top:8px}.preset-save input,.metadata-edit input,.metadata-edit textarea{width:100%;background:#121212;border:1px solid #3a3a3a;color:#ddd;border-radius:3px;padding:7px;outline:0}.preset-save button{border:1px solid #393939;background:#252525;color:#ccc;border-radius:3px;padding:6px 8px;cursor:pointer}.preset-save button:last-child{grid-column:1/-1}.metadata-edit{display:grid;gap:8px;margin-top:9px}.metadata-edit label{display:grid;gap:4px;color:#999;font-size:9px}.metadata-edit textarea{min-height:72px;resize:vertical}.image-layer-swatch{background:linear-gradient(135deg,#777,#333)!important}.form-grid input[type=range]{width:100%}
 @media(max-width:760px){:root{--right:clamp(160px,42vw,230px)}.editor-stage canvas{max-width:calc(100vw - var(--right) - 8px)!important}.tool-section-body{padding:7px!important}.editor-footer{padding:0 4px}.editor-footer button{padding:5px 4px}.panel-header{padding:0 6px}}
 @media(max-width:430px){:root{--right:44vw}.editor-stage canvas{max-width:calc(100vw - var(--right) - 6px)!important}}
+
+/* Precise values stay aligned with the range control on every panel. */
+.control-value{display:inline-flex;align-items:center;justify-content:flex-end;gap:5px;min-width:74px}
+.control-number{width:44px;height:20px;padding:1px 3px;border:1px solid #3a3a3a;border-radius:3px;background:#111;color:#e6e6e6;text-align:right;font:500 10px/1 ui-monospace,SFMono-Regular,Consolas,monospace;font-variant-numeric:tabular-nums}
+.control-number:focus-visible{outline:2px solid #b78cff;outline-offset:1px;border-color:#b78cff}
+.control-number::-webkit-inner-spin-button,.control-number::-webkit-outer-spin-button{opacity:.55}
+.control-value b{display:none!important}
+.panel-header .histogram-block{min-width:0;flex:1.35}
+.histogram-block canvas{height:76px!important;min-height:76px;background:#0f0f10!important;border-color:#484848!important}
+.histogram-readout{display:flex;justify-content:space-between;gap:6px;color:#9f9f9f;font:9px/1.2 ui-monospace,SFMono-Regular,Consolas,monospace;font-variant-numeric:tabular-nums;white-space:nowrap}
+.histogram-readout .clip-shadow{color:#73a7ff}.histogram-readout .clip-highlight{color:#ff9d7c}
+@media(max-width:760px){.control-number{width:40px}.control-value{min-width:68px}.histogram-block canvas{height:64px!important;min-height:64px}.histogram-readout{font-size:8px}}
 .before-split-canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;display:none;z-index:2}.before-split-canvas.active{display:block}.before-split-divider{position:absolute;top:0;bottom:0;width:2px;background:rgba(255,255,255,.92);box-shadow:0 0 0 1px rgba(0,0,0,.35);z-index:5;pointer-events:none}.before-split-range{position:absolute;left:50%;bottom:50px;transform:translateX(-50%);z-index:10;width:min(420px,55%);accent-color:#eee}.editor.focus-view .before-split-range,.editor.photo-only .before-split-range{bottom:20px}.editor.focus-view .before-split-divider,.editor.photo-only .before-split-divider{display:block}
 
 /* Compact, scannable section rows. Keep labels and summaries on one line. */
@@ -103,3 +115,14 @@
 .control input[type=range]::-moz-range-thumb,.range-row input[type=range]::-moz-range-thumb,.brush-options input[type=range]::-moz-range-thumb,.form-grid input[type=range]::-moz-range-thumb{width:12px;height:12px;border:1px solid #111;border-radius:50%;background:#e1e1e1;box-shadow:0 0 0 1px rgba(255,255,255,.15)}
 .control input[type=range]:focus-visible,.range-row input[type=range]:focus-visible,.brush-options input[type=range]:focus-visible,.form-grid input[type=range]:focus-visible{outline:1px solid #8d8d8d;outline-offset:3px}
 .photo-card.image-missing::before{content:'Preview unavailable';position:absolute;inset:0;display:grid;place-items:center;color:#888;font-size:11px;background:#202020}.photo-card img.image-missing{display:none}
+
+/* Final rail sizing: keep the histogram readable without overlapping tools. */
+.panel-header{height:auto!important;min-height:122px!important;display:grid!important;grid-template-columns:1fr auto;grid-template-rows:22px auto;align-items:start!important;padding:6px 8px!important;gap:4px 7px}
+.panel-header .rating{grid-column:1;grid-row:1;padding-top:3px;flex:0 0 auto}
+.panel-header .flags{grid-column:2;grid-row:1;padding-top:3px;flex:0 0 auto}
+.panel-header .histogram-block{grid-column:1 / -1;grid-row:2;min-width:0;width:100%}
+.panel-header .histogram-block canvas{display:block!important;width:100%!important;height:76px!important;min-height:76px;background:#0f0f10!important;border:1px solid #484848;border-radius:3px}
+.panel-header .histogram-readout{display:flex!important}
+.editor-panel{grid-template-rows:auto minmax(0,1fr) 0 42px!important}
+@media(max-width:760px){.panel-header{min-height:106px!important;padding:5px 6px!important}.panel-header .histogram-block canvas{height:58px!important;min-height:58px}}
+@media(max-width:760px){.editor-panel{grid-template-rows:auto minmax(0,1fr) 0 38px!important}}

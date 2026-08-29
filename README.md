@@ -65,6 +65,7 @@ Each section in the right rail is independently collapsible. Section state is re
 ## Library and organization
 
 - Multi-photo device import.
+- JPG/JPEG, PNG, WebP, GIF, BMP, AVIF, SVG, and detected RAW extensions; the picker also accepts files whose MIME type is missing but whose extension is known.
 - Thumbnail-backed library rendering for responsive large collections.
 - Local IndexedDB persistence.
 - Browser-storage persistence request where supported.
@@ -102,6 +103,7 @@ Each section in the right rail is independently collapsible. Section state is re
 ### Curves and color
 
 - Tone-curve processing
+- Direct curve-point dragging keeps the five tonal controls synchronized; every range control also accepts an exact numeric value and double-click reset.
 - RGB/HSL-aware pixel transformations
 - Hue, Saturation, and Luminance controls
 - Color grading
@@ -304,6 +306,7 @@ Derived photos are written back into the local library with source metadata.
 Pro mode includes:
 
 - RGB/luminance histogram
+- Large live RGB histogram with luminance outline and shadow/highlight clipping percentages.
 - Highlight clipping overlay
 - Shadow clipping overlay
 - Focus/edge diagnostic overlay

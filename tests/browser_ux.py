@@ -75,6 +75,9 @@ def main():
             page.click(f'[data-mode="{mode}"]');counts.append(page.locator('.tool-section').count())
         assert counts[0] <= counts[1] <= counts[2]
         page.click('[data-mode="advanced"]');head=page.locator('.accordion-head').first;section=head.locator('..');before='collapsed' in (section.get_attribute('class') or '');head.click();after='collapsed' in (section.get_attribute('class') or '');assert before != after
+        if 'open' not in (page.locator('[data-tool-section="edit"]').get_attribute('class') or ''): page.click('[data-tool-toggle="edit"]')
+        if not page.locator('[data-section="light"] .accordion-body').is_visible(): page.locator('[data-section="light"] .accordion-head').click()
+        number=page.locator('[data-control-number="edit|exposure"]');number.fill('37');assert page.evaluate("currentPhoto.edits.exposure===37");number.fill('0');assert page.evaluate("currentPhoto.edits.exposure===0")
         if 'open' not in (page.locator('[data-tool-section="transform"]').get_attribute('class') or ''): page.click('[data-tool-toggle="transform"]')
         if not page.locator('#autoCrop').is_visible(): page.locator('[data-section="crop"] .accordion-head').click()
         page.click('#autoCrop');page.wait_for_timeout(100);assert page.evaluate("currentPhoto.edits.cropZoom>=100 && currentPhoto.edits.cropX>=0 && currentPhoto.edits.cropX<=100")
