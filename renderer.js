@@ -8,6 +8,7 @@ async function decodeImage(blob){if(!blob)throw new Error('Photo data is unavail
 let renderFallbackNoticeFor=null;
 async function decodePhotoImage(blob){try{return await decodeImage(blob)}catch(primaryError){const fallback=currentPhoto?.thumbnailBlob;if(!fallback||fallback===blob)throw primaryError;try{const image=await decodeImage(fallback);if(renderFallbackNoticeFor!==currentPhoto?.id){renderFallbackNoticeFor=currentPhoto?.id;toast('Original preview unavailable — using the local thumbnail')}return image}catch{throw primaryError}}}
 function releaseImage(image){image?.close?.();if(image?.__darkroomObjectUrl)URL.revokeObjectURL(image.__darkroomObjectUrl)}
+function setEditorFallback(active){const stage=$('#photoViewport'),img=$('#editorFallbackImage');if(!stage||!img)return;stage.classList.toggle('preview-fallback',!!active);if(!active||!currentPhoto?.blob){img.classList.remove('active');img.removeAttribute('src');img.dataset.photoId='';return}img.classList.add('active');if(img.dataset.photoId===currentPhoto.id)return;const photoId=currentPhoto.id;img.dataset.photoId=photoId;img.dataset.source='original';img.onerror=()=>{if(img.dataset.photoId!==photoId)return;if(img.dataset.source==='thumbnail'||!currentPhoto?.thumbnailBlob)return;img.dataset.source='thumbnail';img.src=blobUrl(currentPhoto,true)};img.src=blobUrl(currentPhoto,false)}
 async function applySkyReplacement(source,e){if(!currentPhoto?.skyReplacementId)return source;const ref=photos.find(p=>p.id===currentPhoto.skyReplacementId);if(!ref)return source;const bmp=await decodeImage(ref.blob),sky=document.createElement('canvas');sky.width=source.width;sky.height=source.height;const sx=sky.getContext('2d',{alpha:false}),scale=Math.max(source.width/bmp.width,source.height/bmp.height),dw=bmp.width*scale,dh=bmp.height*scale;sx.drawImage(bmp,(source.width-dw)/2,(source.height-dh)/2,dw,dh);releaseImage(bmp);const ctx=source.getContext('2d',{alpha:false}),base=ctx.getImageData(0,0,source.width,source.height),sd=sx.getImageData(0,0,sky.width,sky.height).data,mask=DarkRoomEngine.smartMaskRaster(base.data,source.width,source.height,'sky'),opacity=DarkRoomEngine.clamp((e.skyReplacementOpacity??100)/100);for(let i=0;i<base.data.length;i+=4){const m=(mask.data[i/4]||0)/255*opacity;base.data[i]=DarkRoomEngine.mix(base.data[i],sd[i],m);base.data[i+1]=DarkRoomEngine.mix(base.data[i+1],sd[i+1],m);base.data[i+2]=DarkRoomEngine.mix(base.data[i+2],sd[i+2],m)}ctx.putImageData(base,0,0);return source}
 
 
@@ -41,7 +42,35 @@ function applyHistoryState(state){if(!state||!currentPhoto)return;currentPhoto.e
 function undo(){if(historyIndex<=0)return;historyIndex--;applyHistoryState(history[historyIndex]);updateHistoryButtons()}
 function redo(){if(historyIndex>=history.length-1)return;historyIndex++;applyHistoryState(history[historyIndex]);updateHistoryButtons()}
 function updateHistoryButtons(){$('#undoBtn').disabled=historyIndex<=0;$('#redoBtn').disabled=historyIndex>=history.length-1}
-async function openEditor(id){currentPhoto=normalizePhoto(photos.find(p=>p.id===id));if(!currentPhoto)return;$('#editor').classList.remove('hidden','focus-view');$('#editor').setAttribute('aria-hidden','false');photoOnly=false;currentPanel='edit';beforeSplit=false;activeLocalId=currentPhoto.localEdits[0]?.id||null;activeLayerId=currentPhoto.adjustmentLayers?.[0]?.id||null;activeImageLayerId=currentPhoto.imageLayers?.[0]?.id||null;paintMode=null;beforeMode=false;history=[];historyIndex=-1;const canvas=$('#editorCanvas');if(canvas){canvas.width=1;canvas.height=1;canvas.getContext('2d',{alpha:false})?.clearRect(0,0,1,1)}captureHistory();resetZoom();syncEditorMeta();applyEditorMode(false);renderControls();await renderCanvas(canvas);updateCompositionOverlay()}
+async function openEditor(id){currentPhoto=normalizePhoto(photos.find(p=>p.id===id));if(!currentPhoto)return;$('#editor').classList.remove('hidden','focus-view');$('#editor').setAttribute('aria-hidden','false');photoOnly=false;currentPanel='edit';beforeSplit=false;activeLocalId=currentPhoto.localEdits[0]?.id||null;activeLayerId=currentPhoto.adjustmentLayers?.[0]?.id||null;activeImageLayerId=currentPhoto.imageLayers?.[0]?.id||null;paintMode=null;beforeMode=false;history=[];historyIndex=-1;const canvas=$('#editorCanvas');if(canvas){canvas.width=1;canvas.height=1;canvas.getContext('2d',{alpha:false})?.clearRect(0,0,1,1)}setEditorFallback(true);captureHistory();resetZoom();syncEditorMeta();applyEditorMode(false);renderControls();await renderCanvas(canvas);updateCompositionOverlay()}
 async function renderThumbnailFallback(canvas,maxSize=1400){const blob=currentPhoto?.thumbnailBlob;if(!blob)return false;try{const bmp=await decodeImage(blob),temp=transformedSourceCanvas(bmp,defaultEdits(),maxSize);releaseImage(bmp);canvas.width=temp.width;canvas.height=temp.height;const out=canvas.getContext('2d',{alpha:false});out.imageSmoothingEnabled=true;out.imageSmoothingQuality='high';out.drawImage(temp,0,0);if(canvas.id==='editorCanvas'){drawHistogram(canvas);renderMaskOverlay();renderDiagnosticOverlay();updateCompositionOverlay()}const sample=out.getImageData(0,0,Math.min(canvas.width,160),Math.min(canvas.height,160)).data;let sum=0;for(let i=0;i<sample.length;i+=4)sum+=sample[i]+sample[i+1]+sample[i+2];return sum>=3*sample.length/4}catch(error){console.warn('Thumbnail fallback failed',error);return false}}
-const renderCanvasNowBase=renderCanvasNow;renderCanvasNow=async function(canvas,maxSize=1400,forceOriginal=false){try{await renderCanvasNowBase(canvas,maxSize,forceOriginal)}catch(error){console.error('Render failed',error);if(canvas?.id==='editorCanvas'&&await renderThumbnailFallback(canvas,maxSize))toast('Original preview unavailable — showing the local thumbnail');else if(canvas?.id==='editorCanvas')toast('Could not decode this image — try re-importing the original');return}if(!forceOriginal&&canvas?.id==='editorCanvas'&&canvas.width&&canvas.height){const data=canvas.getContext('2d').getImageData(0,0,Math.min(canvas.width,160),Math.min(canvas.height,160)).data;let sum=0;for(let i=0;i<data.length;i+=4)sum+=data[i]+data[i+1]+data[i+2];if(sum<3*data.length/4){const recovered=await renderThumbnailFallback(canvas,maxSize);if(recovered)toast('Preview is empty — showing the local thumbnail');else{toast('Preview is empty — showing the untouched photo');await renderCanvasNowBase(canvas,maxSize,true)}}}}
+const renderCanvasNowBase=renderCanvasNow;
+renderCanvasNow=async function(canvas,maxSize=1400,forceOriginal=false){
+  const photoId=currentPhoto?.id;
+  try{await renderCanvasNowBase(canvas,maxSize,forceOriginal)}
+  catch(error){
+    console.error('Render failed',error);
+    if(photoId!==currentPhoto?.id)return;
+    if(canvas?.id==='editorCanvas'&&await renderThumbnailFallback(canvas,maxSize)){
+      setEditorFallback(false);toast('Original preview unavailable — showing the local thumbnail');
+    }else if(canvas?.id==='editorCanvas'){
+      setEditorFallback(true);toast('Could not decode this image — showing the original preview');
+    }
+    return;
+  }
+  if(photoId!==currentPhoto?.id)return;
+  if(forceOriginal||canvas?.id!=='editorCanvas'||!canvas.width||!canvas.height){
+    if(canvas?.id==='editorCanvas')setEditorFallback(false);
+    return;
+  }
+  const data=canvas.getContext('2d').getImageData(0,0,Math.min(canvas.width,160),Math.min(canvas.height,160)).data;
+  let sum=0;for(let i=0;i<data.length;i+=4)sum+=data[i]+data[i+1]+data[i+2];
+  if(sum<3*data.length/4){
+    const recovered=await renderThumbnailFallback(canvas,maxSize);
+    if(recovered){setEditorFallback(false);toast('Preview is empty — showing the local thumbnail');return}
+    toast('Preview is empty — showing the untouched photo');
+    await renderCanvasNowBase(canvas,maxSize,true);
+  }
+  setEditorFallback(false);
+}
 const renderCanvasStatusBase=renderCanvas;renderCanvas=function(canvas,maxSize=1400,forceOriginal=false){const status=$('#renderStatus');const isEditor=canvas?.id==='editorCanvas';if(isEditor&&status){status.classList.remove('hidden');status.textContent='Rendering preview…';canvas.setAttribute('aria-busy','true')}const result=renderCanvasStatusBase(canvas,maxSize,forceOriginal);return Promise.resolve(result).finally(()=>{if(isEditor&&status){status.classList.add('hidden');canvas.removeAttribute('aria-busy')}})};

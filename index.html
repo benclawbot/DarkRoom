@@ -143,6 +143,7 @@
     </header>
 
     <section id="photoViewport" class="editor-stage" aria-label="Zoomable photo viewport">
+      <img id="editorFallbackImage" class="editor-image-fallback" alt="" aria-hidden="true">
       <div id="canvasWrap" class="canvas-wrap"><canvas id="editorCanvas"></canvas><canvas id="beforeSplitCanvas" class="before-split-canvas" aria-hidden="true"></canvas><canvas id="maskOverlay" class="mask-overlay" aria-hidden="true"></canvas><canvas id="diagnosticOverlay" class="diagnostic-overlay" aria-hidden="true"></canvas><div id="beforeSplitDivider" class="before-split-divider hidden"></div><div id="compositionOverlay" class="composition-overlay none"></div></div>
       <input id="beforeSplitRange" class="before-split-range hidden" type="range" min="5" max="95" value="50" aria-label="Before and after split position" />
       <div id="paintHud" class="paint-hud hidden"><b>Local edit</b><span>Drag on photo · Esc to finish</span></div>

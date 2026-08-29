@@ -10,6 +10,7 @@ function hueBand(h){let best=BANDS[0],bd=999;for(const p of BANDS){const d=Math.
 function curveLuma(l,e){const points=Array.isArray(e.curvePoints)?e.curvePoints.filter(p=>Number.isFinite(+p?.x)&&Number.isFinite(+p?.y)).map(p=>({x:clamp(+p.x),y:clamp(+p.y)})).sort((a,b)=>a.x-b.x):[];if(points.length>=2){if(l<=points[0].x){const a=points[0],b=points[1],t=(l-a.x)/Math.max(.0001,b.x-a.x);return clamp(a.y+(b.y-a.y)*t)}for(let i=1;i<points.length;i++){const a=points[i-1],b=points[i];if(l<=b.x){const t=(l-a.x)/Math.max(.0001,b.x-a.x);return clamp(a.y+(b.y-a.y)*t)}}const a=points.at(-2),b=points.at(-1),t=(l-a.x)/Math.max(.0001,b.x-a.x);return clamp(a.y+(b.y-a.y)*t)}const knobs=[[.03,e.curveBlacks||0,.16],[.25,e.curveShadows||0,.22],[.5,e.curveMidtones||0,.24],[.75,e.curveHighlights||0,.22],[.97,e.curveWhites||0,.16]];let v=l;for(const [center,val,amp] of knobs){const fall=clamp(1-Math.abs(l-center)/.28);v+=val/100*amp*fall}return clamp(v)}
 function grade(r,g,b,l,e){let hue=0,sat=0,lum=0;const balance=(e.gradeBalance||0)/100,split=.5+balance*.18,blend=clamp((e.gradeBlending??50)/100,.05,1);if(l<split-.12){hue=e.gradeShadowHue||0;sat=e.gradeShadowSat||0;lum=e.gradeShadowLum||0}else if(l>split+.12){hue=e.gradeHighHue||0;sat=e.gradeHighSat||0;lum=e.gradeHighLum||0}else{hue=e.gradeMidHue||0;sat=e.gradeMidSat||0;lum=e.gradeMidLum||0}let [h,s,li]=rgbToHsl(r,g,b);if(sat){const dh=((hue-h+540)%360)-180;h+=dh*Math.abs(sat)/125*blend;s=clamp(s+sat/280*blend)}li=clamp(li+lum/100*.22);return hslToRgb(h,s,li)}
 function applyTonePixel(r,g,b,e={}){
+ if(![r,g,b].every(Number.isFinite))return[0,0,0];
  let R=r/255,G=g/255,B=b/255;
  const temp=(e.temp||0)/100,tint=(e.tint||0)/100;R*=1+temp*.19+tint*.035;B*=1-temp*.19+tint*.035;G*=1-tint*.105;
  const exp=Math.pow(2,(e.exposure||0)/50);R*=exp;G*=exp;B*=exp;
@@ -24,6 +25,7 @@ function applyTonePixel(r,g,b,e={}){
  [R,G,B]=grade(clamp(R)*255,clamp(G)*255,clamp(B)*255,clamp(li),e).map(v=>v/255);
  const fade=(e.fade||0)/100;if(fade>0){R=mix(R,.5,fade*.16);G=mix(G,.5,fade*.16);B=mix(B,.5,fade*.16)}
  if(globalSat<=-1){const mono=clamp(.2126*R+.7152*G+.0722*B);R=G=B=mono}
+ if(![R,G,B].every(Number.isFinite))return[clamp255(r),clamp255(g),clamp255(b)];
  return[clamp(R)*255,clamp(G)*255,clamp(B)*255];
 }
 function localAdjustPixel(r,g,b,a,strength){if(!strength)return[r,g,b];const e={gamma:100,gradeBlending:50};for(const [k,v] of Object.entries(a||{}))e[k]=typeof v==='number'?v*strength:v;return applyTonePixel(r,g,b,e)}

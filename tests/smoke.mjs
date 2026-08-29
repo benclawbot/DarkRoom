@@ -11,7 +11,7 @@ for(const id of direct){
   const generated=js.includes(`id="${id}"`)||js.includes(`id=\\"${id}\\"`);
   assert(ids.has(id)||generated,`Missing static or generated control #${id}`);
 }
-for(const id of ['photoViewport','editorCanvas','canvasWrap','maskOverlay','compositionOverlay','zoomIn','zoomOut','zoomReset','zoomLabel','undoBtn','redoBtn','beforeAfterBtn','beforeSplitBtn','beforeSplitRange','pickBtn','rejectBtn','copyEdits','pasteEdits','panelToggle','fullscreenBtn','mobileFullscreenBtn','modeSwitcher','toolTabs','controls','selectPhotosBtn','batchBar']) assert(ids.has(id),`Missing required #${id}`);
+for(const id of ['photoViewport','editorCanvas','editorFallbackImage','canvasWrap','maskOverlay','compositionOverlay','zoomIn','zoomOut','zoomReset','zoomLabel','undoBtn','redoBtn','beforeAfterBtn','beforeSplitBtn','beforeSplitRange','pickBtn','rejectBtn','copyEdits','pasteEdits','panelToggle','fullscreenBtn','mobileFullscreenBtn','modeSwitcher','toolTabs','controls','selectPhotosBtn','batchBar']) assert(ids.has(id),`Missing required #${id}`);
 assert(ids.has('renderStatus')&&css.includes('.render-status'),'Render status indicator missing');
 for(const mode of ['quick','advanced','pro']) assert(html.includes(`data-mode="${mode}"`),`Missing editor mode ${mode}`);
 for(const panel of ['edit','masks','heal','transform','retouch','ai','info']) assert(html.includes(`data-panel="${panel}"`),`Missing right-rail panel ${panel}`);
@@ -37,5 +37,5 @@ assert(js.includes('createHealOperation')&&(js.includes('DarkRoomEngine.inpaint'
 assert(js.includes('matchReferenceLook')&&js.includes('matchLook'),'Reference look matching missing');
 assert((js.includes('DarkRoomEngine.applyTonePixel')||js.includes('E.applyTonePixel'))&&js.includes('detailProcess')&&js.includes('portraitProcess'),'Pixel/detail/portrait engine integration missing');
 assert(js.includes('compositionOverlay')&&css.includes('.composition-thirds'),'Composition guides missing');
-assert(sw.includes('darkroom-v16')&&sw.includes('engine-core.js')&&sw.includes('generative-runtime.js')&&sw.includes('docs/assets/examples/'),'Service worker v16 assets missing');
+assert(sw.includes('darkroom-v17')&&sw.includes('engine-core.js')&&sw.includes('generative-runtime.js')&&sw.includes('docs/assets/examples/'),'Service worker v17 assets missing');
 console.log(`Static UX/feature checks passed (${new Set(direct).size} control references verified).`);

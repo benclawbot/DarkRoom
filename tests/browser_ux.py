@@ -67,8 +67,11 @@ def main():
         page.click('[data-mode="advanced"]');page.click('[data-tool-toggle="retouch"]');page.wait_for_timeout(500)
         webp_avg=page.evaluate("()=>{const c=document.querySelector('#editorCanvas'),d=c.getContext('2d').getImageData(0,0,c.width,c.height).data;let n=0;for(let i=0;i<d.length;i+=Math.max(4,Math.floor(d.length/4000/4)*4))n+=d[i]+d[i+1]+d[i+2];return n/Math.max(1,d.length/Math.max(4,Math.floor(d.length/4000/4)*4))/3}")
         assert webp_avg>5, f'WebP preview unexpectedly black in Retouch: {webp_avg}'
+        page.evaluate("setEditorFallback(true)");assert page.locator('#editorFallbackImage').is_visible();assert page.locator('#editorFallbackImage').get_attribute('src');page.evaluate("setEditorFallback(false)");assert not page.locator('#editorFallbackImage').is_visible()
         fallback_avg=page.evaluate("""async()=>{const original=currentPhoto.blob;currentPhoto.blob=new Blob([new Uint8Array([0,1,2,3])],{type:'image/webp'});await renderCanvas(document.querySelector('#editorCanvas'));const c=document.querySelector('#editorCanvas'),d=c.getContext('2d').getImageData(0,0,c.width,c.height).data;let n=0;for(let i=0;i<d.length;i+=Math.max(4,Math.floor(d.length/4000/4)*4))n+=d[i]+d[i+1]+d[i+2];const avg=n/Math.max(1,d.length/Math.max(4,Math.floor(d.length/4000/4)*4))/3;currentPhoto.blob=original;await renderCanvas(c);return avg}""")
         assert fallback_avg>5, f'WebP thumbnail fallback unexpectedly black: {fallback_avg}'
+        sanitized_avg=page.evaluate("""async()=>{currentPhoto.edits={...currentPhoto.edits,gamma:NaN,curvePoints:[{x:.5,y:0},{x:.5,y:0}]};normalizePhoto(currentPhoto);await renderCanvas(document.querySelector('#editorCanvas'));const c=document.querySelector('#editorCanvas'),d=c.getContext('2d').getImageData(0,0,c.width,c.height).data;let n=0;for(let i=0;i<d.length;i+=Math.max(4,Math.floor(d.length/4000/4))){n+=d[i]+d[i+1]+d[i+2]}return n/Math.max(1,d.length/Math.max(4,Math.floor(d.length/4000/4)))/3}""")
+        assert sanitized_avg>5, f'Sanitized persisted edits unexpectedly black: {sanitized_avg}'
         exposure=page.locator('[data-edit="exposure"]').first
         for value in range(-80,81,8):
             exposure.evaluate("(el, value) => { el.value = value; el.dispatchEvent(new Event('input', {bubbles: true})); }", value)
