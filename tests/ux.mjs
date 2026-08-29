@@ -1,6 +1,8 @@
 import fs from 'node:fs';import assert from 'node:assert/strict';
 const read=f=>fs.readFileSync(new URL('../'+f,import.meta.url),'utf8');
 const html=read('index.html'),css=read('styles.css'),core=read('core.js'),editor=read('editor.js'),app=read('app.js'),lib=read('library.js'),renderer=read('renderer.js'),ai=read('ai-runtime.js');
+assert(html.includes('rel="icon"')&&html.includes('href="icon.svg"'),'aperture favicon must be declared');
+assert(css.includes('::-webkit-slider-thumb')&&css.includes('::-moz-range-thumb'),'range controls must have custom track and knob styling');
 // Progressive disclosure
 for(const m of ['quick','advanced','pro'])assert(html.includes(`data-mode="${m}"`),`missing ${m} mode`);
 assert(core.includes('MODE_RANK')&&core.includes("quick:0")&&core.includes("advanced:1")&&core.includes("pro:2"));
