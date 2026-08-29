@@ -1,7 +1,8 @@
 node_modules/
 test-output/
+__pycache__/
+.codex-remote-attachments/
 .env
 .env.local
 .env.*.local
 *.log
-

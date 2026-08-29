@@ -107,7 +107,7 @@ Each section in the right rail is independently collapsible. Section state is re
 ### Curves and color
 
 - Tone-curve processing
-- Lightroom-style point curves: click to add a point, drag to shape it, double-click to remove it, or use Reset curve. The five tonal controls stay synchronized with the curve, and every range control also accepts an exact numeric value with double-click reset.
+- Smooth Lightroom-style point curves: begin with two adjustable endpoints, click anywhere to add arbitrary points, drag any point to shape the curve, double-click an interior point to remove it, or use Reset curve. The five tonal controls stay synchronized with the same smooth curve, and every range control also accepts an exact numeric value with double-click reset.
 - RGB/HSL-aware pixel transformations
 - Hue, Saturation, and Luminance controls
 - Color grading
@@ -463,9 +463,10 @@ Release `1.0.0` is validated with:
 - Quick / Advanced / Pro state-machine tests.
 - Right-side tool rail and collapsible-section tests.
 - Fullscreen/Focus View checks.
-- Pixel-engine tests for tone, HSL, grading, direct point curves, masks, dodge/burn/local edits, smart masks, detail, portrait, restoration, relighting, remove/clone/generative operations.
+- Pixel-engine tests for tone, HSL, grading, smooth direct point curves, masks, dodge/burn/local edits, smart masks, detail, portrait, restoration, relighting, remove/clone/generative operations.
 - Professional engine tests for layers, LUT, quality analysis, red-eye/frequency processing, HDR/noise/focus merges, and TIFF encoding.
-- End-to-end Playwright UX workflow on desktop and 390×844 mobile viewport, including PNG/WebP import, non-black Retouch previews with source-image and thumbnail fallbacks, persisted edit-state sanitization, point-curve add/drag/reset, right-side tools, accordions, Auto Crop, split comparison, local painting, layers, sky replacement, compare/culling, and fullscreen.
+- End-to-end Playwright UX workflow on desktop and 390×844 mobile viewport, including all three supplied photos, PNG/WebP import, non-black default and Retouch previews, overlapping-render race coverage, smooth point-curve add/drag/reset, right-side tools, accordions, Auto Crop, local painting, layers, sky replacement, compare/culling, fullscreen, and local-only deletion.
+- Service-worker upgrade coverage verifies stale application-shell caches are removed before the current renderer is reused.
 - Legacy-library recovery coverage verifies a valid original with a missing thumbnail is rebuilt before the library/editor are shown.
 
 ## Known constraints

@@ -9,6 +9,7 @@ const neutral=E.applyTonePixel(100,120,140,{gamma:100,gradeBlending:50});assert(
 const bright=E.applyTonePixel(100,100,100,{exposure:50,gamma:100});assert(bright[0]>100,'exposure should brighten');
 const curveLift=E.applyTonePixel(128,128,128,{curvePoints:[{x:0,y:0},{x:.5,y:.8},{x:1,y:1}],gamma:100});assert(curveLift[0]>170&&curveLift[1]>170&&curveLift[2]>170,'direct tone-curve points should lift the midpoint');
 const curveCrush=E.applyTonePixel(128,128,128,{curvePoints:[{x:0,y:0},{x:.5,y:.2},{x:1,y:1}],gamma:100});assert(curveCrush[0]<90&&curveCrush[1]<90&&curveCrush[2]<90,'direct tone-curve points should lower the midpoint');
+const smoothQuarter=E.applyTonePixel(64,64,64,{curvePoints:[{x:0,y:0},{x:.5,y:.8},{x:1,y:1}],gamma:100});assert(smoothQuarter[0]>108,'tone-curve interpolation should bend smoothly instead of joining points with straight segments');
 const sat=E.applyTonePixel(180,100,90,{saturation:-100,gamma:100});assert(Math.max(...sat)-Math.min(...sat)===0,'saturation -100 must produce true black and white');
 const redHue=E.applyTonePixel(210,50,45,{hueRed:80,gamma:100});assert(Math.abs(redHue[1]-50)>2||Math.abs(redHue[2]-45)>2,'HSL hue should alter red-band color');
 const redLum=E.applyTonePixel(210,50,45,{lumRed:80,gamma:100});assert(redLum.reduce((a,b)=>a+b,0)>305,'HSL luminance should brighten red band');

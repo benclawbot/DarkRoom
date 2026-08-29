@@ -28,6 +28,9 @@ jobs:
       - run: pip install playwright pillow
       - run: python -m playwright install --with-deps chromium
       - run: python tests/browser_ux.py
+      - run: python tests/preview_race.py
+      - run: python tests/tone_curve_ux.py
+      - run: python tests/supplied_images_ux.py
 
   deploy:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
