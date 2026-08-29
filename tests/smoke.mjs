@@ -2,7 +2,8 @@ import fs from 'node:fs';
 import assert from 'node:assert/strict';
 const html=fs.readFileSync(new URL('../index.html',import.meta.url),'utf8');
 const files=['engine-core.js','core.js','library.js','renderer.js','editor.js','pro-tools.js','app.js'];
-const js=files.map(f=>fs.readFileSync(new URL('../'+f,import.meta.url),'utf8')).join('\n');
+const sourceByFile=Object.fromEntries(files.map(f=>[f,fs.readFileSync(new URL('../'+f,import.meta.url),'utf8')]));
+const js=files.map(f=>sourceByFile[f]).join('\n');
 const css=fs.readFileSync(new URL('../styles.css',import.meta.url),'utf8');
 const sw=fs.readFileSync(new URL('../sw.js',import.meta.url),'utf8');
 const ids=new Set([...html.matchAll(/id="([^"]+)"/g)].map(m=>m[1]));
@@ -31,6 +32,7 @@ assert(html.includes('.dng')&&js.includes("imageExts")&&js.includes("No supporte
 assert(html.includes('class="histogram-block"')&&html.includes('aria-label="RGB histogram"'),'Labeled RGB histogram block missing');
 assert(html.includes('id="histogramReadout"')&&js.includes('histogramReadout'),'Histogram clipping readout missing');
 assert(js.includes('isUsableBlob')&&js.includes('repairPhotoThumbnail')&&js.includes('photoBlob('),'Legacy photo asset recovery missing');
+for(const file of ['editor.js','library.js','pro-tools.js']) assert(!/\b(?:currentPhoto|p|photo)\.blob\b/.test(sourceByFile[file]),`${file} bypasses the shared photoBlob resolver`);
 assert(js.includes('class="control-number"')&&js.includes('data-control-number'),'Precise numeric slider entry missing');
 assert(css.includes('#exportQuality')&&css.includes('.mini-offset input[type=range]'),'Secondary sliders should share the editor control styling');
 assert(js.includes("type==='dodge'")&&js.includes("type==='burn'")&&js.includes('setPaintMode'),'Dodge/burn local editing missing');
