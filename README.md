@@ -103,7 +103,7 @@ Each section in the right rail is independently collapsible. Section state is re
 ### Curves and color
 
 - Tone-curve processing
-- Direct curve-point dragging keeps the five tonal controls synchronized; every range control also accepts an exact numeric value and double-click reset.
+- Lightroom-style point curves: click to add a point, drag to shape it, double-click to remove it, or use Reset curve. The five tonal controls stay synchronized with the curve, and every range control also accepts an exact numeric value with double-click reset.
 - RGB/HSL-aware pixel transformations
 - Hue, Saturation, and Luminance controls
 - Color grading

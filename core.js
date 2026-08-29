@@ -10,7 +10,7 @@ function releaseDecodedImage(image){if(image?.__darkroomObjectUrl)URL.revokeObje
 const defaultEdits=()=>({
  exposure:0,contrast:0,highlights:0,shadows:0,whites:0,blacks:0,temp:0,tint:0,vibrance:0,saturation:0,
  texture:0,clarity:0,dehaze:0,localContrast:0,gamma:100,vignette:0,grain:0,sharpness:0,noise:0,luminanceNoise:0,colorNoise:0,deblur:0,artifactReduction:0,dustRemoval:0,lineRemoval:0,faceRestore:0,fade:0,bloom:0,halation:0,
- curveBlacks:0,curveShadows:0,curveMidtones:0,curveHighlights:0,curveWhites:0,
+ curveBlacks:0,curveShadows:0,curveMidtones:0,curveHighlights:0,curveWhites:0,curvePoints:[],
  satRed:0,satOrange:0,satYellow:0,satGreen:0,satAqua:0,satBlue:0,satPurple:0,satMagenta:0,
  hueRed:0,hueOrange:0,hueYellow:0,hueGreen:0,hueAqua:0,hueBlue:0,huePurple:0,hueMagenta:0,
  lumRed:0,lumOrange:0,lumYellow:0,lumGreen:0,lumAqua:0,lumBlue:0,lumPurple:0,lumMagenta:0,

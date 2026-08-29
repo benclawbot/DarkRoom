@@ -86,6 +86,19 @@ def main():
         if 'open' not in (page.locator('[data-tool-section="edit"]').get_attribute('class') or ''): page.click('[data-tool-toggle="edit"]')
         if not page.locator('[data-section="light"] .accordion-body').is_visible(): page.locator('[data-section="light"] .accordion-head').click()
         number=page.locator('[data-control-number="edit|exposure"]');number.fill('37');assert page.evaluate("currentPhoto.edits.exposure===37");number.fill('0');assert page.evaluate("currentPhoto.edits.exposure===0")
+        if not page.locator('[data-section="curves"] .accordion-body').is_visible(): page.locator('[data-section="curves"] .accordion-head').click()
+        curve=page.locator('#toneCurveCanvas');assert curve.is_visible();curve_box=curve.bounding_box();assert curve_box and curve_box['width']>200 and curve_box['height']>100
+        curve_before=page.evaluate("currentPhoto.edits.curvePoints.length")
+        page.mouse.click(curve_box['x']+curve_box['width']*.62,curve_box['y']+curve_box['height']*.28);page.wait_for_timeout(100)
+        curve_after=page.evaluate("({count:currentPhoto.edits.curvePoints.length,mid:currentPhoto.edits.curveMidtones,points:currentPhoto.edits.curvePoints})")
+        assert curve_after['count']>=curve_before+1 and any(abs(curve_after['points'][i]['y']-curve_after['points'][i]['x'])>.05 for i in range(len(curve_after['points']))), curve_after
+        point=max(curve_after['points'],key=lambda p: p['y']-p['x'])
+        page.mouse.move(curve_box['x']+point['x']*curve_box['width'],curve_box['y']+(1-point['y'])*curve_box['height']);page.mouse.down();page.mouse.move(curve_box['x']+point['x']*curve_box['width'],curve_box['y']+curve_box['height']*.55,steps=4);page.mouse.up();page.wait_for_timeout(100)
+        curve_dragged=page.evaluate("(x)=>currentPhoto.edits.curvePoints.find(p=>Math.abs(p.x-x)<.05)?.y",point['x'])
+        assert curve_dragged is not None and abs(curve_dragged-point['y'])>.05, curve_dragged
+        page.locator('[data-edit="curveMidtones"]').evaluate("(el)=>{el.value='-30';el.dispatchEvent(new Event('input',{bubbles:true}));el.dispatchEvent(new Event('change',{bubbles:true}));}")
+        assert page.evaluate("currentPhoto.edits.curveMidtones===-30")
+        page.click('#resetToneCurve');page.wait_for_timeout(100);assert page.evaluate("currentPhoto.edits.curvePoints.length===0 && currentPhoto.edits.curveMidtones===0")
         if 'open' not in (page.locator('[data-tool-section="transform"]').get_attribute('class') or ''): page.click('[data-tool-toggle="transform"]')
         if not page.locator('#autoCrop').is_visible(): page.locator('[data-section="crop"] .accordion-head').click()
         page.click('#autoCrop');page.wait_for_timeout(100);assert page.evaluate("currentPhoto.edits.cropZoom>=100 && currentPhoto.edits.cropX>=0 && currentPhoto.edits.cropX<=100")
