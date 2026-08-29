@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/assets/hero-banner.webp" alt="DarkRoom — local-first professional photo editing" width="100%" />
+  <img src="docs/assets/hero-banner.webp" alt="DarkRoom — local-first professional photo editing with an editor preview" width="100%" />
 </p>
 
 # DarkRoom
@@ -24,6 +24,18 @@ There is **no account system and no cloud photo storage**. Imported originals, r
 ### Library
 
 ![DarkRoom library](docs/assets/library-desktop.webp)
+
+### Photo examples
+
+These real-world landscape and motorsport photos are included in the browser test fixtures and are used to validate import, editing, sky replacement, batch analysis, and compare workflows.
+
+<table>
+  <tr>
+    <td><img src="tests/fixtures/photos/photo-1.jpg" alt="Mountain village at sunset" /></td>
+    <td><img src="tests/fixtures/photos/photo-2.jpg" alt="White sand dunes under a blue sky" /></td>
+    <td><img src="tests/fixtures/photos/photo-3.jpg" alt="Classic race car drifting at Laguna Seca" /></td>
+  </tr>
+</table>
 
 ### Pro editor — fixed right-side tools
 

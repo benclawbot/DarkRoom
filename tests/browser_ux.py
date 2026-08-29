@@ -16,12 +16,6 @@ def sample_png(seed=0,w=900,h=600):
     d.rectangle((w*.7,h*.58,w*.77,h*.83),fill=(180,190,185))
     bio=BytesIO();im.save(bio,'PNG');return bio.getvalue()
 
-def sample_webp(seed=0,w=900,h=600):
-    im=Image.new('RGB',(w,h),(35+seed*15,55,80));d=ImageDraw.Draw(im)
-    d.ellipse((w*.18,h*.18,w*.43,h*.66),fill=(210,160-seed*10,90+seed*10))
-    d.polygon([(0,h*.72),(w*.32,h*.44),(w*.57,h*.7),(w*.78,h*.36),(w,h*.7),(w,h),(0,h)],fill=(38+seed*8,62+seed*8,45))
-    bio=BytesIO();im.save(bio,'WEBP',quality=90);return bio.getvalue()
-
 def boot(page):
     html=(ROOT/'index.html').read_text(encoding='utf-8')
     html=re.sub(r'<link rel="stylesheet"[^>]+>','',html)
@@ -49,9 +43,10 @@ def main():
         page=context.new_page();errors=[];page.on('pageerror',lambda e: errors.append(str(e)))
         boot(page)
         assert page.title()=='DarkRoom'
-        page.set_input_files('#fileInput',[{'name':'mountain-one.webp','mimeType':'image/webp','buffer':sample_webp(0)},{'name':'mountain-two.png','mimeType':'image/png','buffer':sample_png(1)}])
-        page.wait_for_function("document.querySelectorAll('.photo-card').length===2",timeout=15000)
-        assert page.evaluate("photos.length") == 2
+        fixtures=ROOT/'tests'/'fixtures'/'photos'
+        page.set_input_files('#fileInput',[{'name':f.name,'mimeType':'image/jpeg','buffer':f.read_bytes()} for f in sorted(fixtures.glob('*.jpg'))])
+        page.wait_for_function("document.querySelectorAll('.photo-card').length===3",timeout=15000)
+        assert page.evaluate("photos.length") == 3
         assert page.evaluate("photos.every(p=>!!p.thumbnailBlob)")
         page.screenshot(path=str(out/'library-desktop.png'),full_page=True)
         page.locator('.photo-card').first.click();page.wait_for_selector('#editor:not(.hidden)');page.wait_for_function("document.querySelector('#editorCanvas').width>10")
@@ -100,7 +95,7 @@ def main():
         assert avg>5, f'editor preview unexpectedly black: {avg}'
         page.screenshot(path=str(out/'editor-desktop.png'),full_page=True)
         page.click('#closeEditor');page.wait_for_function("document.querySelector('#editor').classList.contains('hidden')")
-        page.click('#selectPhotosBtn');page.locator('.photo-card').nth(0).click();page.locator('.photo-card').nth(1).click();page.click('#batchAnalyze');page.wait_for_function("photos.every(p=>p.analysis&&Number.isFinite(p.analysis.sharpness))",timeout=15000)
+        page.click('#selectPhotosBtn');page.locator('.photo-card').nth(0).click();page.locator('.photo-card').nth(1).click();page.click('#batchAnalyze');page.wait_for_function("photos.filter(p=>selectedPhotoIds.has(p.id)).length===2&&photos.filter(p=>selectedPhotoIds.has(p.id)).every(p=>p.analysis&&Number.isFinite(p.analysis.sharpness))",timeout=15000)
         page.click('#batchCompare');page.wait_for_selector('#compareView:not(.hidden)');
         for _ in range(30):
             if 'Focus' in page.locator('#compareLeftMeta').inner_text(): break
