@@ -25,17 +25,9 @@ There is **no account system and no cloud photo storage**. Imported originals, r
 
 ![DarkRoom library](docs/assets/library-desktop.webp)
 
-### Photo examples
+### In-app sample set
 
-These real-world landscape and motorsport photos are included in the browser test fixtures and are used to validate import, editing, sky replacement, batch analysis, and compare workflows.
-
-<table>
-  <tr>
-    <td><img src="tests/fixtures/photos/photo-1.jpg" alt="Mountain village at sunset" /></td>
-    <td><img src="tests/fixtures/photos/photo-2.jpg" alt="White sand dunes under a blue sky" /></td>
-    <td><img src="tests/fixtures/photos/photo-3.jpg" alt="Classic race car drifting at Laguna Seca" /></td>
-  </tr>
-</table>
+Open the library and choose **Open sample set** to load the bundled landscape and motorsport examples directly into DarkRoom. The originals stay in this browser's local library and are available for testing edits, masks, compare, and export without adding a README image gallery.
 
 ### Pro editor — fixed right-side tools
 
