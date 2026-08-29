@@ -31,7 +31,7 @@
 
   <main class="main" id="mainView">
     <section id="libraryView" class="view active">
-      <div class="page-head"><div><p class="eyebrow">LIBRARY</p><h1 id="viewTitle">All Photos</h1><p id="viewSubtitle">Your photos, stored on this device.</p></div><div class="head-actions"><select id="sortSelect"><option value="new">Newest</option><option value="old">Oldest</option><option value="name">Name</option><option value="rating">Rating</option></select><button id="gridSizeBtn" class="icon-btn">▦</button></div></div>
+      <div class="page-head"><div><p class="eyebrow">LIBRARY</p><h1 id="viewTitle">All Photos</h1><p id="viewSubtitle">Your photos, stored on this device.</p></div><div class="head-actions"><div id="albumActions" hidden><button id="renameAlbum" class="icon-btn" title="Rename album">✎</button><button id="deleteAlbum" class="icon-btn" title="Delete album">⌫</button></div><select id="sortSelect"><option value="new">Newest</option><option value="old">Oldest</option><option value="name">Name</option><option value="rating">Rating</option></select><button id="gridSizeBtn" class="icon-btn">▦</button></div></div>
       <div id="emptyState" class="empty-state">
         <div class="empty-art"><span>◩</span></div><h2>Build your DarkRoom library</h2><p>Import photos from your phone or computer. Originals stay untouched; edits are saved as instructions.</p><button class="primary" id="emptyImport">＋ Add photos</button><small>JPG, PNG, WebP and most browser-supported image formats</small>
       </div>
@@ -45,7 +45,7 @@
 
     <section id="storageView" class="view">
       <div class="page-head"><div><p class="eyebrow">DEVICE</p><h1>Storage</h1><p>See exactly what DarkRoom stores in this browser.</p></div></div>
-      <div class="storage-card"><div class="donut" id="donut"><span id="storageBig">0 MB</span><small>used</small></div><div class="storage-detail"><h3>Local photo storage</h3><p>Originals are stored in IndexedDB on this device. Your browser may enforce its own storage quota.</p><div class="usagebar"><i id="usageBar"></i></div><div class="storage-row"><span>Photos</span><b id="photoStorage">0 MB</b></div><div class="storage-row"><span>Available estimate</span><b id="quotaStorage">—</b></div><button id="clearLibrary" class="danger">Delete local library</button></div></div>
+      <div class="storage-card"><div class="donut" id="donut"><span id="storageBig">0 MB</span><small>used</small></div><div class="storage-detail"><h3>Local photo storage</h3><p>Originals are stored in IndexedDB on this device. Your browser may enforce its own storage quota.</p><div class="usagebar"><i id="usageBar"></i></div><div class="storage-row"><span>Photos</span><b id="photoStorage">0 MB</b></div><div class="storage-row"><span>Available estimate</span><b id="quotaStorage">—</b></div><div class="storage-row"><span>Storage mode</span><b id="storageMode">Browser-managed local storage</b></div><button id="clearLibrary" class="danger">Delete local library</button></div></div>
       <div class="info-card"><b>Nondestructive by design</b><p>DarkRoom stores adjustment parameters separately from your original files. Export creates a new rendered file.</p></div>
     </section>
   </main>
@@ -62,9 +62,9 @@
 
   <div id="editor" class="editor hidden" aria-hidden="true">
     <div class="editor-top"><button id="closeEditor" class="icon-btn">←</button><div><b id="editorName">Photo</b><small id="editorMeta"></small></div><div class="editor-top-actions"><button id="favoriteBtn" class="icon-btn">♡</button><button id="exportBtn" class="primary small">Export</button></div></div>
-    <div class="editor-stage"><div class="image-wrap"><img id="editorImage" alt="Photo being edited" /></div></div>
+    <div class="editor-stage" id="photoViewport"><div class="zoom-toolbar"><button id="zoomOut" aria-label="Zoom out">−</button><button id="zoomReset"><span id="zoomLabel">100%</span></button><button id="zoomIn" aria-label="Zoom in">＋</button></div><div class="image-wrap" id="canvasWrap"><canvas id="editorCanvas" aria-label="Photo being edited"></canvas></div></div>
     <div class="editor-panel">
-      <div class="tool-tabs" id="toolTabs"><button data-panel="light" class="active">☀<small>Light</small></button><button data-panel="color">◉<small>Color</small></button><button data-panel="effects">✦<small>Effects</small></button><button data-panel="detail">◇<small>Detail</small></button><button data-panel="info">ⓘ<small>Info</small></button></div>
+      <div class="tool-tabs" id="toolTabs"><button data-panel="light" class="active">☀<small>Light</small></button><button data-panel="color">◉<small>Color</small></button><button data-panel="effects">✦<small>Effects</small></button><button data-panel="detail">◇<small>Detail</small></button><button data-panel="transform">↻<small>Transform</small></button><button data-panel="albums">▱<small>Albums</small></button><button data-panel="info">ⓘ<small>Info</small></button></div>
       <div id="controls" class="controls"></div>
       <div class="editor-footer"><button id="resetEdits">Reset</button><div class="rating" id="ratingButtons"><button data-rate="1">★</button><button data-rate="2">★</button><button data-rate="3">★</button><button data-rate="4">★</button><button data-rate="5">★</button></div><button id="deletePhoto" class="text-danger">Delete</button></div>
     </div>
