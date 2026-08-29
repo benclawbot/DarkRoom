@@ -23,27 +23,29 @@ There is **no account system and no cloud photo storage**. Imported originals, r
 
 ## Screenshots
 
-### Library
+Each screenshot below uses exactly one of the supplied sample photographs. The photos are also available inside the app through **Open sample set**; no synthetic or placeholder artwork is used in the examples.
 
-![DarkRoom library](docs/assets/library-desktop.webp)
+### Library — mountain sunset sample
+
+![DarkRoom library showing the supplied mountain sunset photo](docs/assets/library-desktop.webp)
 
 ### In-app sample set
 
 Open the library and choose **Open sample set** to load the bundled landscape and motorsport examples directly into DarkRoom. The originals stay in this browser's local library and are available for testing edits, masks, compare, and export without adding a README image gallery.
 
-### Pro editor — fixed right-side tools
+### Pro editor — race-car sample
 
-![DarkRoom desktop editor](docs/assets/editor-desktop.webp)
+![DarkRoom desktop editor showing the supplied race-car photo](docs/assets/editor-desktop.webp)
 
-### Mobile editor — photo left, tools right
+### Mobile editor — white-dunes sample
 
 <p align="center">
-  <img src="docs/assets/editor-mobile.webp" alt="DarkRoom mobile editor" width="390" />
+  <img src="docs/assets/editor-mobile.webp" alt="DarkRoom mobile editor showing the supplied white dunes photo" width="390" />
 </p>
 
-### Compare / culling workflow
+### Culling workflow — one real sample photo
 
-![DarkRoom compare view](docs/assets/compare-desktop.webp)
+![DarkRoom culling workflow with the supplied mountain sunset photo](docs/assets/compare-desktop.webp)
 
 ## Editing modes
 

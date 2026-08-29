@@ -32,6 +32,7 @@ assert(html.includes('.dng')&&js.includes("imageExts")&&js.includes("No supporte
 assert(html.includes('class="histogram-block"')&&html.includes('aria-label="RGB histogram"'),'Labeled RGB histogram block missing');
 assert(html.includes('id="histogramReadout"')&&js.includes('histogramReadout'),'Histogram clipping readout missing');
 assert(js.includes('isUsableBlob')&&js.includes('repairPhotoThumbnail')&&js.includes('photoBlob('),'Legacy photo asset recovery missing');
+assert(sourceByFile['renderer.js'].includes('sourceBlob=')&&sourceByFile['renderer.js'].includes('photoBlob(currentPhoto)'),'Renderer must use the resilient photo source resolver');
 for(const file of ['editor.js','library.js','pro-tools.js']) assert(!/\b(?:currentPhoto|p|photo)\.blob\b/.test(sourceByFile[file]),`${file} bypasses the shared photoBlob resolver`);
 assert(js.includes('class="control-number"')&&js.includes('data-control-number'),'Precise numeric slider entry missing');
 assert(css.includes('#exportQuality')&&css.includes('.mini-offset input[type=range]'),'Secondary sliders should share the editor control styling');
@@ -41,5 +42,5 @@ assert(js.includes('createHealOperation')&&(js.includes('DarkRoomEngine.inpaint'
 assert(js.includes('matchReferenceLook')&&js.includes('matchLook'),'Reference look matching missing');
 assert((js.includes('DarkRoomEngine.applyTonePixel')||js.includes('E.applyTonePixel'))&&js.includes('detailProcess')&&js.includes('portraitProcess'),'Pixel/detail/portrait engine integration missing');
 assert(js.includes('compositionOverlay')&&css.includes('.composition-thirds'),'Composition guides missing');
-assert(sw.includes('darkroom-v18')&&sw.includes('engine-core.js')&&sw.includes('generative-runtime.js')&&sw.includes('docs/assets/examples/'),'Service worker v18 assets missing');
+assert(sw.includes('darkroom-v19')&&sw.includes('engine-core.js')&&sw.includes('generative-runtime.js')&&sw.includes('docs/assets/examples/'),'Service worker v19 assets missing');
 console.log(`Static UX/feature checks passed (${new Set(direct).size} control references verified).`);
