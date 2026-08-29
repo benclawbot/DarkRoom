@@ -1,5 +1,5 @@
-const CACHE='darkroom-v10';
-const ASSETS=['./','./index.html','./styles.css','./engine-core.js','./ai-runtime.js','./generative-runtime.js','./raw-runtime.js','./core.js','./library.js','./renderer.js','./editor.js','./pro-tools.js','./app.js','./manifest.webmanifest','./icon.svg'];
+const CACHE='darkroom-v11';
+const ASSETS=['./','./index.html','./styles.css','./engine-core.js','./ai-runtime.js','./generative-runtime.js','./raw-runtime.js','./core.js','./library.js','./renderer.js','./editor.js','./pro-tools.js','./app.js','./manifest.webmanifest','./icon.svg','./docs/assets/examples/mountain-sunset.jpg','./docs/assets/examples/white-dunes.jpg','./docs/assets/examples/race-car.jpg'];
 self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>Promise.all(ASSETS.map(a=>c.add(a).catch(()=>null)))).then(()=>self.skipWaiting())));
 self.addEventListener('activate',e=>e.waitUntil(Promise.all([caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))),self.clients.claim()])));
 self.addEventListener('fetch',e=>{if(e.request.method!=='GET')return;const nav=e.request.mode==='navigate';if(nav){e.respondWith(fetch(e.request).then(r=>{const copy=r.clone();caches.open(CACHE).then(c=>c.put('./index.html',copy));return r}).catch(()=>caches.match('./index.html')));return}e.respondWith(caches.match(e.request).then(hit=>hit||fetch(e.request).then(r=>{if(r.ok&&new URL(e.request.url).origin===location.origin){const copy=r.clone();caches.open(CACHE).then(c=>c.put(e.request,copy))}return r})))});

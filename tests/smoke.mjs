@@ -24,11 +24,12 @@ assert(js.includes("e.key==='f'||e.key==='F'")&&js.includes('togglePhotoOnly()')
 assert(js.includes("$('#mobileFullscreenBtn').onclick=()=>togglePhotoOnly()"),'Mobile picture-only control missing');
 assert(js.includes('requestFullscreen')&&css.includes('.editor.photo-only'),'Native/CSS fullscreen visualization missing');
 assert(js.includes('selectionMode')&&js.includes('batchExport')&&js.includes('batchMutate'),'Multi-photo selection/batch editing missing');
+assert(html.includes('id="demoImport"')&&js.includes('loadDemoPhotos')&&js.includes('docs/assets/examples/'),'Bundled in-app demo set missing');
 assert(js.includes("type==='dodge'")&&js.includes("type==='burn'")&&js.includes('setPaintMode'),'Dodge/burn local editing missing');
 assert(js.includes('generateSmartMask')&&js.includes('smartMaskRaster'),'Smart masks missing');
 assert(js.includes('createHealOperation')&&(js.includes('DarkRoomEngine.inpaint')||js.includes('E.inpaint')),'Content-aware removal missing');
 assert(js.includes('matchReferenceLook')&&js.includes('matchLook'),'Reference look matching missing');
 assert((js.includes('DarkRoomEngine.applyTonePixel')||js.includes('E.applyTonePixel'))&&js.includes('detailProcess')&&js.includes('portraitProcess'),'Pixel/detail/portrait engine integration missing');
 assert(js.includes('compositionOverlay')&&css.includes('.composition-thirds'),'Composition guides missing');
-assert(sw.includes('darkroom-v10')&&sw.includes('engine-core.js')&&sw.includes('generative-runtime.js'),'Service worker v10 assets missing');
+assert(sw.includes('darkroom-v11')&&sw.includes('engine-core.js')&&sw.includes('generative-runtime.js')&&sw.includes('docs/assets/examples/'),'Service worker v11 assets missing');
 console.log(`Static UX/feature checks passed (${new Set(direct).size} control references verified).`);

@@ -16,6 +16,9 @@ def sample_png(seed=0,w=900,h=600):
     d.rectangle((w*.7,h*.58,w*.77,h*.83),fill=(180,190,185))
     bio=BytesIO();im.save(bio,'PNG');return bio.getvalue()
 
+def sample_webp(seed=0,w=900,h=600):
+    im=Image.new('RGB',(w,h),(95,45+seed*5,40));d=ImageDraw.Draw(im);d.rectangle((80,80,420,460),fill=(220,170,60));d.ellipse((500,120,820,440),fill=(55,145,220));bio=BytesIO();im.save(bio,'WEBP',quality=88);return bio.getvalue()
+
 def boot(page):
     html=(ROOT/'index.html').read_text(encoding='utf-8')
     html=re.sub(r'<link rel="stylesheet"[^>]+>','',html)
@@ -44,11 +47,11 @@ def main():
         boot(page)
         assert page.title()=='DarkRoom'
         fixtures=ROOT/'tests'/'fixtures'/'photos'
-        files=[{'name':'sample.png','mimeType':'image/png','buffer':sample_png(7)}]
+        files=[{'name':'sample.png','mimeType':'image/png','buffer':sample_png(7)},{'name':'sample.webp','mimeType':'image/webp','buffer':sample_webp(3)}]
         files += [{'name':f.name,'mimeType':'image/jpeg','buffer':f.read_bytes()} for f in sorted(fixtures.glob('*.jpg'))]
         page.set_input_files('#fileInput',files)
-        page.wait_for_function("document.querySelectorAll('.photo-card').length===4",timeout=15000)
-        assert page.evaluate("photos.length") == 4
+        page.wait_for_function("document.querySelectorAll('.photo-card').length===5",timeout=15000)
+        assert page.evaluate("photos.length") == 5
         assert page.evaluate("photos.every(p=>!!p.thumbnailBlob)")
         thumb=page.locator('.photo-card').first.locator('img')
         page.wait_for_function("document.querySelector('.photo-card img')?.naturalWidth>0")
@@ -121,8 +124,8 @@ def main():
         page.click('#mobileFullscreenBtn')
         page.click('#closeEditor');page.wait_for_function("document.querySelector('#editor').classList.contains('hidden')")
         page.on('dialog',lambda dialog: dialog.accept())
-        page.click('#selectPhotosBtn');page.locator('.photo-card').first.click();page.click('#batchDelete');page.wait_for_function("photos.length===3")
-        assert page.locator('.photo-card').count()==3
+        page.click('#selectPhotosBtn');page.locator('.photo-card').first.click();page.click('#batchDelete');page.wait_for_function("photos.length===4")
+        assert page.locator('.photo-card').count()==4
         if errors: raise AssertionError('Browser page errors: '+repr(errors))
         print('Browser UX tests passed: import/data flow, fixed right rail, modes, accordion, zoom/fullscreen, masks, dodge/burn, remove, layers, sky, culling/compare, mobile layout.')
         browser.close()
