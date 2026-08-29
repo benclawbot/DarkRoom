@@ -1,0 +1,45 @@
+name: DarkRoom Release Unpack
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.release-sync/manifest'
+
+permissions:
+  contents: write
+
+jobs:
+  unpack-release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Reconstruct and verify release
+        shell: bash
+        run: |
+          set -euo pipefail
+          expected=$(awk -F= '/^sha256=/{print $2}' .release-sync/manifest)
+          chunks=$(awk -F= '/^chunks=/{print $2}' .release-sync/manifest)
+          actual_chunks=$(find .release-sync -maxdepth 1 -type f -name 'chunk-*' | wc -l | tr -d ' ')
+          test "$actual_chunks" = "$chunks"
+          cat $(find .release-sync -maxdepth 1 -type f -name 'chunk-*' | sort) | base64 -d > /tmp/darkroom-release.tar.gz
+          echo "$expected  /tmp/darkroom-release.tar.gz" | sha256sum -c -
+          tar -xzf /tmp/darkroom-release.tar.gz -C .
+      - name: Validate release
+        run: npm test
+      - name: Commit exact tested release
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf .release-sync
+          rm -f .github/workflows/release-unpack.yml
+          git config user.name 'BenClawBot (AlphaOM3G1)'
+          git config user.email 'benclawbot@gmail.com'
+          git add -A
+          git commit -m 'Release DarkRoom 1.0.0 local-first professional editor'
+          git push origin HEAD:main
