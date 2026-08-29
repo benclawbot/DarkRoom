@@ -56,10 +56,10 @@ def main():
         # Records created by older builds may have a valid original but no cached thumbnail.
         # Refreshing the library should repair that cache so album and editor views share a
         # reliable preview path.
-        page.evaluate("""()=>{const p=photos[0];const legacy={...p,thumbnailBlob:null};delete legacy._thumbUrl;window.__darkroomTestStores.photos.set(p.id,legacy)}""")
+        page.evaluate("""()=>{const p=photos.find(x=>x.name==='sample.webp')||photos[0];const legacy={...p,thumbnailBlob:null};delete legacy._thumbUrl;window.__darkroomTestStores.photos.set(p.id,legacy)}""")
         page.evaluate("refreshData()")
-        page.wait_for_function("photos[0]?.thumbnailBlob?.size>0",timeout=10000)
-        assert page.evaluate("photos[0].thumbnailBlob.size>0")
+        page.wait_for_function("photos.find(x=>x.name==='sample.webp')?.thumbnailBlob?.size>0",timeout=10000)
+        assert page.evaluate("photos.find(x=>x.name==='sample.webp')?.thumbnailBlob?.size>0")
         thumb=page.locator('.photo-card').first.locator('img')
         page.wait_for_function("document.querySelector('.photo-card img')?.naturalWidth>0")
         thumb.evaluate("el=>{el.src='blob:darkroom-invalid-thumbnail'}")
