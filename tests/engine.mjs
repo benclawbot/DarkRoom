@@ -37,6 +37,11 @@ assert(changed(E.detailProcess(noisy,w,h,0,0,{deblur:70}),noisy),'deblur should 
 const speck=new Uint8ClampedArray(data);speck[(12*w+12)*4]=255;speck[(12*w+12)*4+1]=255;speck[(12*w+12)*4+2]=255;assert(changed(E.restoreProcess(speck,w,h,{dustRemoval:100,lineRemoval:0,blemish:0}),speck),'dust removal should alter outlier');
 assert(changed(E.portraitProcess(data,w,h,{skinSmooth:50,eyes:40,lips:30,faceLight:20,faceRestore:40}),data),'portrait process should alter portrait-like pixels');
 assert(changed(E.relightProcess(data,w,h,{relightForeground:50,relightBackground:-20,rimLight:20,relightWarmth:20,relightDirection:50,relightSoftness:50}),data),'relight should alter pixels');
+const depthStrip=new Uint8ClampedArray([100,100,100,255,100,100,100,255]);
+const foregroundLift=E.relightProcess(depthStrip,2,1,{relightForeground:100,relightBackground:0,rimLight:0,relightWarmth:0,relightDirection:50,relightSoftness:100}, {w:2,h:1,data:[0,255]});
+assert(foregroundLift[4]>foregroundLift[0],'foreground light should brighten the nearer/high-depth pixel');
+const backgroundLift=E.relightProcess(depthStrip,2,1,{relightForeground:0,relightBackground:100,rimLight:0,relightWarmth:0,relightDirection:50,relightSoftness:100}, {w:2,h:1,data:[0,255]});
+assert(backgroundLift[0]>backgroundLift[4],'background light should brighten the farther/low-depth pixel');
 
 // Remove/clone/generative algorithms
 const heal={type:'heal',size:.35,feather:.2,flow:1,opacity:1,density:1,strokes:[{size:.35,feather:.2,flow:1,points:[{x:.5,y:.5}]}]};
