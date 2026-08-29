@@ -1,0 +1,34 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+const html=fs.readFileSync(new URL('../index.html',import.meta.url),'utf8');
+const files=['engine-core.js','core.js','library.js','renderer.js','editor.js','pro-tools.js','app.js'];
+const js=files.map(f=>fs.readFileSync(new URL('../'+f,import.meta.url),'utf8')).join('\n');
+const css=fs.readFileSync(new URL('../styles.css',import.meta.url),'utf8');
+const sw=fs.readFileSync(new URL('../sw.js',import.meta.url),'utf8');
+const ids=new Set([...html.matchAll(/id="([^"]+)"/g)].map(m=>m[1]));
+const direct=[...js.matchAll(/\$\('#([A-Za-z0-9_-]+)'\)/g)].map(m=>m[1]);
+for(const id of direct){
+  const generated=js.includes(`id="${id}"`)||js.includes(`id=\\"${id}\\"`);
+  assert(ids.has(id)||generated,`Missing static or generated control #${id}`);
+}
+for(const id of ['photoViewport','editorCanvas','canvasWrap','maskOverlay','compositionOverlay','zoomIn','zoomOut','zoomReset','zoomLabel','undoBtn','redoBtn','beforeAfterBtn','beforeSplitBtn','beforeSplitRange','pickBtn','rejectBtn','copyEdits','pasteEdits','panelToggle','fullscreenBtn','mobileFullscreenBtn','modeSwitcher','toolTabs','controls','selectPhotosBtn','batchBar']) assert(ids.has(id),`Missing required #${id}`);
+for(const mode of ['quick','advanced','pro']) assert(html.includes(`data-mode="${mode}"`),`Missing editor mode ${mode}`);
+for(const panel of ['edit','masks','heal','transform','retouch','ai','info']) assert(html.includes(`data-panel="${panel}"`),`Missing right-rail panel ${panel}`);
+assert(js.includes('ACCORDION_DEFAULTS')&&js.includes('accordionSection(')&&js.includes('bindAccordions()'),'Collapsible tool sections missing');
+assert(js.includes("accordionSection('light'")&&js.includes("accordionSection('curves'")&&js.includes("accordionSection('localAdjust'")&&js.includes("accordionSection('remove'"),'Core accordion sections missing');
+assert(js.includes('modeAllows(')&&js.includes('MODE_RANK'),'Progressive disclosure modes missing');
+assert(css.includes('.accordion.collapsed .accordion-body')&&css.includes('.accordion-head'),'Accordion UX styling missing');
+assert(css.includes('grid-template-columns:minmax(0,1fr) var(--right)'),'Right-side editing panel missing');
+assert(css.includes('Always keep tools on the right')||css.includes('grid-column:2'),'Mobile right-side tool rail missing');
+assert(js.includes("e.key==='f'||e.key==='F'")&&js.includes('togglePhotoOnly()'),'Desktop F picture-only shortcut missing');
+assert(js.includes("$('#mobileFullscreenBtn').onclick=()=>togglePhotoOnly()"),'Mobile picture-only control missing');
+assert(js.includes('requestFullscreen')&&css.includes('.editor.photo-only'),'Native/CSS fullscreen visualization missing');
+assert(js.includes('selectionMode')&&js.includes('batchExport')&&js.includes('batchMutate'),'Multi-photo selection/batch editing missing');
+assert(js.includes("type==='dodge'")&&js.includes("type==='burn'")&&js.includes('setPaintMode'),'Dodge/burn local editing missing');
+assert(js.includes('generateSmartMask')&&js.includes('smartMaskRaster'),'Smart masks missing');
+assert(js.includes('createHealOperation')&&(js.includes('DarkRoomEngine.inpaint')||js.includes('E.inpaint')),'Content-aware removal missing');
+assert(js.includes('matchReferenceLook')&&js.includes('matchLook'),'Reference look matching missing');
+assert((js.includes('DarkRoomEngine.applyTonePixel')||js.includes('E.applyTonePixel'))&&js.includes('detailProcess')&&js.includes('portraitProcess'),'Pixel/detail/portrait engine integration missing');
+assert(js.includes('compositionOverlay')&&css.includes('.composition-thirds'),'Composition guides missing');
+assert(sw.includes('darkroom-v8')&&sw.includes('engine-core.js')&&sw.includes('generative-runtime.js'),'Service worker v8 assets missing');
+console.log(`Static UX/feature checks passed (${new Set(direct).size} control references verified).`);

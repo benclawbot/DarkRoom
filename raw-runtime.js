@@ -1,0 +1,7 @@
+const DarkRoomRAW=(()=>{
+ const RAW_EXT=/\.(dng|cr2|cr3|nef|nrw|arw|srf|sr2|raf|orf|rw2|pef|rwl|3fr|fff|iiq|mos|mrw|x3f)$/i;let modulePromise=null;
+ const isRaw=f=>RAW_EXT.test(f.name||'');
+ async function getModule(){if(!modulePromise)modulePromise=import('https://cdn.jsdelivr.net/npm/libraw-wasm@1.6.0/+esm');return modulePromise}
+ async function decode(file){const mod=await getModule(),LibRaw=mod.default||mod.LibRaw||mod,raw=new LibRaw(),buffer=new Uint8Array(await file.arrayBuffer());await raw.open(buffer,{useCameraWb:true,useCameraMatrix:1,outputColor:1,outputBps:8,highlight:2,userQual:3});const meta=await raw.metadata(false).catch(()=>({})),img=await raw.imageData();const w=img.width||img.iwidth||meta.width||meta.sizes?.width,h=img.height||img.iheight||meta.height||meta.sizes?.height;if(!w||!h||!img.data)throw new Error('RAW decoder returned no image dimensions');let rgba;if(img.data.length===w*h*4)rgba=new Uint8ClampedArray(img.data);else{rgba=new Uint8ClampedArray(w*h*4);const channels=Math.max(3,Math.round(img.data.length/(w*h)));for(let i=0;i<w*h;i++){rgba[i*4]=img.data[i*channels]||0;rgba[i*4+1]=img.data[i*channels+1]||0;rgba[i*4+2]=img.data[i*channels+2]||0;rgba[i*4+3]=255}}const c=document.createElement('canvas');c.width=w;c.height=h;c.getContext('2d').putImageData(new ImageData(rgba,w,h),0,0);const blob=await new Promise((res,rej)=>c.toBlob(b=>b?res(b):rej(new Error('RAW preview encoding failed')),'image/png'));try{raw.close?.()}catch{}return{blob,width:w,height:h,metadata:meta}}
+ return{isRaw,decode};
+})();
