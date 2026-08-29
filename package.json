@@ -1,7 +1,10 @@
 {
   "name":"darkroom-local-photo-editor",
   "private":true,
-  "version":"0.2.0",
+  "version":"0.3.0",
   "type":"module",
-  "scripts":{"test":"node --check app.js && node --check sw.js && node tests/smoke.mjs"}
+  "scripts":{
+    "test":"npm run test:static",
+    "test:static":"node --check core.js && node --check library.js && node --check renderer.js && node --check editor.js && node --check app.js && node --check sw.js && node tests/smoke.mjs"
+  }
 }
