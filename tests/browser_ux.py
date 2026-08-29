@@ -58,9 +58,17 @@ def main():
         thumb.evaluate("el=>{el.src='blob:darkroom-invalid-thumbnail'}")
         page.wait_for_function("document.querySelector('.photo-card img')?.naturalWidth>0",timeout=5000)
         page.screenshot(path=str(out/'library-desktop.png'),full_page=True)
-        page.locator('.photo-card').first.click();page.wait_for_selector('#editor:not(.hidden)');page.wait_for_function("document.querySelector('#editorCanvas').width>10")
+        page.locator('.photo-card').first.click();page.wait_for_selector('#editor:not(.hidden)');page.wait_for_function("document.querySelector('#editorCanvas').width>10 && !document.querySelector('#editorCanvas').hasAttribute('aria-busy')")
         png_avg=page.evaluate("()=>{const c=document.querySelector('#editorCanvas'),d=c.getContext('2d').getImageData(0,0,c.width,c.height).data;let n=0;for(let i=0;i<d.length;i+=Math.max(4,Math.floor(d.length/4000/4)*4))n+=d[i]+d[i+1]+d[i+2];return n/Math.max(1,d.length/Math.max(4,Math.floor(d.length/4000/4)*4))/3}")
         assert png_avg>5, f'PNG preview unexpectedly black: {png_avg}'
+        page.click('#closeEditor');page.wait_for_function("document.querySelector('#editor').classList.contains('hidden')")
+        webp_card=page.locator('.photo-card').filter(has=page.locator('img[alt="sample.webp"]'));assert webp_card.count()==1
+        webp_card.click();page.wait_for_selector('#editor:not(.hidden)');page.wait_for_function("document.querySelector('#editorCanvas').width>10 && !document.querySelector('#editorCanvas').hasAttribute('aria-busy')")
+        page.click('[data-mode="advanced"]');page.click('[data-tool-toggle="retouch"]');page.wait_for_timeout(500)
+        webp_avg=page.evaluate("()=>{const c=document.querySelector('#editorCanvas'),d=c.getContext('2d').getImageData(0,0,c.width,c.height).data;let n=0;for(let i=0;i<d.length;i+=Math.max(4,Math.floor(d.length/4000/4)*4))n+=d[i]+d[i+1]+d[i+2];return n/Math.max(1,d.length/Math.max(4,Math.floor(d.length/4000/4)*4))/3}")
+        assert webp_avg>5, f'WebP preview unexpectedly black in Retouch: {webp_avg}'
+        fallback_avg=page.evaluate("""async()=>{const original=currentPhoto.blob;currentPhoto.blob=new Blob([new Uint8Array([0,1,2,3])],{type:'image/webp'});await renderCanvas(document.querySelector('#editorCanvas'));const c=document.querySelector('#editorCanvas'),d=c.getContext('2d').getImageData(0,0,c.width,c.height).data;let n=0;for(let i=0;i<d.length;i+=Math.max(4,Math.floor(d.length/4000/4)*4))n+=d[i]+d[i+1]+d[i+2];const avg=n/Math.max(1,d.length/Math.max(4,Math.floor(d.length/4000/4)*4))/3;currentPhoto.blob=original;await renderCanvas(c);return avg}""")
+        assert fallback_avg>5, f'WebP thumbnail fallback unexpectedly black: {fallback_avg}'
         exposure=page.locator('[data-edit="exposure"]').first
         for value in range(-80,81,8):
             exposure.evaluate("(el, value) => { el.value = value; el.dispatchEvent(new Event('input', {bubbles: true})); }", value)
