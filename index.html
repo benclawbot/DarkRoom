@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#0a0a0a" />
+  <meta name="theme-color" content="#111111" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <title>DarkRoom</title>
@@ -13,45 +13,92 @@
 <body>
 <div id="app">
   <header class="topbar">
-    <button class="brand" data-route="library" aria-label="DarkRoom home"><span class="brandmark">D</span><span>DarkRoom</span></button>
-    <div class="search-wrap"><span>⌕</span><input id="searchInput" placeholder="Search photos, dates, albums…" autocomplete="off" /></div>
-    <div class="top-actions"><button id="storageBtn" class="icon-btn" title="Storage">◫</button><button id="importTop" class="primary small">＋ Add photos</button></div>
+    <button class="app-switcher" aria-label="DarkRoom"><span class="brandmark">D</span></button>
+    <button class="brand" data-route="library">DarkRoom</button>
+    <div class="search-wrap"><span class="search-icon">⌕</span><input id="searchInput" placeholder="Search All Photos" autocomplete="off" /></div>
+    <div class="top-actions">
+      <button id="filterToggle" class="top-icon" title="Filter">≡</button>
+      <button id="storageBtn" class="top-icon" title="Local storage">◫</button>
+      <button id="importTop" class="add-photos">＋ Add Photos</button>
+    </div>
   </header>
 
   <aside class="sidebar">
-    <nav>
+    <button id="sideAdd" class="sidebar-add">＋ Add Photos</button>
+    <nav class="main-nav">
+      <button class="nav" data-route="home"><span>⌂</span> Home</button>
       <button class="nav active" data-route="library"><span>▦</span> All Photos <b id="allCount">0</b></button>
       <button class="nav" data-route="recent"><span>◷</span> Recently Added</button>
       <button class="nav" data-route="favorites"><span>♡</span> Favorites</button>
-      <button class="nav" data-route="albums"><span>▱</span> Albums</button>
-      <button class="nav" data-route="storage"><span>◫</span> Storage</button>
+      <button class="nav" data-route="flagged"><span>⚑</span> Picked</button>
     </nav>
-    <div class="side-bottom"><p>LOCAL-FIRST PHOTO WORKSPACE</p><div class="meter"><i id="sideMeter"></i></div><small id="sideStorage">0 MB stored locally</small></div>
+    <div class="sidebar-section">
+      <div class="sidebar-heading"><span>Albums</span><button id="newAlbumMini" aria-label="New album">＋</button></div>
+      <div id="sidebarAlbums" class="sidebar-albums"></div>
+      <button class="nav" data-route="albums"><span>▱</span> All Albums</button>
+    </div>
+    <div class="sidebar-bottom">
+      <button class="nav" data-route="storage"><span>◫</span> Local Storage</button>
+      <small id="sideStorage">0 MB stored locally</small>
+      <div class="meter"><i id="sideMeter"></i></div>
+    </div>
   </aside>
 
   <main class="main" id="mainView">
+    <section id="homeView" class="view">
+      <div class="home-hero">
+        <p class="eyebrow">DARKROOM</p>
+        <h1>Your photography, local and private.</h1>
+        <p>Import, organize, edit, and export without uploading your originals anywhere.</p>
+        <button id="homeImport" class="add-photos large">＋ Add Photos</button>
+      </div>
+      <div class="home-cards">
+        <button data-route="recent"><span>◷</span><b>Recently Added</b><small>Continue with your newest photos</small></button>
+        <button data-route="favorites"><span>♡</span><b>Favorites</b><small>Return to your best images</small></button>
+        <button data-route="albums"><span>▱</span><b>Albums</b><small>Organize photos without duplicates</small></button>
+      </div>
+    </section>
+
     <section id="libraryView" class="view active">
-      <div class="page-head"><div><p class="eyebrow">LIBRARY</p><h1 id="viewTitle">All Photos</h1><p id="viewSubtitle">Your photos, stored on this device.</p></div><div class="head-actions"><div id="albumActions" hidden><button id="renameAlbum" class="icon-btn" title="Rename album">✎</button><button id="deleteAlbum" class="icon-btn" title="Delete album">⌫</button></div><select id="sortSelect"><option value="new">Newest</option><option value="old">Oldest</option><option value="name">Name</option><option value="rating">Rating</option></select><button id="gridSizeBtn" class="icon-btn">▦</button></div></div>
+      <div class="library-toolbar">
+        <div>
+          <p class="eyebrow" id="viewEyebrow">LIBRARY</p>
+          <h1 id="viewTitle">All Photos</h1>
+          <p id="viewSubtitle">Photos stored on this device.</p>
+        </div>
+        <div class="toolbar-actions">
+          <div id="albumActions" class="album-actions" hidden>
+            <button id="renameAlbum">Rename</button><button id="deleteAlbum" class="danger-text">Delete</button>
+          </div>
+          <select id="sortSelect" aria-label="Sort photos"><option value="new">Capture / import: newest</option><option value="old">Capture / import: oldest</option><option value="name">File name</option><option value="rating">Rating</option></select>
+          <button id="gridSizeBtn" class="square-button" title="Grid density">▦</button>
+        </div>
+      </div>
+      <div id="filterBar" class="filter-bar hidden">
+        <button data-filter="all" class="active">All</button><button data-filter="picked">⚑ Picked</button><button data-filter="rejected">⚑ Rejected</button><button data-filter="5">★★★★★</button><button data-filter="4">★★★★+</button><button data-filter="3">★★★+</button><button data-filter="2">★★+</button><button data-filter="1">★+</button>
+      </div>
       <div id="emptyState" class="empty-state">
-        <div class="empty-art"><span>◩</span></div><h2>Build your DarkRoom library</h2><p>Import photos from your phone or computer. Originals stay untouched; edits are saved as instructions.</p><button class="primary" id="emptyImport">＋ Add photos</button><small>JPG, PNG, WebP and most browser-supported image formats</small>
+        <div class="empty-art">▧</div><h2>No photos here yet</h2><p>Add photos from this device. Originals remain untouched and local.</p><button id="emptyImport" class="add-photos">＋ Add Photos</button>
       </div>
       <div id="photoGrid" class="photo-grid"></div>
     </section>
 
     <section id="albumsView" class="view">
-      <div class="page-head"><div><p class="eyebrow">ORGANIZE</p><h1>Albums</h1><p>Group photos without duplicating originals.</p></div><button class="primary" id="newAlbumBtn">＋ New album</button></div>
+      <div class="library-toolbar"><div><p class="eyebrow">ORGANIZE</p><h1>Albums</h1><p>Group photos without duplicating originals.</p></div><button id="newAlbumBtn" class="add-photos">＋ Create Album</button></div>
       <div id="albumGrid" class="album-grid"></div>
     </section>
 
     <section id="storageView" class="view">
-      <div class="page-head"><div><p class="eyebrow">DEVICE</p><h1>Storage</h1><p>See exactly what DarkRoom stores in this browser.</p></div></div>
-      <div class="storage-card"><div class="donut" id="donut"><span id="storageBig">0 MB</span><small>used</small></div><div class="storage-detail"><h3>Local photo storage</h3><p>Originals are stored in IndexedDB on this device. Your browser may enforce its own storage quota.</p><div class="usagebar"><i id="usageBar"></i></div><div class="storage-row"><span>Photos</span><b id="photoStorage">0 MB</b></div><div class="storage-row"><span>Available estimate</span><b id="quotaStorage">—</b></div><div class="storage-row"><span>Storage mode</span><b id="storageMode">Browser-managed local storage</b></div><button id="clearLibrary" class="danger">Delete local library</button></div></div>
-      <div class="info-card"><b>Nondestructive by design</b><p>DarkRoom stores adjustment parameters separately from your original files. Export creates a new rendered file.</p></div>
+      <div class="library-toolbar"><div><p class="eyebrow">DEVICE</p><h1>Local Storage</h1><p>Everything DarkRoom stores in this browser.</p></div></div>
+      <div class="storage-layout">
+        <div class="storage-card"><div class="donut" id="donut"><span id="storageBig">0 MB</span><small>photos</small></div><div class="storage-detail"><h3>Local photo library</h3><p>Original image files and nondestructive edit metadata are stored with IndexedDB on this device.</p><div class="usagebar"><i id="usageBar"></i></div><div class="storage-row"><span>Photo originals</span><b id="photoStorage">0 MB</b></div><div class="storage-row"><span>Available estimate</span><b id="quotaStorage">—</b></div><div class="storage-row"><span>Retention</span><b id="storageMode">Browser-managed</b></div><button id="clearLibrary" class="danger">Delete Local Library</button></div></div>
+        <div class="info-card"><b>No cloud by design</b><p>DarkRoom never uploads your imported photos. Vercel hosts only the application files.</p></div>
+      </div>
     </section>
   </main>
 
   <nav class="mobile-nav">
-    <button class="active" data-route="library"><span>▦</span><small>Library</small></button>
+    <button class="active" data-route="library"><span>▦</span><small>Photos</small></button>
     <button data-route="albums"><span>▱</span><small>Albums</small></button>
     <button id="mobileAdd" class="mobile-add"><span>＋</span></button>
     <button data-route="favorites"><span>♡</span><small>Favorites</small></button>
@@ -61,17 +108,42 @@
   <input id="fileInput" type="file" accept="image/*" multiple hidden />
 
   <div id="editor" class="editor hidden" aria-hidden="true">
-    <div class="editor-top"><button id="closeEditor" class="icon-btn">←</button><div><b id="editorName">Photo</b><small id="editorMeta"></small></div><div class="editor-top-actions"><button id="favoriteBtn" class="icon-btn">♡</button><button id="exportBtn" class="primary small">Export</button></div></div>
-    <div class="editor-stage" id="photoViewport"><div class="zoom-toolbar"><button id="zoomOut" aria-label="Zoom out">−</button><button id="zoomReset"><span id="zoomLabel">100%</span></button><button id="zoomIn" aria-label="Zoom in">＋</button></div><div class="image-wrap" id="canvasWrap"><canvas id="editorCanvas" aria-label="Photo being edited"></canvas></div></div>
-    <div class="editor-panel">
-      <div class="tool-tabs" id="toolTabs"><button data-panel="light" class="active">☀<small>Light</small></button><button data-panel="color">◉<small>Color</small></button><button data-panel="effects">✦<small>Effects</small></button><button data-panel="detail">◇<small>Detail</small></button><button data-panel="transform">↻<small>Transform</small></button><button data-panel="albums">▱<small>Albums</small></button><button data-panel="info">ⓘ<small>Info</small></button></div>
+    <header class="editor-top">
+      <button id="closeEditor" class="editor-icon" aria-label="Back">←</button>
+      <div class="editor-title"><b id="editorName">Photo</b><small id="editorMeta"></small></div>
+      <div class="editor-history"><button id="undoBtn" title="Undo">↶</button><button id="redoBtn" title="Redo">↷</button><button id="beforeAfterBtn" title="Before / after">◐</button></div>
+      <div class="editor-top-actions"><button id="favoriteBtn" class="editor-icon">♡</button><button id="exportBtn" class="export-button">Export</button></div>
+    </header>
+
+    <section id="photoViewport" class="editor-stage" aria-label="Zoomable photo viewport">
+      <div id="canvasWrap" class="canvas-wrap"><canvas id="editorCanvas"></canvas></div>
+      <div class="zoom-controls"><button id="zoomOut">−</button><button id="zoomReset"><span id="zoomLabel">100%</span></button><button id="zoomIn">＋</button></div>
+    </section>
+
+    <aside class="editor-panel" aria-label="Fixed editing parameters">
+      <div class="panel-header">
+        <div class="rating" id="ratingButtons"><button data-rate="1">★</button><button data-rate="2">★</button><button data-rate="3">★</button><button data-rate="4">★</button><button data-rate="5">★</button></div>
+        <div class="flags"><button id="pickBtn" title="Pick">⚑</button><button id="rejectBtn" title="Reject">⚐</button></div>
+      </div>
+      <div class="tool-tabs" id="toolTabs">
+        <button data-panel="presets"><span>◫</span><small>Presets</small></button>
+        <button data-panel="light" class="active"><span>☀</span><small>Light</small></button>
+        <button data-panel="color"><span>◉</span><small>Color</small></button>
+        <button data-panel="effects"><span>✦</span><small>Effects</small></button>
+        <button data-panel="detail"><span>◇</span><small>Detail</small></button>
+        <button data-panel="optics"><span>◌</span><small>Optics</small></button>
+        <button data-panel="geometry"><span>▱</span><small>Geometry</small></button>
+        <button data-panel="transform"><span>⌗</span><small>Crop</small></button>
+        <button data-panel="albums"><span>▧</span><small>Albums</small></button>
+        <button data-panel="info"><span>ⓘ</span><small>Info</small></button>
+      </div>
       <div id="controls" class="controls"></div>
-      <div class="editor-footer"><button id="resetEdits">Reset</button><div class="rating" id="ratingButtons"><button data-rate="1">★</button><button data-rate="2">★</button><button data-rate="3">★</button><button data-rate="4">★</button><button data-rate="5">★</button></div><button id="deletePhoto" class="text-danger">Delete</button></div>
-    </div>
+      <div class="editor-footer"><button id="resetEdits">Reset Edits</button><button id="copyEdits">Copy</button><button id="pasteEdits">Paste</button><button id="deletePhoto" class="danger-text">Delete</button></div>
+    </aside>
   </div>
 
   <div id="modalBackdrop" class="modal-backdrop hidden">
-    <div class="modal" id="albumModal"><h2>Create album</h2><p>Albums reference photos without creating duplicate image files.</p><input id="albumName" placeholder="Album name" maxlength="80" /><div class="modal-actions"><button id="cancelModal">Cancel</button><button id="createAlbum" class="primary">Create</button></div></div>
+    <div class="modal" id="albumModal"><h2>Create album</h2><p>Albums reference photos without creating duplicate files.</p><input id="albumName" placeholder="Album name" maxlength="80" /><div class="modal-actions"><button id="cancelModal">Cancel</button><button id="createAlbum" class="add-photos">Create</button></div></div>
   </div>
 
   <div id="toast" class="toast"></div>
