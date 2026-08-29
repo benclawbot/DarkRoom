@@ -448,7 +448,7 @@ Production project: **DarkRoom** on Vercel.
 
 ### GitHub Actions deployment
 
-Every push to `main` runs the static and browser UX checks first. When both checks pass, the workflow deploys the repository root to the linked Vercel project. Configure these repository secrets once in GitHub: `VERCEL_TOKEN`, `VERCEL_ORG_ID`, and `VERCEL_PROJECT_ID`. Pull requests run the checks but do not deploy.
+Every push to `main` runs the static and browser UX checks first. When all three Vercel repository secrets are configured, the workflow deploys the repository root to the linked Vercel project; otherwise it reports the CLI deploy as skipped so the quality checks remain visible. If the repository is connected in Vercel, that Git integration can deploy the same `main` push automatically. The required secrets are `VERCEL_TOKEN`, `VERCEL_ORG_ID`, and `VERCEL_PROJECT_ID`. Pull requests run the checks but do not deploy.
 
 ## Current test status
 

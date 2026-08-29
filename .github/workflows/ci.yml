@@ -42,4 +42,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Deploy DarkRoom to Vercel
+        if: env.VERCEL_TOKEN != '' && env.VERCEL_ORG_ID != '' && env.VERCEL_PROJECT_ID != ''
         run: npx --yes vercel@latest deploy --prod --yes --token="$VERCEL_TOKEN"
+      - name: Explain deployment path
+        if: env.VERCEL_TOKEN == '' || env.VERCEL_ORG_ID == '' || env.VERCEL_PROJECT_ID == ''
+        run: echo "::notice::Vercel CLI deploy skipped because VERCEL_TOKEN, VERCEL_ORG_ID, or VERCEL_PROJECT_ID is not configured. A linked Vercel Git integration can still deploy this push automatically."
