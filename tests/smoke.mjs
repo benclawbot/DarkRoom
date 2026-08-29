@@ -30,5 +30,5 @@ assert(js.includes('createHealOperation')&&(js.includes('DarkRoomEngine.inpaint'
 assert(js.includes('matchReferenceLook')&&js.includes('matchLook'),'Reference look matching missing');
 assert((js.includes('DarkRoomEngine.applyTonePixel')||js.includes('E.applyTonePixel'))&&js.includes('detailProcess')&&js.includes('portraitProcess'),'Pixel/detail/portrait engine integration missing');
 assert(js.includes('compositionOverlay')&&css.includes('.composition-thirds'),'Composition guides missing');
-assert(sw.includes('darkroom-v9')&&sw.includes('engine-core.js')&&sw.includes('generative-runtime.js'),'Service worker v9 assets missing');
+assert(sw.includes('darkroom-v10')&&sw.includes('engine-core.js')&&sw.includes('generative-runtime.js'),'Service worker v10 assets missing');
 console.log(`Static UX/feature checks passed (${new Set(direct).size} control references verified).`);

@@ -91,6 +91,7 @@
 .accordion-head small{flex:0 0 auto;margin-left:auto;white-space:nowrap;line-height:1.2}
 @media(max-width:760px){.tool-section-header{height:32px!important;min-height:32px!important;padding:0 7px!important}.accordion-head{height:28px;min-height:28px!important;padding:0 6px!important}}
 .accordion-head{justify-content:space-between}.accordion-head b{order:1;text-align:left}.accordion-head small{order:2;margin-left:auto}.accordion-chevron{order:3}.accordion.collapsed .accordion-head small{display:none}.tool-section-header .tool-section-icon{order:1}.tool-section-header b{order:2;text-align:left}.tool-section-header .tool-chevron{order:3;margin-left:auto}
+.control{padding:5px 0}.control label{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:2px;color:#aaa;font-size:10px;line-height:1.2}.control label b{color:#ddd;font-size:10px;font-weight:500;font-variant-numeric:tabular-nums}.control input[type=range],.range-row input[type=range],.brush-options input[type=range],.form-grid input[type=range]{accent-color:#d5d5d5!important;color-scheme:dark}
 
 /* Match the reference editor: quiet tracks, bright knobs, and aligned values. */
 .control input[type=range],.range-row input[type=range],.brush-options input[type=range],.form-grid input[type=range]{appearance:none;-webkit-appearance:none;width:100%;height:16px;margin:0;background:transparent;accent-color:#d5d5d5;cursor:pointer}
