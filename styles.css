@@ -88,6 +88,14 @@
 .control-value b{display:none!important}
 .panel-header .histogram-block{min-width:0;flex:1.35}
 .histogram-block canvas{height:76px!important;min-height:76px;background:#0f0f10!important;border-color:#484848!important}
+
+/* Keep secondary sliders visually identical to the main editing controls. */
+#exportQuality,.mini-offset input[type=range]{appearance:none;-webkit-appearance:none;width:100%;height:16px;margin:0;background:transparent;accent-color:#d5d5d5;color-scheme:dark;cursor:pointer}
+#exportQuality::-webkit-slider-runnable-track,.mini-offset input[type=range]::-webkit-slider-runnable-track{height:3px;border-radius:999px;background:#555}
+#exportQuality::-moz-range-track,.mini-offset input[type=range]::-moz-range-track{height:3px;border-radius:999px;background:#555}
+#exportQuality::-webkit-slider-thumb,.mini-offset input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:12px;height:12px;margin-top:-4.5px;border:1px solid #111;border-radius:50%;background:#e1e1e1;box-shadow:0 0 0 1px rgba(255,255,255,.15)}
+#exportQuality::-moz-range-thumb,.mini-offset input[type=range]::-moz-range-thumb{width:12px;height:12px;border:1px solid #111;border-radius:50%;background:#e1e1e1;box-shadow:0 0 0 1px rgba(255,255,255,.15)}
+#exportQuality:focus-visible,.mini-offset input[type=range]:focus-visible{outline:1px solid #8d8d8d;outline-offset:3px}
 .histogram-readout{display:flex;justify-content:space-between;gap:6px;color:#9f9f9f;font:9px/1.2 ui-monospace,SFMono-Regular,Consolas,monospace;font-variant-numeric:tabular-nums;white-space:nowrap}
 .histogram-readout .clip-shadow{color:#73a7ff}.histogram-readout .clip-highlight{color:#ff9d7c}
 @media(max-width:760px){.control-number{width:40px}.control-value{min-width:68px}.histogram-block canvas{height:64px!important;min-height:64px}.histogram-readout{font-size:8px}}

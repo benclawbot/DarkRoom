@@ -19,6 +19,7 @@ There is **no account system and no cloud photo storage**. Imported originals, r
 - **One renderer:** preview and export use the same processing graph.
 - **Graceful capability fallback:** heavy AI features prefer WebGPU, fall back where possible, and never block ordinary editing.
 - **Upgrade-safe previews:** older library records are repaired on refresh when their cached thumbnail is missing, while the original blob remains the editing source.
+- **Consistent controls:** primary, mask, clone, and export sliders share the same track, knob, focus state, and keyboard behavior.
 
 ## Screenshots
 

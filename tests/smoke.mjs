@@ -32,6 +32,7 @@ assert(html.includes('class="histogram-block"')&&html.includes('aria-label="RGB 
 assert(html.includes('id="histogramReadout"')&&js.includes('histogramReadout'),'Histogram clipping readout missing');
 assert(js.includes('isUsableBlob')&&js.includes('repairPhotoThumbnail')&&js.includes('photoBlob('),'Legacy photo asset recovery missing');
 assert(js.includes('class="control-number"')&&js.includes('data-control-number'),'Precise numeric slider entry missing');
+assert(css.includes('#exportQuality')&&css.includes('.mini-offset input[type=range]'),'Secondary sliders should share the editor control styling');
 assert(js.includes("type==='dodge'")&&js.includes("type==='burn'")&&js.includes('setPaintMode'),'Dodge/burn local editing missing');
 assert(js.includes('generateSmartMask')&&js.includes('smartMaskRaster'),'Smart masks missing');
 assert(js.includes('createHealOperation')&&(js.includes('DarkRoomEngine.inpaint')||js.includes('E.inpaint')),'Content-aware removal missing');
