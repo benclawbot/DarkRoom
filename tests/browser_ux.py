@@ -110,7 +110,11 @@ def main():
         page.set_viewport_size({'width':390,'height':844});page.wait_for_timeout(250)
         geo=page.evaluate("""()=>{const p=document.querySelector('#photoViewport').getBoundingClientRect(),t=document.querySelector('.editor-panel').getBoundingClientRect();return {photoRight:p.right,toolsLeft:t.left,toolsWidth:t.width,button:getComputedStyle(document.querySelector('#mobileFullscreenBtn')).display}}""")
         assert geo['toolsLeft'] >= geo['photoRight']-2 and geo['toolsWidth']>120 and geo['button']!='none'
-        page.screenshot(path=str(out/'editor-mobile.png'),full_page=True);page.click('#mobileFullscreenBtn');assert 'photo-only' in (page.locator('#editor').get_attribute('class') or '');page.click('#mobileFullscreenBtn')
+        page.screenshot(path=str(out/'editor-mobile.png'),full_page=True);page.click('#zoomIn');page.click('#mobileFullscreenBtn');assert 'photo-only' in (page.locator('#editor').get_attribute('class') or '')
+        page.wait_for_function("document.querySelector('#editorCanvas')?.getBoundingClientRect().width>0")
+        full=page.evaluate("()=>{const c=document.querySelector('#editorCanvas'),r=c.getBoundingClientRect(),d=c.getContext('2d').getImageData(0,0,c.width,c.height).data;let n=0;for(let i=0;i<d.length;i+=Math.max(4,Math.floor(d.length/4000/4)*4))n+=d[i]+d[i+1]+d[i+2];return {left:r.left,right:r.right,top:r.top,bottom:r.bottom,avg:n/Math.max(1,d.length/Math.max(4,Math.floor(d.length/4000/4)*4))/3}}")
+        assert full['left']>=-2 and full['right']<=390+2 and full['top']>=-2 and full['bottom']<=844+2 and full['avg']>5, full
+        page.click('#mobileFullscreenBtn')
         page.click('#closeEditor');page.wait_for_function("document.querySelector('#editor').classList.contains('hidden')")
         page.on('dialog',lambda dialog: dialog.accept())
         page.click('#selectPhotosBtn');page.locator('.photo-card').first.click();page.click('#batchDelete');page.wait_for_function("photos.length===2")
