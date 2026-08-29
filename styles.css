@@ -126,3 +126,4 @@
 .editor-panel{grid-template-rows:auto minmax(0,1fr) 0 42px!important}
 @media(max-width:760px){.panel-header{min-height:106px!important;padding:5px 6px!important}.panel-header .histogram-block canvas{height:58px!important;min-height:58px}}
 @media(max-width:760px){.editor-panel{grid-template-rows:auto minmax(0,1fr) 0 38px!important}}
+.render-status{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:12;padding:8px 12px;border:1px solid #444;border-radius:5px;background:rgba(20,20,20,.9);color:#ddd;font-size:11px;pointer-events:none;box-shadow:0 8px 25px rgba(0,0,0,.35)}

@@ -12,6 +12,7 @@ for(const id of direct){
   assert(ids.has(id)||generated,`Missing static or generated control #${id}`);
 }
 for(const id of ['photoViewport','editorCanvas','canvasWrap','maskOverlay','compositionOverlay','zoomIn','zoomOut','zoomReset','zoomLabel','undoBtn','redoBtn','beforeAfterBtn','beforeSplitBtn','beforeSplitRange','pickBtn','rejectBtn','copyEdits','pasteEdits','panelToggle','fullscreenBtn','mobileFullscreenBtn','modeSwitcher','toolTabs','controls','selectPhotosBtn','batchBar']) assert(ids.has(id),`Missing required #${id}`);
+assert(ids.has('renderStatus')&&css.includes('.render-status'),'Render status indicator missing');
 for(const mode of ['quick','advanced','pro']) assert(html.includes(`data-mode="${mode}"`),`Missing editor mode ${mode}`);
 for(const panel of ['edit','masks','heal','transform','retouch','ai','info']) assert(html.includes(`data-panel="${panel}"`),`Missing right-rail panel ${panel}`);
 assert(js.includes('ACCORDION_DEFAULTS')&&js.includes('accordionSection(')&&js.includes('bindAccordions()'),'Collapsible tool sections missing');
