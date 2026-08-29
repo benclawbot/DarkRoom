@@ -26,6 +26,7 @@ assert(js.includes("$('#mobileFullscreenBtn').onclick=()=>togglePhotoOnly()"),'M
 assert(js.includes('requestFullscreen')&&css.includes('.editor.photo-only'),'Native/CSS fullscreen visualization missing');
 assert(js.includes('selectionMode')&&js.includes('batchExport')&&js.includes('batchMutate'),'Multi-photo selection/batch editing missing');
 assert(html.includes('id="demoImport"')&&js.includes('loadDemoPhotos')&&js.includes('docs/assets/examples/'),'Bundled in-app demo set missing');
+assert(html.includes('class="histogram-block"')&&html.includes('aria-label="RGB histogram"'),'Labeled RGB histogram block missing');
 assert(js.includes("type==='dodge'")&&js.includes("type==='burn'")&&js.includes('setPaintMode'),'Dodge/burn local editing missing');
 assert(js.includes('generateSmartMask')&&js.includes('smartMaskRaster'),'Smart masks missing');
 assert(js.includes('createHealOperation')&&(js.includes('DarkRoomEngine.inpaint')||js.includes('E.inpaint')),'Content-aware removal missing');
