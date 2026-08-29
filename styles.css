@@ -78,3 +78,14 @@
 @media(max-width:760px){:root{--right:clamp(160px,42vw,230px)}.editor-stage canvas{max-width:calc(100vw - var(--right) - 8px)!important}.tool-section-body{padding:7px!important}.editor-footer{padding:0 4px}.editor-footer button{padding:5px 4px}.panel-header{padding:0 6px}}
 @media(max-width:430px){:root{--right:44vw}.editor-stage canvas{max-width:calc(100vw - var(--right) - 6px)!important}}
 .before-split-canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;display:none;z-index:2}.before-split-canvas.active{display:block}.before-split-divider{position:absolute;top:0;bottom:0;width:2px;background:rgba(255,255,255,.92);box-shadow:0 0 0 1px rgba(0,0,0,.35);z-index:5;pointer-events:none}.before-split-range{position:absolute;left:50%;bottom:50px;transform:translateX(-50%);z-index:10;width:min(420px,55%);accent-color:#eee}.editor.focus-view .before-split-range,.editor.photo-only .before-split-range{bottom:20px}.editor.focus-view .before-split-divider,.editor.photo-only .before-split-divider{display:block}
+
+/* Compact, scannable section rows. Keep labels and summaries on one line. */
+.tool-section-header{display:flex!important;flex-direction:row!important;align-items:center;gap:8px;height:34px!important;min-height:34px;padding:0 10px!important}
+.tool-section-icon{flex:0 0 18px;font-size:13px;line-height:1;text-align:center}
+.tool-section-header b{flex:1;min-width:0;font-size:11px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tool-chevron{flex:0 0 14px;font-size:14px;line-height:1;text-align:center}
+.accordion-head{display:flex!important;flex-direction:row!important;align-items:center;gap:7px;min-height:30px!important;height:30px;padding:0 8px!important}
+.accordion-chevron{flex:0 0 14px;font-size:13px;line-height:1;text-align:center}
+.accordion-head b{flex:1;min-width:0;font-size:10px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.accordion-head small{flex:0 0 auto;margin-left:auto;white-space:nowrap;line-height:1.2}
+@media(max-width:760px){.tool-section-header{height:32px!important;min-height:32px!important;padding:0 7px!important}.accordion-head{height:28px;min-height:28px!important;padding:0 6px!important}}

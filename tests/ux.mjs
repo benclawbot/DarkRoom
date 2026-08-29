@@ -8,6 +8,7 @@ assert(editor.includes('modeAllows(t.tier)'),'tool rail must obey editor mode');
 // Right-side tools and accordion UX
 assert(css.includes('grid-template-columns:minmax(0,1fr) var(--right)'),'desktop tools must stay right of photo');
 assert(css.includes('.accordion.collapsed .accordion-body'),'sections must be independently collapsible');
+assert(css.includes('.accordion-head{display:flex!important;'),'accordion headers must be compact horizontal rows');
 assert(editor.includes('darkroom-accordion-')&&editor.includes('localStorage.setItem(accordionKey()'),'accordion state must persist');
 assert(editor.includes('soloSections'),'pro solo-section workflow missing');
 // Focus view
