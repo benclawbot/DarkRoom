@@ -40,7 +40,7 @@ def main():
         assert page.locator('#panelToggle').count()==0
 
         page.set_input_files('#fileInput',{'name':'studio.png','mimeType':'image/png','buffer':sample_png()})
-        page.wait_for_function("window.currentPhoto && document.querySelector('#editorCanvas').width>20",timeout=15000)
+        page.wait_for_function("currentPhoto && document.querySelector('#editorCanvas').width>20",timeout=15000)
         assert not page.locator('#editorEmptyPicker').is_visible()
         labels=page.locator('[data-tool-toggle] b').all_inner_texts()
         assert labels==['Adjust','Crop','Mask','Retouch'],labels
@@ -99,7 +99,7 @@ def main():
         if os.path.exists('/usr/bin/chromium'):launch['executable_path']='/usr/bin/chromium'
         browser=p.chromium.launch(**launch);context=browser.new_context(viewport={'width':390,'height':844},service_workers='block');page=context.new_page();page.goto(url,wait_until='networkidle')
         assert page.locator('#editorOpenPhoto').is_visible()
-        page.set_input_files('#fileInput',{'name':'mobile.png','mimeType':'image/png','buffer':sample_png()});page.wait_for_function("window.currentPhoto && document.querySelector('#editorCanvas').width>20",timeout=15000)
+        page.set_input_files('#fileInput',{'name':'mobile.png','mimeType':'image/png','buffer':sample_png()});page.wait_for_function("currentPhoto && document.querySelector('#editorCanvas').width>20",timeout=15000)
         assert page.locator('#panelToggle').count()==0
         assert page.locator('#sessionFilmstrip').count()==0
         assert page.locator('#editorPanel').bounding_box() is not None
