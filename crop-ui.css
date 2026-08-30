@@ -26,4 +26,7 @@
 .crop-n,.crop-s{left:25%;right:25%;height:28px;cursor:ns-resize}.crop-n{top:-14px}.crop-s{bottom:-14px}.crop-e,.crop-w{top:25%;bottom:25%;width:28px;cursor:ew-resize}.crop-e{right:-14px}.crop-w{left:-14px}
 .crop-n:before,.crop-s:before{width:34px;height:4px;left:50%;transform:translateX(-50%)}.crop-n:before{top:12px}.crop-s:before{bottom:12px}.crop-n:after,.crop-s:after{display:none}
 .crop-e:before,.crop-w:before{width:4px;height:34px;top:50%;transform:translateY(-50%)}.crop-e:before{right:12px}.crop-w:before{left:12px}.crop-e:after,.crop-w:after{display:none}
+.straighten-guide{position:absolute;z-index:11;height:2px;transform-origin:0 50%;pointer-events:none;background:#fff;box-shadow:0 0 0 1px rgba(0,0,0,.55),0 0 8px rgba(0,0,0,.45)}
+.straighten-guide::before,.straighten-guide::after{content:"";position:absolute;top:50%;width:8px;height:8px;margin-top:-4px;border-radius:50%;background:#fff;box-shadow:0 0 0 1px rgba(0,0,0,.5)}
+.straighten-guide::before{left:-4px}.straighten-guide::after{right:-4px}.straighten-guide.hidden{display:none}
 @media(max-width:760px){.crop-mode-strip{gap:5px;margin:0 0 10px}.crop-mode-strip button{min-height:58px;border-radius:8px}.crop-tool-icon{font-size:18px}.crop-direct-head span{display:none}.crop-aspect-simple select{height:40px}.crop-aspect-simple>button{height:40px}.direct-crop-frame{border-width:2px}.crop-grid{background:rgba(255,255,255,.25)}}
