@@ -23,11 +23,19 @@ function saveExportSheet(){
   localStorage.setItem('darkroom-export-sharpen',$('#exportSharpen').value);
 }
 
+function revealOpenedPhoto(){
+  if(!currentPhoto)return;
+  $('#editorEmptyPicker')?.classList.add('hidden');
+  $('#editorPanel')?.classList.remove('empty-editor');
+  $('.editor-title')?.classList.remove('empty');
+}
+
 async function openSinglePhoto(files){
   const one=[...(files||[])].slice(0,1);
   if(!one.length)return;
   await darkroomReady;
   await importFiles(one);
+  revealOpenedPhoto();
 }
 
 function bindFocusedApp(){
