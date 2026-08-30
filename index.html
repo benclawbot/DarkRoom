@@ -10,42 +10,44 @@
   <link rel="icon" href="icon.svg" type="image/svg+xml" />
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="stylesheet" href="styles.css?v=22" />
+  <link rel="stylesheet" href="accessibility.css?v=22" />
 </head>
 <body>
+<a class="skip-link" href="#mainView">Skip to content</a>
 <div id="app">
   <header class="topbar">
-    <button class="app-switcher" aria-label="DarkRoom"><span class="brandmark">D</span></button>
+    <button class="app-switcher" aria-label="DarkRoom"><span class="brandmark" aria-hidden="true">D</span></button>
     <button class="brand" data-route="library">DarkRoom</button>
-    <div class="search-wrap"><span class="search-icon">⌕</span><input id="searchInput" placeholder="Search All Photos" autocomplete="off" /></div>
+    <div class="search-wrap"><span class="search-icon" aria-hidden="true">⌕</span><label for="searchInput" class="visually-hidden">Search all photos</label><input id="searchInput" placeholder="Search All Photos" autocomplete="off" /></div>
     <div class="top-actions">
-      <button id="filterToggle" class="top-icon" title="Filter">≡</button>
-      <button id="storageBtn" class="top-icon" title="Local storage">◫</button>
+      <button id="filterToggle" class="top-icon" title="Filter" aria-label="Show or hide filters" aria-pressed="false">≡</button>
+      <button id="storageBtn" class="top-icon" title="Local storage" aria-label="Open local storage">◫</button>
       <button id="importTop" class="add-photos">＋ Add Photos</button>
     </div>
   </header>
 
   <aside class="sidebar">
     <button id="sideAdd" class="sidebar-add">＋ Add Photos</button>
-    <nav class="main-nav">
-      <button class="nav" data-route="home"><span>⌂</span> Home</button>
-      <button class="nav active" data-route="library"><span>▦</span> All Photos <b id="allCount">0</b></button>
-      <button class="nav" data-route="recent"><span>◷</span> Recently Added</button>
-      <button class="nav" data-route="favorites"><span>♡</span> Favorites</button>
-      <button class="nav" data-route="flagged"><span>⚑</span> Picked</button>
+    <nav class="main-nav" aria-label="Primary navigation">
+      <button class="nav" data-route="home"><span aria-hidden="true">⌂</span> Home</button>
+      <button class="nav active" data-route="library" aria-current="page"><span aria-hidden="true">▦</span> All Photos <b id="allCount">0</b></button>
+      <button class="nav" data-route="recent"><span aria-hidden="true">◷</span> Recently Added</button>
+      <button class="nav" data-route="favorites"><span aria-hidden="true">♡</span> Favorites</button>
+      <button class="nav" data-route="flagged"><span aria-hidden="true">⚑</span> Picked</button>
     </nav>
     <div class="sidebar-section">
       <div class="sidebar-heading"><span>Albums</span><button id="newAlbumMini" aria-label="New album">＋</button></div>
       <div id="sidebarAlbums" class="sidebar-albums"></div>
-      <button class="nav" data-route="albums"><span>▱</span> All Albums</button>
+      <button class="nav" data-route="albums"><span aria-hidden="true">▱</span> All Albums</button>
     </div>
     <div class="sidebar-bottom">
-      <button class="nav" data-route="storage"><span>◫</span> Local Storage</button>
+      <button class="nav" data-route="storage"><span aria-hidden="true">◫</span> Local Storage</button>
       <small id="sideStorage">0 MB stored locally</small>
       <div class="meter"><i id="sideMeter"></i></div>
     </div>
   </aside>
 
-  <main class="main" id="mainView">
+  <main class="main" id="mainView" tabindex="-1">
     <section id="homeView" class="view">
       <div class="home-hero">
         <p class="eyebrow">DARKROOM</p>
@@ -54,9 +56,9 @@
         <button id="homeImport" class="add-photos large">＋ Add Photos</button>
       </div>
       <div class="home-cards">
-        <button data-route="recent"><span>◷</span><b>Recently Added</b><small>Continue with your newest photos</small></button>
-        <button data-route="favorites"><span>♡</span><b>Favorites</b><small>Return to your best images</small></button>
-        <button data-route="albums"><span>▱</span><b>Albums</b><small>Organize photos without duplicates</small></button>
+        <button data-route="recent"><span aria-hidden="true">◷</span><b>Recently Added</b><small>Continue with your newest photos</small></button>
+        <button data-route="favorites"><span aria-hidden="true">♡</span><b>Favorites</b><small>Return to your best images</small></button>
+        <button data-route="albums"><span aria-hidden="true">▱</span><b>Albums</b><small>Organize photos without duplicates</small></button>
       </div>
     </section>
 
@@ -72,8 +74,8 @@
             <button id="renameAlbum">Rename</button><button id="deleteAlbum" class="danger-text">Delete</button>
           </div>
           <select id="sortSelect" aria-label="Sort photos"><option value="new">Capture / import: newest</option><option value="old">Capture / import: oldest</option><option value="name">File name</option><option value="rating">Rating</option></select>
-          <button id="selectPhotosBtn" class="square-button select-button" title="Select photos">✓</button>
-          <button id="gridSizeBtn" class="square-button" title="Grid density">▦</button>
+          <button id="selectPhotosBtn" class="square-button select-button" title="Select photos" aria-label="Select photos" aria-pressed="false">✓</button>
+          <button id="gridSizeBtn" class="square-button" title="Grid density" aria-label="Change grid density">▦</button>
         </div>
       </div>
       <div id="batchBar" class="batch-bar hidden" aria-label="Selected photo actions">
@@ -86,11 +88,11 @@
         <button id="batchExport" title="Export selected photos">Export</button>
         <button id="batchDone">Done</button>
       </div>
-      <div id="filterBar" class="filter-bar hidden">
-        <button data-filter="all" class="active">All</button><button data-filter="picked">⚑ Picked</button><button data-filter="rejected">⚑ Rejected</button><button data-filter="5">★★★★★</button><button data-filter="4">★★★★+</button><button data-filter="3">★★★+</button><button data-filter="2">★★+</button><button data-filter="1">★+</button>
+      <div id="filterBar" class="filter-bar hidden" aria-label="Photo filters">
+        <button data-filter="all" class="active" aria-pressed="true">All</button><button data-filter="picked" aria-pressed="false">⚑ Picked</button><button data-filter="rejected" aria-pressed="false">⚑ Rejected</button><button data-filter="5" aria-pressed="false">★★★★★</button><button data-filter="4" aria-pressed="false">★★★★+</button><button data-filter="3" aria-pressed="false">★★★+</button><button data-filter="2" aria-pressed="false">★★+</button><button data-filter="1" aria-pressed="false">★+</button>
       </div>
       <div id="emptyState" class="empty-state">
-        <div class="empty-art">▧</div><h2>No photos here yet</h2><p>Add photos from this device. Originals remain untouched and local.</p><div class="empty-actions"><button id="emptyImport" class="add-photos">＋ Add Photos</button><button id="demoImport" class="secondary">Open sample set</button></div>
+        <div class="empty-art" aria-hidden="true">▧</div><h2>No photos here yet</h2><p>Add photos from this device. Originals remain untouched and local.</p><div class="empty-actions"><button id="emptyImport" class="add-photos">＋ Add Photos</button><button id="demoImport" class="secondary">Open sample set</button></div>
       </div>
       <div id="photoGrid" class="photo-grid"></div>
     </section>
@@ -109,12 +111,12 @@
     </section>
   </main>
 
-  <nav class="mobile-nav">
-    <button class="active" data-route="library"><span>▦</span><small>Photos</small></button>
-    <button data-route="albums"><span>▱</span><small>Albums</small></button>
-    <button id="mobileAdd" class="mobile-add"><span>＋</span></button>
-    <button data-route="favorites"><span>♡</span><small>Favorites</small></button>
-    <button data-route="storage"><span>◫</span><small>Storage</small></button>
+  <nav class="mobile-nav" aria-label="Mobile navigation">
+    <button class="active" data-route="library" aria-current="page"><span aria-hidden="true">▦</span><small>Photos</small></button>
+    <button data-route="albums"><span aria-hidden="true">▱</span><small>Albums</small></button>
+    <button id="mobileAdd" class="mobile-add" aria-label="Add photos"><span aria-hidden="true">＋</span></button>
+    <button data-route="favorites"><span aria-hidden="true">♡</span><small>Favorites</small></button>
+    <button data-route="storage"><span aria-hidden="true">◫</span><small>Storage</small></button>
   </nav>
 
   <input id="fileInput" type="file" accept="image/*,.dng,.cr2,.cr3,.nef,.nrw,.arw,.srf,.sr2,.raf,.orf,.rw2,.pef,.rwl,.3fr,.fff,.iiq,.mos,.mrw,.x3f" multiple hidden />
@@ -123,73 +125,72 @@
     <header class="editor-top">
       <button id="closeEditor" class="editor-icon" aria-label="Back">←</button>
       <div class="editor-title"><b id="editorName">Photo</b><small id="editorMeta"></small></div>
-      <div class="editor-history"><button id="undoBtn" title="Undo">↶</button><button id="redoBtn" title="Redo">↷</button><button id="beforeAfterBtn" title="Before / after">◐</button><button id="beforeSplitBtn" title="Split before / after">↔</button></div>
+      <div class="editor-history"><button id="undoBtn" title="Undo" aria-label="Undo">↶</button><button id="redoBtn" title="Redo" aria-label="Redo">↷</button><button id="beforeAfterBtn" title="Before / after" aria-label="Toggle before and after" aria-pressed="false">◐</button><button id="beforeSplitBtn" title="Split before / after" aria-label="Toggle split before and after" aria-pressed="false">↔</button></div>
       <div class="mode-switcher" id="modeSwitcher" role="group" aria-label="Editing complexity">
         <button data-mode="quick">Quick</button><button data-mode="advanced">Advanced</button><button data-mode="pro">Pro</button>
       </div>
-      <div class="editor-top-actions"><button id="fullscreenBtn" class="editor-icon" title="Picture only / fullscreen (F)" aria-label="Show picture only">⛶</button><button id="panelToggle" class="editor-icon" title="Show / hide tools" aria-label="Show or hide editing tools">☷</button><button id="favoriteBtn" class="editor-icon">♡</button><button id="exportBtn" class="export-button">Export</button></div>
+      <div class="editor-top-actions"><button id="fullscreenBtn" class="editor-icon" title="Picture only / fullscreen (F)" aria-label="Show picture only" aria-pressed="false">⛶</button><button id="panelToggle" class="editor-icon" title="Show / hide tools" aria-label="Show or hide editing tools" aria-pressed="false">☷</button><button id="favoriteBtn" class="editor-icon" title="Favorite" aria-label="Favorite photo" aria-pressed="false">♡</button><button id="exportBtn" class="export-button">Export</button></div>
     </header>
 
     <section id="photoViewport" class="editor-stage" aria-label="Zoomable photo viewport">
       <div id="editorFallbackImage" class="editor-image-fallback" role="img" aria-label="Rendered photo preview" aria-hidden="true"></div><div id="canvasWrap" class="canvas-wrap"><canvas id="editorCanvas"></canvas><canvas id="beforeSplitCanvas" class="before-split-canvas" aria-hidden="true"></canvas><canvas id="maskOverlay" class="mask-overlay" aria-hidden="true"></canvas><canvas id="diagnosticOverlay" class="diagnostic-overlay" aria-hidden="true"></canvas><div id="beforeSplitDivider" class="before-split-divider hidden"></div><div id="compositionOverlay" class="composition-overlay none"></div></div>
-      <input id="beforeSplitRange" class="before-split-range hidden" type="range" min="5" max="95" value="50" aria-label="Before and after split position" />
+      <input id="beforeSplitRange" class="before-split-range hidden" type="range" min="5" max="95" value="50" aria-label="Before and after split position" aria-valuetext="Split at 50%" />
       <div id="paintHud" class="paint-hud hidden"><b>Local edit</b><span>Drag on photo · Esc to finish</span></div>
       <div id="renderStatus" class="render-status hidden" role="status" aria-live="polite">Rendering preview…</div>
-      <button id="mobileFullscreenBtn" class="mobile-fullscreen-button" title="Picture only" aria-label="Picture only">⛶</button>
-      <div class="zoom-controls"><button id="zoomOut">−</button><button id="zoomReset"><span id="zoomLabel">100%</span></button><button id="zoomIn">＋</button></div>
+      <button id="mobileFullscreenBtn" class="mobile-fullscreen-button" title="Picture only" aria-label="Picture only" aria-pressed="false">⛶</button>
+      <div class="zoom-controls" aria-label="Zoom controls"><button id="zoomOut" aria-label="Zoom out">−</button><button id="zoomReset" aria-label="Reset zoom"><span id="zoomLabel">100%</span></button><button id="zoomIn" aria-label="Zoom in">＋</button></div>
     </section>
 
     <nav id="mobileEditorDock" class="mobile-editor-dock" aria-label="Mobile editing tools">
-      <button data-mobile-tool="edit"><span>☼</span><small>Adjust</small></button>
-      <button data-mobile-tool="masks"><span>◌</span><small>Mask</small></button>
-      <button data-mobile-tool="heal"><span>✚</span><small>Remove</small></button>
-      <button data-mobile-tool="transform"><span>⌗</span><small>Crop</small></button>
-      <button data-mobile-tool="more"><span>•••</span><small>More</small></button>
+      <button data-mobile-tool="edit"><span aria-hidden="true">☼</span><small>Adjust</small></button>
+      <button data-mobile-tool="masks"><span aria-hidden="true">◌</span><small>Mask</small></button>
+      <button data-mobile-tool="heal"><span aria-hidden="true">✚</span><small>Remove</small></button>
+      <button data-mobile-tool="transform"><span aria-hidden="true">⌗</span><small>Crop</small></button>
+      <button data-mobile-tool="more"><span aria-hidden="true">•••</span><small>More</small></button>
     </nav>
 
     <aside class="editor-panel" aria-label="Fixed editing parameters">
       <div class="panel-header">
-        <div class="rating" id="ratingButtons"><button data-rate="1">★</button><button data-rate="2">★</button><button data-rate="3">★</button><button data-rate="4">★</button><button data-rate="5">★</button></div>
-        <div class="histogram-block"><span>Histogram · RGB / luminance</span><canvas id="histogramCanvas" width="220" height="76" aria-label="RGB histogram"></canvas><div id="histogramReadout" class="histogram-readout" aria-live="polite"><span class="clip-shadow">Shadows 0%</span><span>Range 0–100%</span><span class="clip-highlight">Highlights 0%</span></div></div><div class="flags"><button id="pickBtn" title="Pick">⚑</button><button id="rejectBtn" title="Reject">⚐</button></div>
+        <div class="rating" id="ratingButtons" role="group" aria-label="Photo rating"><button data-rate="1" aria-label="1 star" aria-pressed="false">★</button><button data-rate="2" aria-label="2 stars" aria-pressed="false">★</button><button data-rate="3" aria-label="3 stars" aria-pressed="false">★</button><button data-rate="4" aria-label="4 stars" aria-pressed="false">★</button><button data-rate="5" aria-label="5 stars" aria-pressed="false">★</button></div>
+        <div class="histogram-block"><span>Histogram · RGB / luminance</span><canvas id="histogramCanvas" width="220" height="76" aria-label="RGB histogram"></canvas><div id="histogramReadout" class="histogram-readout" aria-live="polite"><span class="clip-shadow">Shadows 0%</span><span>Range 0–100%</span><span class="clip-highlight">Highlights 0%</span></div></div><div class="flags"><button id="pickBtn" title="Pick" aria-label="Pick photo" aria-pressed="false">⚑</button><button id="rejectBtn" title="Reject" aria-label="Reject photo" aria-pressed="false">⚐</button></div>
       </div>
       <div class="tool-tabs context-tools" id="toolTabs" aria-label="Editing categories">
-        <button data-panel="edit" data-tier="quick" class="active"><span>☼</span><small>Edit</small></button>
-        <button data-panel="masks" data-tier="quick"><span>◌</span><small>Mask</small></button>
-        <button data-panel="heal" data-tier="quick"><span>✚</span><small>Remove</small></button>
-        <button data-panel="transform" data-tier="quick"><span>⌗</span><small>Crop</small></button>
-        <button data-panel="retouch" data-tier="advanced"><span>☺</span><small>Retouch</small></button>
-        <button data-panel="ai" data-tier="quick"><span>✧</span><small>AI</small></button>
-        <button data-panel="info" data-tier="pro"><span>ⓘ</span><small>Info</small></button>
+        <button data-panel="edit" data-tier="quick" class="active"><span aria-hidden="true">☼</span><small>Edit</small></button>
+        <button data-panel="masks" data-tier="quick"><span aria-hidden="true">◌</span><small>Mask</small></button>
+        <button data-panel="heal" data-tier="quick"><span aria-hidden="true">✚</span><small>Remove</small></button>
+        <button data-panel="transform" data-tier="quick"><span aria-hidden="true">⌗</span><small>Crop</small></button>
+        <button data-panel="retouch" data-tier="advanced"><span aria-hidden="true">☺</span><small>Retouch</small></button>
+        <button data-panel="ai" data-tier="quick"><span aria-hidden="true">✧</span><small>AI</small></button>
+        <button data-panel="info" data-tier="pro"><span aria-hidden="true">ⓘ</span><small>Info</small></button>
       </div>
       <div id="controls" class="controls" aria-label="Collapsible editing tool sections"></div>
       <div class="editor-footer"><button id="resetEdits">Reset Edits</button><button id="copyEdits">Copy</button><button id="pasteEdits">Paste</button><button id="deletePhoto" class="danger-text">Delete</button></div>
     </aside>
   </div>
 
-  <div id="modalBackdrop" class="modal-backdrop hidden">
-    <div class="modal" id="albumModal"><h2>Create album</h2><p>Albums reference photos without creating duplicate files.</p><input id="albumName" placeholder="Album name" maxlength="80" /><div class="modal-actions"><button id="cancelModal">Cancel</button><button id="createAlbum" class="add-photos">Create</button></div></div>
+  <div id="modalBackdrop" class="modal-backdrop hidden" aria-hidden="true">
+    <div class="modal" id="albumModal" role="dialog" aria-modal="true" aria-labelledby="albumModalTitle"><h2 id="albumModalTitle">Create album</h2><p>Albums reference photos without creating duplicate files.</p><label for="albumName" class="visually-hidden">Album name</label><input id="albumName" placeholder="Album name" maxlength="80" /><div class="modal-actions"><button id="cancelModal">Cancel</button><button id="createAlbum" class="add-photos">Create</button></div></div>
   </div>
 
-  <div id="batchAlbumBackdrop" class="modal-backdrop hidden"><div class="modal"><h2>Add selected photos to album</h2><div id="batchAlbumList" class="album-membership"></div><div class="modal-actions"><button id="cancelBatchAlbum">Cancel</button></div></div></div>
+  <div id="batchAlbumBackdrop" class="modal-backdrop hidden" aria-hidden="true"><div class="modal" role="dialog" aria-modal="true" aria-labelledby="batchAlbumTitle"><h2 id="batchAlbumTitle">Add selected photos to album</h2><div id="batchAlbumList" class="album-membership"></div><div class="modal-actions"><button id="cancelBatchAlbum">Cancel</button></div></div></div>
 
-  <div id="compareView" class="compare-view hidden" aria-hidden="true">
-    <header><b>Compare</b><span id="compareMeta"></span><button id="closeCompare">Close</button></header>
+  <div id="compareView" class="compare-view hidden" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="compareTitle">
+    <header><b id="compareTitle">Compare</b><span id="compareMeta"></span><button id="closeCompare">Close</button></header>
     <div class="compare-grid">
       <figure><canvas id="compareLeft"></canvas><figcaption id="compareLeftMeta"></figcaption></figure>
       <figure><canvas id="compareRight"></canvas><figcaption id="compareRightMeta"></figcaption></figure>
     </div>
   </div>
 
-  <div id="renameBackdrop" class="modal-backdrop hidden">
-    <div class="modal"><h2>Batch rename</h2><p>Rename selected photos locally.</p><div class="form-grid"><label>Prefix<input id="renamePrefix" value="DarkRoom" maxlength="80" /></label><label>Start number<input id="renameStart" type="number" min="1" value="1" /></label></div><div class="modal-actions"><button id="cancelRename">Cancel</button><button id="applyRename" class="add-photos">Rename</button></div></div>
+  <div id="renameBackdrop" class="modal-backdrop hidden" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="renameModalTitle"><h2 id="renameModalTitle">Batch rename</h2><p>Rename selected photos locally.</p><div class="form-grid"><label>Prefix<input id="renamePrefix" value="DarkRoom" maxlength="80" /></label><label>Start number<input id="renameStart" type="number" min="1" value="1" /></label></div><div class="modal-actions"><button id="cancelRename">Cancel</button><button id="applyRename" class="add-photos">Rename</button></div></div>
   </div>
 
-  <div id="mergeBackdrop" class="modal-backdrop hidden">
-    <div class="modal"><h2>Combine photos</h2><p>Process the selected originals locally.</p><div class="merge-grid"><button data-merge="hdr">HDR Merge</button><button data-merge="focus">Focus Stack</button><button data-merge="noise">Noise Stack</button><button data-merge="panorama">Panorama</button></div><div class="modal-actions"><button id="cancelMerge">Cancel</button></div></div>
+  <div id="mergeBackdrop" class="modal-backdrop hidden" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="mergeModalTitle"><h2 id="mergeModalTitle">Combine photos</h2><p>Process the selected originals locally.</p><div class="merge-grid"><button data-merge="hdr">HDR Merge</button><button data-merge="focus">Focus Stack</button><button data-merge="noise">Noise Stack</button><button data-merge="panorama">Panorama</button></div><div class="modal-actions"><button id="cancelMerge">Cancel</button></div></div>
   </div>
 
-
-  <div id="toast" class="toast"></div>
+  <div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
 </div>
 <script src="engine-core.js?v=22"></script>
 <script src="ai-runtime.js?v=22"></script>
@@ -201,5 +202,6 @@
 <script src="editor.js?v=22"></script>
 <script src="pro-tools.js?v=22"></script>
 <script src="app.js?v=22"></script>
+<script src="accessibility.js?v=22"></script>
 </body>
 </html>
