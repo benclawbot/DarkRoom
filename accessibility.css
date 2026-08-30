@@ -43,4 +43,10 @@
 /* Keep compact inline controls compact while retaining the normalized treatment. */
 .stack-inline select{min-height:24px;height:24px;padding-top:2px;padding-bottom:2px}
 
+/* Split comparison must composite both sides on the same canvas geometry. The rendered-image fallback fills the viewport and can drift from canvasWrap; disable it while split is active and reveal the actual edited canvas underneath the before canvas. */
+.editor-stage:has(.before-split-canvas.active) .editor-image-fallback{display:none!important}
+.editor-stage:has(.before-split-canvas.active) #editorCanvas{display:block!important;visibility:visible!important;background:#000!important}
+.editor-stage:has(.before-split-canvas.active) .canvas-wrap{isolation:isolate}
+.editor-stage:has(.before-split-canvas.active) .before-split-canvas{inset:0!important;width:100%!important;height:100%!important;max-width:none!important;max-height:none!important;box-shadow:none!important}
+
 @media (max-width:760px){:where(.mobile-nav button,.mobile-editor-dock button,.zoom-controls button,#mobileFullscreenBtn,#fullscreenBtn,#panelToggle,#favoriteBtn,#pickBtn,#rejectBtn){min-width:44px;min-height:44px}.zoom-controls{min-height:44px}.mobile-editor-dock button{padding-block:8px}.unified-layer-add{grid-template-columns:1fr 1fr}.unified-layer-add select{grid-column:1/-1}.unified-layer-row{grid-template-columns:20px 42px 42px minmax(0,1fr) 40px}.stack-content-thumb,.stack-mask-thumb{width:42px;height:34px}.stack-more{display:none}.stack-inline{grid-template-columns:1fr}.stack-modifiers{margin-left:63px}}
