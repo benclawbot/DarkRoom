@@ -1,172 +1,164 @@
 # DarkRoom
 
-**DarkRoom is a focused, local-first, nondestructive photo editor for desktop and mobile browsers.**
+DarkRoom is a focused, local-first, nondestructive photo editor for desktop and mobile browsers.
 
-The product is deliberately narrow: **open a photograph, edit it, export it.** It does not require an account, upload originals to a DarkRoom server, or ask photographers to work through a catalog, culling system, editing mode hierarchy, or assistant.
+**Open a photo. Edit it. Export it.**
 
-## Product principles
+No account. No catalog workflow. No editing modes. No unnecessary setup between the photograph and the tools.
 
-- **Photo first.** The photograph occupies the workspace; controls stay secondary.
-- **One editor.** There is no Quick / Advanced / Pro choice. Professional controls are available through progressive disclosure in one interface.
-- **Nondestructive.** Originals remain untouched; edits are stored as parameters, masks, and operations.
-- **Local first.** Imported originals and edits stay in browser-managed local storage on the current device.
-- **Minimal workflow.** Open → Adjust → Export.
-- **Direct manipulation.** Crop, masks, healing, zoom, pan, and before/after are designed around the image rather than configuration screens.
-- **One renderer.** Preview and export evaluate the same editing graph.
+## What DarkRoom is
 
-## Editing workspace
+DarkRoom is built around a single professional editing workspace. The photograph stays at the center while controls remain secondary and appear only when needed.
 
-The right-hand editor has five jobs:
+- **One editor** — no Quick, Advanced, or Pro modes.
+- **Nondestructive editing** — the original file is never modified.
+- **Local-first** — photos and edit metadata stay in browser-managed storage on the current device.
+- **Direct manipulation** — crop, masks, healing, zoom, pan, and comparison happen on the image.
+- **Consistent output** — preview and export use the same rendering pipeline.
 
-1. **Adjust** — presets, Light, Color, Tone Curve, Color Mixer, Color Grading, Detail, Effects, Optics, Geometry, and LUT/film looks.
-2. **Crop** — crop ratios, straighten, rotate, flip, reposition, composition guides, and perspective geometry.
-3. **Mask** — brush, linear gradient, radial gradient, luminance range, color range, hue range, dodge, and burn.
-4. **Heal** — heal and clone painting.
-5. **Retouch** — restrained portrait and restoration controls.
+## Workflow
 
-Only one tool is active at a time. Within a tool, sections expand only when needed.
+1. Open one or more photographs.
+2. Edit with Adjust, Crop, Mask, Heal, and Retouch.
+3. Compare with the original when needed.
+4. Export the finished image.
 
-## Professional editing controls
+When several photographs are open, DarkRoom shows a lightweight filmstrip for navigation. It is not a catalog or culling system.
 
-### Light
+## Editing tools
 
-- Exposure
-- Contrast
-- Highlights
-- Shadows
-- Whites
-- Blacks
-- Gamma / midtone processing
+### Adjust
 
-### Color
+Global photographic controls include:
 
-- Temperature / Tint
-- Vibrance / Saturation
-- RGB/HSL-aware transformations
+- Exposure, Contrast, Highlights, Shadows, Whites, Blacks
+- Temperature, Tint, Vibrance, Saturation
+- Tone Curve
 - Eight-band Color Mixer
-- Shadow / midtone / highlight color grading
+- Shadow, midtone, and highlight Color Grading
+- Texture, Clarity, Dehaze
+- Vignette and Grain
+- Sharpening, Noise Reduction, Deblur, and artifact controls
+- Lens correction and defringe
+- Perspective and geometry adjustments
+- Built-in and custom presets
+- `.cube` 3D LUT import with adjustable strength
 
-### Tone Curve
+### Crop
 
-- Smooth point curve
-- Click to add points
-- Drag to edit
-- Double-click an interior point to remove it
-- Precise numeric tonal controls remain synchronized with the curve
-
-### Detail and effects
-
-- Texture
-- Clarity
-- Dehaze
-- Vignette
-- Grain
-- Sharpening
-- Noise reduction
-- Deblur / artifact reduction controls
-
-### Optics and geometry
-
-- Lens correction and defringe controls
+- Free repositioning
+- Common aspect ratios
 - Straighten
-- Rotate / flip
-- Horizontal / vertical geometry
-- Aspect and scale
-- X/Y offset
-- Composition guides
+- Rotate and flip
+- Horizontal and vertical geometry
+- Scale and X/Y offset
+- Rule of Thirds, Golden Ratio, and diagonal guides
 
-### LUTs and presets
+### Mask
 
-- Built-in photographic presets
-- Save reusable local presets
-- Import `.cube` 3D LUT files
-- Adjustable LUT strength
-
-## Local editing
-
-DarkRoom supports manual, nondestructive local adjustments:
+Manual nondestructive local adjustments include:
 
 - Brush
-- Linear gradient
-- Radial gradient
-- Luminance range
-- Color range
-- Hue / parametric ranges
-- Add / subtract / intersect components
-- Mask invert, feather, flow, density, and opacity
-- Local Light, Color, Detail, and texture controls
+- Linear Gradient
+- Radial Gradient
+- Luminance Range
+- Color Range
+- Hue and parametric ranges
 - Dodge and Burn
+- Add, Subtract, and Intersect
+- Invert, Feather, Flow, Density, and Opacity
+- Local Light, Color, Detail, and texture adjustments
 
-## Heal and clone
+### Heal
 
-Healing is intentionally simple:
-
-- **Heal** blends nearby pixels into the painted region.
+- **Heal** blends nearby pixels into a painted region.
 - **Clone** copies pixels from an adjustable offset source.
 
-Both are stored nondestructively and can be removed later.
+Both remain editable and removable.
 
-## Working with several photographs
+### Retouch
 
-Opening multiple files creates a lightweight **session filmstrip** below the photograph. It is navigation, not a catalog.
+Focused portrait and restoration controls are available without introducing a separate editing mode or workspace.
 
-- Click a thumbnail to move between photographs.
+## Tone Curve
+
+The point curve is directly editable:
+
+- Click to add a point.
+- Drag to adjust it.
+- Double-click an interior point to remove it.
+- Numeric tonal controls stay synchronized with the curve.
+
+## Before / After
+
+DarkRoom provides several fast comparison methods:
+
+- **Before / After** toggles the original view.
+- **Split** provides a draggable comparison.
+- Hold **`\`** to temporarily show the original and release it to return to the edit.
+
+Useful shortcuts:
+
+| Shortcut | Action |
+| --- | --- |
+| `Ctrl/Cmd + Z` | Undo |
+| `Ctrl/Cmd + Shift + Z` | Redo |
+| `Ctrl/Cmd + 0` | Reset zoom |
+| `F` | Picture-only fullscreen |
+| `O` | Toggle mask overlay |
+| `Left / Right Arrow` | Previous / next photo |
+| Mouse wheel / pinch | Zoom |
+| Drag | Pan |
+
+## Multiple photographs
+
+Opening several files creates a session filmstrip below the photograph.
+
+- Click a thumbnail to switch photos.
 - Use Left / Right Arrow to move through the session.
 - Each photograph keeps its own nondestructive edits.
-- Copy / Paste transfers editing settings between photographs.
+- Copy / Paste can transfer editing settings between photographs.
 
-The landing screen only keeps a simple list of locally opened photographs so work can be resumed. There are no albums, favorites, star ratings, pick/reject flags, color labels, culling modes, quality analysis, or multi-image merge workflows.
-
-## Before / after and navigation
-
-- **Before / After** button toggles the original view.
-- **Split** provides a draggable before/after comparison.
-- Hold **`\`** to temporarily see the original; release to return to the edit.
-- `Ctrl/Cmd + Z` — Undo
-- `Ctrl/Cmd + Shift + Z` — Redo
-- `Ctrl/Cmd + 0` — Reset zoom
-- `F` — Picture-only fullscreen
-- `O` — Toggle mask overlay
-- Mouse wheel / pinch — Zoom
-- Drag — Pan
+DarkRoom deliberately does not include albums, favorites, star ratings, pick/reject flags, color labels, search filters, culling modes, quality scoring, or multi-image merge workflows.
 
 ## RAW support
 
-DarkRoom detects common RAW extensions and can decode them in-browser through `libraw-wasm` where supported.
+DarkRoom can decode common RAW formats in the browser through `libraw-wasm` where supported.
 
-Detected extensions include DNG, CR2/CR3, NEF/NRW, ARW/SRF/SR2, RAF, ORF, RW2, PEF, RWL, 3FR, FFF, IIQ, MOS, MRW, and X3F.
+Detected extensions include DNG, CR2, CR3, NEF, NRW, ARW, SRF, SR2, RAF, ORF, RW2, PEF, RWL, 3FR, FFF, IIQ, MOS, MRW, and X3F.
 
-RAW decoding is local. Browser rendering will not exactly match proprietary camera pipelines.
+RAW decoding stays local. Rendering may differ from proprietary camera-processing software.
 
 ## Export
 
-Export is presented as one compact sheet:
+The export sheet supports:
 
 - JPEG
 - PNG
 - WebP
-- AVIF where supported by the browser
+- AVIF when supported by the browser
 - Baseline TIFF
-- Quality
+- Quality control
 - Optional long-edge resize
 - Output sharpening for screen or print
 
-Preview and export use the same editing renderer.
+Preview and export evaluate the same edit graph.
 
 ## Mobile
 
-On small screens the editing panel becomes a bottom sheet:
+On smaller screens, the editing controls become a bottom sheet so the photograph remains the primary surface.
 
-- The photograph remains full-width.
-- The five tools stay within thumb reach.
-- The panel can be collapsed to maximize the photograph.
-- Pinch zoom and pan continue to operate on the visible preview and overlays together.
+- Full-width image preview
+- Five primary editing tools within thumb reach
+- Collapsible control panel
+- Pinch zoom and pan
+- Synchronized overlays and preview transforms
 
 ## Privacy and storage
 
 DarkRoom has no account system and no DarkRoom cloud photo storage. Originals and edit metadata are stored in browser-managed storage on the current device.
 
-Browser storage is **not a filesystem backup**. Clearing site data, changing origin, browser cleanup, or storage eviction can remove locally stored photographs. Export important originals and finished work outside DarkRoom.
+Browser storage is **not a backup**. Clearing site data, browser cleanup, origin changes, or storage eviction can remove locally stored photographs. Keep important originals and finished exports outside DarkRoom.
 
 ## Architecture
 
@@ -174,20 +166,20 @@ DarkRoom remains framework-light:
 
 ```text
 index.html
-├── engine-core.js       deterministic pixel, mask, heal and image algorithms
+├── engine-core.js       pixel, mask, heal, and image algorithms
 ├── raw-runtime.js       optional RAW decoding
-├── core.js              local storage, edit defaults, import
-├── library.js           lightweight recent-photo session
-├── renderer.js          shared nondestructive preview/export graph
-├── editor.js            base editing engine and interactions
-├── focused-editor.js    focused professional editing surface
-├── app.js               focused application bindings
-├── styles.css           base renderer/editor styles
-├── focused-editor.css   focused desktop/mobile workspace
+├── core.js              storage, edit defaults, and import
+├── library.js           lightweight photo session
+├── renderer.js          nondestructive preview/export graph
+├── editor.js            editing engine and interactions
+├── focused-editor.js    focused editing surface
+├── app.js               application bindings
+├── styles.css           base editor styles
+├── focused-editor.css   desktop/mobile workspace
 └── sw.js                offline application shell
 ```
 
-The central invariant is unchanged: **the renderer owns image output**. Controls update the edit graph; preview and export evaluate the same graph.
+The central rule is simple: **the renderer owns image output**. Controls update the edit graph; preview and export evaluate that same graph.
 
 ## Run locally
 
@@ -201,19 +193,19 @@ Then open `http://localhost:4173`.
 
 ## Tests
 
-Static, editing-engine, and focused-product checks:
+Run static and engine checks:
 
 ```bash
 npm test
 ```
 
-Focused browser workflow:
+Run the focused browser workflow:
 
 ```bash
 npm run test:browser
 ```
 
-Full suite:
+Run everything:
 
 ```bash
 npm run test:all
@@ -221,4 +213,6 @@ npm run test:all
 
 ## Deployment
 
-DarkRoom is a static application and can be deployed to Vercel or another static host. Pull requests run static/engine checks and a Chromium workflow covering open → edit → crop → mask → heal → compare → export plus the mobile bottom-sheet layout.
+DarkRoom is a static application and can be deployed to Vercel or any static host.
+
+CI validates the editing engine and a Chromium workflow covering open → adjust → crop → mask → heal → compare → export, including the mobile bottom-sheet layout.
