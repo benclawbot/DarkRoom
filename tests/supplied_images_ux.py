@@ -184,6 +184,7 @@ def main():
         page.on("dialog", lambda dialog: dialog.accept())
         page.click("#selectPhotosBtn")
         page.locator(".photo-card").first.click()
+        page.locator("#batchDelete").evaluate("el => el.closest('details').open = true")
         page.click("#batchDelete")
         page.wait_for_function("photos.length === 2")
         assert page.locator(".photo-card").count() == 2
