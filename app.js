@@ -4,7 +4,9 @@ function simplifyLibraryUI(){
  style.textContent=`
  .search-wrap{display:none!important}
  #fullscreenBtn,#favoriteBtn,#ratingButtons,.histogram-block>span{display:none!important}
- #closeEditor{width:42px!important;height:42px!important;min-width:42px!important;border-radius:50%!important;background:#242424!important;border:1px solid #3a3a3a!important;color:#fff!important;font-size:29px!important;font-weight:500!important;line-height:1!important;padding:0!important;display:grid!important;place-items:center!important}
+ #closeEditor{position:relative!important;width:46px!important;height:46px!important;min-width:46px!important;border-radius:50%!important;background:#242424!important;border:1px solid #3a3a3a!important;color:transparent!important;font-size:0!important;line-height:0!important;padding:0!important;display:grid!important;place-items:center!important;overflow:hidden!important}
+ #closeEditor::before{content:""!important;position:absolute!important;left:50%!important;top:50%!important;width:21px!important;height:3px!important;background:#fff!important;border-radius:999px!important;transform:translate(-42%,-50%)!important}
+ #closeEditor::after{content:""!important;position:absolute!important;left:13px!important;top:50%!important;width:13px!important;height:13px!important;border-left:3px solid #fff!important;border-bottom:3px solid #fff!important;border-radius:2px!important;transform:translateY(-50%) rotate(45deg)!important;transform-origin:center!important}
  #closeEditor:hover,#closeEditor:focus-visible{background:#2d2d2d!important;border-color:#4a4a4a!important}
  body:has(.main-nav .nav[data-route="library"].active) #filterToggle,
  body:has(.main-nav .nav[data-route="favorites"].active) #filterToggle,
