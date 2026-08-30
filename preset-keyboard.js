@@ -13,4 +13,5 @@ document.addEventListener('keydown',event=>{
  }
  if(event.key==='Escape'&&p&&!p.hidden){event.preventDefault();event.stopImmediatePropagation();closePopup()}
 },true);
+if(!document.querySelector('script[data-darkroom-batch-workspace]')){const script=document.createElement('script');script.src='./batch-workspace.js?v=24';script.dataset.darkroomBatchWorkspace='1';script.async=false;document.head.appendChild(script)}
 })();
