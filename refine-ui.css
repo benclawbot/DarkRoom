@@ -14,12 +14,13 @@ body.focused-darkroom{overflow:hidden;background:#080809;color:#ececef;color-sch
 .editor-title.empty b,.editor-title.empty small{opacity:.38;}
 #canvasWrap{position:relative;display:grid;place-items:center;}
 #editorCanvas{position:relative!important;inset:auto!important;width:auto!important;height:auto!important;display:block!important;z-index:1;}
-#beforeSplitCanvas,#maskOverlay,#diagnosticOverlay{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;display:block;}
-#beforeSplitCanvas{z-index:3;pointer-events:none;clip-path:inset(0 50% 0 0);}
+#beforeSplitCanvas{position:absolute!important;left:0;top:0;right:auto;bottom:auto;display:none;z-index:3;pointer-events:none;clip-path:inset(0 50% 0 0);}
+#beforeSplitCanvas.active{display:block;}
+#maskOverlay,#diagnosticOverlay{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;display:block;}
 #maskOverlay{z-index:4;pointer-events:none;}
 #diagnosticOverlay{z-index:5;pointer-events:none;}
-#beforeSplitDivider{position:absolute!important;z-index:7;top:0!important;bottom:0!important;width:1px!important;background:#f4f4f4!important;box-shadow:0 0 0 1px rgba(0,0,0,.35);pointer-events:none;}
-#beforeSplitRange{position:absolute!important;z-index:8;inset:0!important;width:100%!important;height:100%!important;opacity:0!important;cursor:ew-resize;}
+#beforeSplitDivider{position:absolute!important;z-index:7;width:1px!important;background:#f4f4f4!important;box-shadow:0 0 0 1px rgba(0,0,0,.35);pointer-events:none;}
+#beforeSplitRange{position:absolute!important;z-index:8;right:auto;bottom:auto;opacity:0!important;cursor:ew-resize;transform:none!important;}
 .session-filmstrip,.focused-launchbar,#libraryView,#panelToggle,#closeEditor{display:none!important;}
 #photoViewport{padding-bottom:0!important;}
 .zoom-controls{bottom:14px!important;}
