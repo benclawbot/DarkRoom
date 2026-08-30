@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "test": "npm run test:static",
-    "test:static": "node --check engine-core.js && node --check core.js && node --check library.js && node --check renderer.js && node --check editor.js && node --check pro-tools.js && node --check app.js && node --check ai-runtime.js && node --check generative-runtime.js && node --check raw-runtime.js && node --check sw.js && node tests/service_worker_upgrade.mjs && node tests/runtime_asset_version.mjs && node tests/smoke.mjs && node tests/ux.mjs && node tests/engine.mjs",
+    "test:static": "node --check engine-core.js && node --check core.js && node --check library.js && node --check renderer.js && node --check editor.js && node --check pro-tools.js && node --check presetpro-presets.js && node --check app.js && node --check app-base.js && node --check ai-runtime.js && node --check generative-runtime.js && node --check raw-runtime.js && node --check sw.js && node tests/service_worker_upgrade.mjs && node tests/runtime_asset_version.mjs && node tests/smoke.mjs && node tests/ux.mjs && node tests/engine.mjs",
     "test:runtime": "python tests/runtime.py",
     "test:browser": "python tests/browser_ux.py && python tests/preview_race.py && python tests/tone_curve_ux.py && python tests/mobile_zoom.py && python tests/render_performance.py && python tests/supplied_images_ux.py && python tests/masking_composition_ux.py",
     "test:all": "npm run test:static && npm run test:browser"
