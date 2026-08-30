@@ -11,6 +11,17 @@
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="stylesheet" href="styles.css?v=22" />
   <link rel="stylesheet" href="accessibility.css?v=22" />
+  <style id="mobile-editor-side-rail">
+    @media (max-width:760px){
+      .editor:not(.photo-only):not(.focus-view){display:grid!important;grid-template-columns:minmax(0,1fr) var(--right)!important;grid-template-rows:48px minmax(0,1fr)!important}
+      .editor:not(.photo-only):not(.focus-view) .editor-top{grid-column:1/-1!important;grid-row:1!important;height:48px!important}
+      .editor:not(.photo-only):not(.focus-view) .editor-stage{grid-column:1!important;grid-row:2!important;min-width:0!important;min-height:0!important}
+      .editor:not(.photo-only):not(.focus-view) .editor-panel{display:grid!important;grid-column:2!important;grid-row:2!important;min-width:var(--right)!important;width:var(--right)!important;border-left:1px solid #303030!important;border-top:0!important;transform:none!important;opacity:1!important;pointer-events:auto!important}
+      .editor:not(.photo-only):not(.focus-view) .editor-stage canvas{max-width:calc(100vw - var(--right) - 8px)!important;max-height:calc(100vh - 56px)!important}
+      .editor:not(.photo-only):not(.focus-view) .mobile-editor-dock{display:none!important}
+      .editor:not(.photo-only):not(.focus-view) .mobile-fullscreen-button{display:block!important}
+    }
+  </style>
 </head>
 <body>
 <a class="skip-link" href="#mainView">Skip to content</a>
