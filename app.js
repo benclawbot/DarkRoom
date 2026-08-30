@@ -4,6 +4,8 @@ function simplifyLibraryUI(){
  style.textContent=`
  .search-wrap{display:none!important}
  #fullscreenBtn,#favoriteBtn,#ratingButtons,.histogram-block>span{display:none!important}
+ #closeEditor{width:42px!important;height:42px!important;min-width:42px!important;border-radius:50%!important;background:#242424!important;border:1px solid #3a3a3a!important;color:#fff!important;font-size:29px!important;font-weight:500!important;line-height:1!important;padding:0!important;display:grid!important;place-items:center!important}
+ #closeEditor:hover,#closeEditor:focus-visible{background:#2d2d2d!important;border-color:#4a4a4a!important}
  body:has(.main-nav .nav[data-route="library"].active) #filterToggle,
  body:has(.main-nav .nav[data-route="favorites"].active) #filterToggle,
  body:has(.main-nav .nav[data-route="library"].active) #filterBar,
