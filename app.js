@@ -9,15 +9,19 @@ function simplifyLibraryUI(){
  .app-switcher.brand-combo .brand-label{font-size:16px!important;font-weight:650!important;line-height:1!important;white-space:nowrap!important;color:#f3f3f3!important}
  .topbar>.brand{display:none!important}
  #fullscreenBtn,#favoriteBtn,#ratingButtons,.flags,.histogram-block>span{display:none!important}
- #closeEditor{position:relative!important;width:46px!important;height:46px!important;min-width:46px!important;border-radius:50%!important;background:#242424!important;border:1px solid #3a3a3a!important;color:transparent!important;font-size:0!important;line-height:0!important;padding:0!important;display:grid!important;place-items:center!important;overflow:hidden!important}
- #closeEditor::before{content:""!important;position:absolute!important;left:50%!important;top:50%!important;width:21px!important;height:3px!important;background:#fff!important;border-radius:999px!important;transform:translate(-42%,-50%)!important}
- #closeEditor::after{content:""!important;position:absolute!important;left:13px!important;top:50%!important;width:13px!important;height:13px!important;border-left:3px solid #fff!important;border-bottom:3px solid #fff!important;border-radius:2px!important;transform:translateY(-50%) rotate(45deg)!important;transform-origin:center!important}
+ #closeEditor{position:relative!important;width:34px!important;height:34px!important;min-width:34px!important;border-radius:50%!important;background:#242424!important;border:1px solid #3a3a3a!important;color:transparent!important;font-size:0!important;line-height:0!important;padding:0!important;display:grid!important;place-items:center!important;overflow:hidden!important}
+ #closeEditor::before{content:""!important;position:absolute!important;left:50%!important;top:50%!important;width:17px!important;height:2px!important;background:#fff!important;border-radius:999px!important;transform:translate(-42%,-50%)!important}
+ #closeEditor::after{content:""!important;position:absolute!important;left:9px!important;top:50%!important;width:10px!important;height:10px!important;border-left:2px solid #fff!important;border-bottom:2px solid #fff!important;border-radius:2px!important;transform:translateY(-50%) rotate(45deg)!important;transform-origin:center!important}
  #closeEditor:hover,#closeEditor:focus-visible{background:#2d2d2d!important;border-color:#4a4a4a!important}
  @media(max-width:760px){
   .editor:not(.focus-view) #modeSwitcher{display:flex!important;visibility:visible!important;opacity:1!important;position:absolute!important;left:50%!important;top:50%!important;transform:translate(-50%,-50%)!important;margin:0!important;z-index:5!important;white-space:nowrap!important}
   .editor:not(.focus-view) #modeSwitcher button{display:block!important;font-size:9px!important;padding:4px 6px!important}
   .editor-top{position:relative!important}
  }
+ #closeEditor,#modeSwitcher,#exportBtn{height:34px!important;min-height:34px!important;box-sizing:border-box!important}
+ #modeSwitcher{display:flex!important;align-items:stretch!important;padding:2px!important}
+ #modeSwitcher button{height:28px!important;min-height:28px!important;padding-top:0!important;padding-bottom:0!important;display:flex!important;align-items:center!important;justify-content:center!important}
+ #exportBtn{padding-top:0!important;padding-bottom:0!important;display:inline-flex!important;align-items:center!important;justify-content:center!important}
  body:has(#albumActions:not([hidden])) #selectPhotosBtn{display:none!important}
  body:has(.main-nav .nav[data-route="library"].active) #filterToggle,
  body:has(.main-nav .nav[data-route="favorites"].active) #filterToggle,
