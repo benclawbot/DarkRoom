@@ -13,6 +13,11 @@ function simplifyLibraryUI(){
  #closeEditor::before{content:""!important;position:absolute!important;left:50%!important;top:50%!important;width:21px!important;height:3px!important;background:#fff!important;border-radius:999px!important;transform:translate(-42%,-50%)!important}
  #closeEditor::after{content:""!important;position:absolute!important;left:13px!important;top:50%!important;width:13px!important;height:13px!important;border-left:3px solid #fff!important;border-bottom:3px solid #fff!important;border-radius:2px!important;transform:translateY(-50%) rotate(45deg)!important;transform-origin:center!important}
  #closeEditor:hover,#closeEditor:focus-visible{background:#2d2d2d!important;border-color:#4a4a4a!important}
+ @media(max-width:760px){
+  .editor:not(.focus-view) #modeSwitcher{display:flex!important;visibility:visible!important;opacity:1!important;position:absolute!important;left:50%!important;top:50%!important;transform:translate(-50%,-50%)!important;margin:0!important;z-index:5!important;white-space:nowrap!important}
+  .editor:not(.focus-view) #modeSwitcher button{display:block!important;font-size:9px!important;padding:4px 6px!important}
+  .editor-top{position:relative!important}
+ }
  body:has(.main-nav .nav[data-route="library"].active) #filterToggle,
  body:has(.main-nav .nav[data-route="favorites"].active) #filterToggle,
  body:has(.main-nav .nav[data-route="library"].active) #filterBar,
