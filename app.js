@@ -3,6 +3,7 @@ function simplifyLibraryUI(){
  style.id='simplified-library-ui';
  style.textContent=`
  .search-wrap{display:none!important}
+ #fullscreenBtn,#favoriteBtn,#ratingButtons,.histogram-block>span{display:none!important}
  body:has(.main-nav .nav[data-route="library"].active) #filterToggle,
  body:has(.main-nav .nav[data-route="favorites"].active) #filterToggle,
  body:has(.main-nav .nav[data-route="library"].active) #filterBar,
