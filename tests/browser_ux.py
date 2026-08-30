@@ -140,7 +140,7 @@ def main():
         assert avg>5, f'editor preview unexpectedly black: {avg}'
         page.screenshot(path=str(out/'editor-desktop.png'),full_page=True)
         page.click('#closeEditor');page.wait_for_function("document.querySelector('#editor').classList.contains('hidden')")
-        page.click('#selectPhotosBtn');page.locator('.photo-card').nth(0).click();page.locator('.photo-card').nth(1).click();page.click('#batchAnalyze');page.wait_for_function("photos.filter(p=>selectedPhotoIds.has(p.id)).length===2&&photos.filter(p=>selectedPhotoIds.has(p.id)).every(p=>p.analysis&&Number.isFinite(p.analysis.sharpness))",timeout=15000)
+        page.click('#selectPhotosBtn');page.locator('.photo-card').nth(0).click();page.locator('.photo-card').nth(1).click();page.locator('#batchAnalyze').evaluate("el=>el.closest('details').open=true");page.click('#batchAnalyze');page.wait_for_function("photos.filter(p=>selectedPhotoIds.has(p.id)).length===2&&photos.filter(p=>selectedPhotoIds.has(p.id)).every(p=>p.analysis&&Number.isFinite(p.analysis.sharpness))",timeout=15000)
         page.click('#batchCompare');page.wait_for_selector('#compareView:not(.hidden)');
         for _ in range(30):
             if 'Focus' in page.locator('#compareLeftMeta').inner_text(): break
@@ -158,7 +158,7 @@ def main():
         page.click('#mobileFullscreenBtn')
         page.click('#closeEditor');page.wait_for_function("document.querySelector('#editor').classList.contains('hidden')")
         page.on('dialog',lambda dialog: dialog.accept())
-        page.click('#selectPhotosBtn');page.locator('.photo-card').first.click();page.click('#batchDelete');page.wait_for_function("photos.length===4")
+        page.click('#selectPhotosBtn');page.locator('.photo-card').first.click();page.locator('#batchDelete').evaluate("el=>el.closest('details').open=true");page.click('#batchDelete');page.wait_for_function("photos.length===4")
         assert page.locator('.photo-card').count()==4
         if errors: raise AssertionError('Browser page errors: '+repr(errors))
         print('Browser UX tests passed: import/data flow, fixed right rail, modes, accordion, zoom/fullscreen, masks, dodge/burn, remove, layers, sky, culling/compare, mobile layout.')
