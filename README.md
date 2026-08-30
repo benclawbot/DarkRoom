@@ -4,11 +4,9 @@
 
 # DarkRoom
 
-**DarkRoom is a local-first, nondestructive photo library and editor for desktop and mobile browsers.** It combines a Lightroom-style photography workflow with advanced local masking, professional pixel-processing tools, optional on-device AI, RAW decoding, batch workflows, and an offline-capable PWA shell.
+**DarkRoom is a local-first, nondestructive photo library and editor for desktop and mobile browsers.** It combines a photography workflow with advanced local masking, professional pixel-processing tools, optional on-device AI, RAW decoding, batch workflows, and an offline-capable PWA shell.
 
 There is **no account system and no cloud photo storage**. Imported originals, ratings, albums, masks, local edits, generated sources, and edit metadata are stored on the current device. Vercel hosts the application files only.
-
-> DarkRoom is an independent project. It does not ship Adobe branding, Adobe assets, or Adobe proprietary processing code.
 
 ## Product principles
 
@@ -406,39 +404,6 @@ npm test
 
 This checks JavaScript syntax, HTML/control bindings, Quick/Advanced/Pro UX contracts, right-rail/accordion/fullscreen behavior, batch-edit data shape, shared rendering, masks, local edits, restoration, relighting, HSL, LUT/layers, merge algorithms, and related pixel-engine behavior.
 
-### Interactive browser UX suite
-
-```bash
-pip install playwright pillow
-python -m playwright install chromium
-npm run test:browser
-```
-
-The Playwright workflow performs real interactions including:
-
-- importing photos
-- opening the editor
-- confirming the tool rail remains to the right of the image
-- switching Quick / Advanced / Pro
-- collapsing sections
-- zoom, fullscreen, and draggable split Before / After
-- Auto Crop with subject-aware crop positioning
-- brush masks
-- dodge / burn
-- healing
-- adjustment layers and local image layers
-- sky replacement
-- batch analysis / compare
-- mobile right-rail layout
-- thumbnail generation and local image-layer rendering
-- non-black rendered preview assertion
-
-Run everything with:
-
-```bash
-npm run test:all
-```
-
 ## PWA / offline behavior
 
 The service worker caches the local application shell and processing modules. Ordinary editing of already-imported photos can work offline after the app shell is cached.
@@ -455,20 +420,6 @@ Production project: **DarkRoom** on Vercel.
 
 Every push to `main` runs the static and browser UX checks first. When all three Vercel repository secrets are configured, the workflow deploys the repository root to the linked Vercel project; otherwise it reports the CLI deploy as skipped so the quality checks remain visible. If the repository is connected in Vercel, that Git integration can deploy the same `main` push automatically. The required secrets are `VERCEL_TOKEN`, `VERCEL_ORG_ID`, and `VERCEL_PROJECT_ID`. Pull requests run the checks but do not deploy.
 
-## Current test status
-
-Release `1.0.0` is validated with:
-
-- JavaScript syntax checks across all runtime modules.
-- **179** bound control references checked, including synchronized numeric/range inputs and direct tone-curve controls.
-- Quick / Advanced / Pro state-machine tests.
-- Right-side tool rail and collapsible-section tests.
-- Fullscreen/Focus View checks.
-- Pixel-engine tests for tone, HSL, grading, smooth direct point curves, masks, dodge/burn/local edits, smart masks, detail, portrait, restoration, relighting, remove/clone/generative operations.
-- Professional engine tests for layers, LUT, quality analysis, red-eye/frequency processing, HDR/noise/focus merges, and TIFF encoding.
-- End-to-end Playwright UX workflow on desktop and 390×844 mobile viewport, including all three supplied photos, PNG/WebP import, non-black default and Retouch previews, overlapping-render race coverage, smooth point-curve add/drag/reset, right-side tools, accordions, Auto Crop, local painting, layers, sky replacement, compare/culling, fullscreen, and local-only deletion.
-- Service-worker upgrade coverage verifies stale application-shell caches are removed and JavaScript/CSS runtime assets refresh from the network before cached copies are reused.
-- Legacy-library recovery coverage verifies a valid original with a missing thumbnail is rebuilt before the library/editor are shown.
 
 ## Known constraints
 
