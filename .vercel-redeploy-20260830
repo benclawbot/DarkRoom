@@ -1,1 +1,1 @@
-Trigger Vercel production deployment for latest DarkRoom main after crop UI commits.
+Retry Vercel production deployment for latest DarkRoom main after rendering and crop performance fixes.
