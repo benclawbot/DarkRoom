@@ -1,7 +1,7 @@
 /* Photo-first UX simplification layer.
    Keeps the existing editing engine intact while reducing visible complexity. */
 
-/* Complexity control: Quick is always available; deeper modes are tucked under More. */
+/* Complexity control: Quick is always available; deeper modes are tucked under More on compact screens. */
 .mode-switcher{align-items:center;overflow:visible}
 .mode-switcher>button[data-mode="quick"]{min-width:54px}
 .mode-more{position:relative}
@@ -14,9 +14,14 @@
 .mode-more-menu button:hover,.mode-more-menu button.active{background:#e6e6e6;color:#151515;font-weight:700}
 .mode-more:not([open]) .mode-more-menu{display:none}
 
-/* Desktop: emphasize the photograph and make the tool rail feel secondary. */
+/* Desktop keeps professional modes one click away while lowering their visual weight. */
 @media(min-width:761px){
   :root{--right:316px}
+  .mode-more{display:contents}
+  .mode-more>summary{display:none}
+  .mode-more-menu{position:static;display:flex!important;min-width:0;padding:0;background:transparent;border:0;border-radius:0;box-shadow:none;gap:1px}
+  .mode-more-menu button{width:auto;text-align:center;color:#858585;padding:5px 8px}
+  .mode-more-menu button.active{background:#e6e6e6;color:#151515}
   .editor-panel{box-shadow:-12px 0 32px rgba(0,0,0,.16)}
   .tool-section-header{min-height:40px}
   .tool-section:not(.open)>.tool-section-header{color:#929292}
