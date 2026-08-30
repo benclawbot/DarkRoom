@@ -1,1 +1,0 @@
-Temporary implementation notes; remove before merge.
