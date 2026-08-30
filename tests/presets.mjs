@@ -29,12 +29,15 @@ assert.equal(styleState.edits.highlights,-15);assert.equal(styleState.edits.shad
 first.edits.exposure=12;
 styleState=U.applyPresetState(first.edits,first.state,'Style',{contrast:0,highlights:-15,shadows:15},defaults);
 assert.equal(styleState.edits.exposure,12,'manual edits made after a preset should survive when the next preset does not control that setting');
+const legacy=U.applyPresetState({exposure:8,contrast:6,highlights:-15,shadows:15,cropX:22},null,'Style',{contrast:0,highlights:-15,shadows:15},defaults);
+assert.equal(legacy.edits.exposure,0,'first selection after upgrade must clear legacy stacked preset edits');assert.equal(legacy.edits.cropX,22,'preset migration must preserve crop state');
 const custom=U.buildPresetPayload({exposure:12,contrast:0,highlights:0,shadows:0,cropX:20,curvePoints:[]},defaults);
 assert.equal(JSON.stringify(custom),JSON.stringify({exposure:12}),'saved presets should include changed image adjustments but exclude crop/geometry state');
 
 const app=fs.readFileSync(new URL('../app.js',import.meta.url),'utf8');
-for(const asset of ['preset-engine.js?v=21','presetpro-presets.js?v=21','preset-ui.js?v=21'])assert(app.includes(asset),`app loader must include ${asset}`);
-assert(app.indexOf('preset-engine.js?v=21')<app.indexOf('presetpro-presets.js?v=21')&&app.indexOf('presetpro-presets.js?v=21')<app.indexOf('preset-ui.js?v=21'),'preset runtime must load engine patch, pack, then UI manager');
+for(const asset of ['preset-engine.js?v=22','presetpro-presets.js?v=22','preset-ui.js?v=22','preset-keyboard.js?v=22'])assert(app.includes(asset),`app loader must include ${asset}`);
+assert(app.indexOf('preset-engine.js?v=22')<app.indexOf('presetpro-presets.js?v=22')&&app.indexOf('presetpro-presets.js?v=22')<app.indexOf('preset-ui.js?v=22')&&app.indexOf('preset-ui.js?v=22')<app.indexOf('preset-keyboard.js?v=22'),'preset runtime must load engine patch, pack, UI manager, then keyboard behavior');
+assert(app.includes("location.protocol==='about:'"),'inline browser harness must avoid asynchronous external preset loading');
 assert(app.includes('currentPhoto.presetSelection=null'),'reset edits must clear the selected preset state');
 assert(uiSource.includes('role="combobox"')&&uiSource.includes('role="listbox"'),'preset picker must use a collapsed accessible combobox/listbox');
 assert(!uiSource.includes('size="10"'),'preset picker must not regress to an always-open native listbox');
