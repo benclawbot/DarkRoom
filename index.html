@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="focused-editor.css?v=24" />
   <link rel="stylesheet" href="refine-ui.css?v=24" />
   <link rel="stylesheet" href="crop-ui.css?v=25" />
+  <link rel="stylesheet" href="typography.css?v=1" />
 </head>
 <body class="focused-darkroom">
 <div id="app">
@@ -20,7 +21,18 @@
 
   <div id="editor" class="editor" aria-hidden="false">
     <header class="editor-top">
-      <div class="editor-title empty"><b id="editorName">DarkRoom</b><small id="editorMeta">Single-photo editor</small></div>
+      <div class="editor-title empty">
+        <svg class="app-aperture-logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="9"></circle>
+          <path d="M14.3 3.3 10 10.8"></path>
+          <path d="M20.1 8.1h-8.6"></path>
+          <path d="m17.8 18.6-4.3-7.5"></path>
+          <path d="m9.7 20.7 4.3-7.5"></path>
+          <path d="M3.9 15.9h8.6"></path>
+          <path d="m6.2 5.4 4.3 7.5"></path>
+        </svg>
+        <span class="editor-title-copy"><b id="editorName">DarkRoom</b><small id="editorMeta">Single-photo editor</small></span>
+      </div>
       <div class="editor-history" aria-label="Edit history">
         <button id="undoBtn" title="Undo" aria-label="Undo">↶</button>
         <button id="redoBtn" title="Redo" aria-label="Redo">↷</button>
@@ -28,6 +40,7 @@
         <button id="beforeSplitBtn" title="Split before / after" aria-label="Split before and after" aria-pressed="false">↔</button>
       </div>
       <div class="editor-top-actions">
+        <button id="topOpenPhoto" class="editor-icon open-photo-top" title="Open photo" aria-label="Open a new photo">＋</button>
         <button id="fullscreenBtn" class="editor-icon" title="Picture only (F)" aria-label="Show picture only" aria-pressed="false">⛶</button>
         <button id="exportBtn" class="export-button">Export</button>
       </div>
@@ -92,6 +105,6 @@
 <script src="focused-editor.js?v=24"></script>
 <script src="refine-ui.js?v=24"></script>
 <script src="crop-ui.js?v=25"></script>
-<script src="app.js?v=24"></script>
+<script src="app.js?v=25"></script>
 </body>
 </html>
