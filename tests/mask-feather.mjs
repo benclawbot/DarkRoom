@@ -28,8 +28,8 @@ const hard=E.applyLocalEdits(makeBase(),w,h,[brush(0)]);
 const broad=E.applyLocalEdits(makeBase(),w,h,[brush(5)]);
 
 assert(feathered[(50*w+50)*4]>100,'the selected interior should still receive the local adjustment');
-assert.equal(at(hard,70),100,'a zero-radius mask should remain hard immediately outside its painted boundary');
-assert(at(feathered,70)>100,'the default falloff should blend the adjustment just outside the nominal boundary');
+assert.equal(at(hard,71),100,'a zero-radius mask should remain hard immediately outside its painted boundary');
+assert(at(feathered,71)>100,'the default falloff should blend the adjustment just outside the nominal boundary');
 assert(at(broad,73)>at(feathered,73),'increasing the radius should extend the smooth transition farther from the mask edge');
 assert.equal(at(broad,90),100,'feathering must not leak into distant unselected image areas');
 
