@@ -4,6 +4,7 @@ const html=read('index.html'),css=read('styles.css'),core=read('core.js'),editor
 assert(html.includes('rel="icon"')&&html.includes('href="icon.svg"'),'aperture favicon must be declared');
 assert(css.includes('::-webkit-slider-thumb')&&css.includes('::-moz-range-thumb'),'range controls must have custom track and knob styling');
 assert(css.includes('.control-number')&&css.includes('.histogram-readout'),'numeric values and histogram readout styling missing');
+assert(css.includes('.control-number::-webkit-inner-spin-button')&&css.includes('display:none')&&css.includes('-moz-appearance:textfield'),'numeric input spinner arrows must be hidden while keyboard entry remains available');
 assert(core.includes('curvePoints:[]')&&editor.includes('Click to add')&&editor.includes('drawToneCurvePointEditor'),'tone curve must expose direct point editing and synchronized controls');
 assert(html.includes('id="batchDelete"')&&lib.includes('async function batchDelete'),'library must expose local-only photo deletion');
 assert(lib.includes('img.onerror')&&lib.includes('blobUrl(photo,false)'),'thumbnail failures must fall back to the original blob');

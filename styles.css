@@ -84,7 +84,8 @@
 .control-value{display:inline-flex;align-items:center;justify-content:flex-end;gap:5px;min-width:74px}
 .control-number{width:44px;height:20px;padding:1px 3px;border:1px solid #3a3a3a;border-radius:3px;background:#111;color:#e6e6e6;text-align:right;font:500 10px/1 ui-monospace,SFMono-Regular,Consolas,monospace;font-variant-numeric:tabular-nums}
 .control-number:focus-visible{outline:2px solid #b78cff;outline-offset:1px;border-color:#b78cff}
-.control-number::-webkit-inner-spin-button,.control-number::-webkit-outer-spin-button{opacity:.55}
+.control-number::-webkit-inner-spin-button,.control-number::-webkit-outer-spin-button{display:none}
+.control-number{-moz-appearance:textfield;appearance:textfield}
 .control-value b{display:none!important}
 .panel-header .histogram-block{min-width:0;flex:1.35}
 .histogram-block canvas{height:76px!important;min-height:76px;background:#0f0f10!important;border-color:#484848!important}
