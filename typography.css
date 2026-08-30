@@ -1,0 +1,46 @@
+:root{--ui-font-size:14px;--app-title-size:19px}
+
+/* Keep the entire interface on one typography scale. The app title is the only exception. */
+html,body,
+button,input,select,textarea,
+#app p,#app span,#app small,#app label,#app b,#app strong,#app em,
+#app h1,#app h2,#app h3,#app h4,#app h5,#app h6,
+#app option,#app output,#app legend,#app figcaption{
+  font-size:var(--ui-font-size)!important;
+}
+
+.editor-title{
+  flex-direction:row!important;
+  align-items:center!important;
+  gap:9px!important;
+}
+
+.editor-title-copy{
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+}
+
+.editor-title #editorName{
+  font-size:var(--app-title-size)!important;
+  line-height:1.05!important;
+  font-weight:700!important;
+  max-width:35vw;
+}
+
+.editor-title #editorMeta{
+  font-size:var(--ui-font-size)!important;
+}
+
+.app-aperture-logo{
+  width:23px;
+  height:23px;
+  flex:0 0 23px;
+  display:block;
+  color:#e7e7ea;
+}
+
+@media(max-width:760px){
+  .editor-title #editorName{max-width:25vw}
+  .app-aperture-logo{width:21px;height:21px;flex-basis:21px}
+}
