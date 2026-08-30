@@ -1,0 +1,50 @@
+/* DarkRoom refinement: single-photo editor surface */
+html,body,#app,.editor{height:100%;min-height:100%;}
+body.focused-darkroom{overflow:hidden;background:#080809;color:#ececef;color-scheme:dark;}
+.editor{display:grid!important;grid-template-rows:56px minmax(0,1fr);grid-template-columns:minmax(0,1fr) 360px;inset:0;background:#080809;}
+.editor.hidden{display:grid!important;}
+.editor-top{grid-column:1/-1;}
+.editor-stage{grid-column:1;grid-row:2;position:relative;min-width:0;min-height:0;overflow:hidden;}
+.editor-panel{grid-column:2;grid-row:2;min-width:0;}
+.editor-empty-picker{position:absolute;inset:0;z-index:20;display:grid;place-items:center;background:#080809;}
+.editor-empty-picker.hidden{display:none!important;}
+.editor-empty-card{display:flex;flex-direction:column;align-items:center;gap:12px;color:#aaa;text-align:center;}
+.editor-empty-card button{height:42px;padding:0 18px;border:1px solid #343438;border-radius:8px;background:#1b1b1e;color:#f2f2f4;font-weight:650;cursor:pointer;}
+.editor-empty-card button:hover{background:#242428;}
+.editor-title.empty b,.editor-title.empty small{opacity:.38;}
+#canvasWrap{position:relative;}
+#editorCanvas,#beforeSplitCanvas,#maskOverlay,#diagnosticOverlay{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;display:block;}
+#beforeSplitCanvas{z-index:3;pointer-events:none;clip-path:inset(0 50% 0 0);}
+#beforeSplitDivider{position:absolute!important;z-index:7;top:0!important;bottom:0!important;width:1px!important;background:#f4f4f4!important;box-shadow:0 0 0 1px rgba(0,0,0,.35);pointer-events:none;}
+#beforeSplitRange{position:absolute!important;z-index:8;inset:0!important;width:100%!important;height:100%!important;opacity:0!important;cursor:ew-resize;}
+.session-filmstrip,.focused-launchbar,#libraryView,#panelToggle,#closeEditor{display:none!important;}
+#photoViewport{padding-bottom:0!important;}
+.zoom-controls{bottom:14px!important;}
+.histogram-block{padding-bottom:10px;}
+.histogram-tone-strip{position:relative;height:30px;margin-top:-1px;border-top:1px solid #303034;}
+.hist-tone-handle{position:absolute;top:5px;width:18px;height:18px;margin-left:-9px;padding:0;border:0;background:transparent;cursor:ew-resize;color:#d8d8dc;touch-action:none;}
+.hist-tone-handle::before{content:"";position:absolute;left:3px;top:3px;width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent;border-bottom:10px solid currentColor;filter:drop-shadow(0 1px 1px #000);}
+.hist-tone-handle:focus-visible{outline:1px solid #888;outline-offset:2px;border-radius:3px;}
+.hist-tone-handle[data-tone="shadows"]{left:18%;}.hist-tone-handle[data-tone="midtones"]{left:50%;}.hist-tone-handle[data-tone="highlights"]{left:82%;}
+.tool-section-header{min-height:54px;}
+.crop-aspect-line{display:grid!important;grid-template-columns:1fr auto;gap:8px;align-items:end;}
+.crop-aspect-line label{min-width:0;}
+.crop-aspect-line select,#toolTabs select{width:100%;background:#18181b!important;color:#e8e8eb!important;border:1px solid #3a3a3f!important;border-radius:6px!important;color-scheme:dark!important;}
+.preset-picker-row{display:grid;grid-template-columns:minmax(0,1fr) 34px;gap:7px;align-items:center;}
+.preset-picker-row select{height:38px;padding:0 9px;}
+.preset-delete{height:38px;border:1px solid #343438;border-radius:6px;background:#19191c;color:#aaa;cursor:pointer;}
+.preset-delete:disabled{opacity:.28;cursor:default;}
+.preset-save{display:grid!important;grid-template-columns:minmax(0,1fr) auto;gap:7px;margin-top:8px;}
+.mask-create-simple{display:flex;flex-direction:column;gap:12px;}
+.mask-create-simple .mask-methods{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.mask-create-simple button{min-height:40px;}
+.mask-brush-size{display:grid;grid-template-columns:auto 1fr 34px;align-items:center;gap:8px;color:#aaa;font-size:12px;}
+.mask-list .local-row{grid-template-columns:minmax(0,1fr) auto auto!important;}
+.mask-list .local-name{display:flex;flex-direction:column;align-items:flex-start;text-align:left;}
+.mask-eye,.mask-delete{width:32px;height:30px;padding:0;border:0;background:transparent;color:#aaa;cursor:pointer;}
+.mask-eye.visible{color:#f0f0f2;}
+.mask-adjustments{padding-top:10px;margin-top:10px;border-top:1px solid #2b2b2f;}
+.mask-adjustments h4{margin:0 0 8px;font-size:12px;color:#ccc;}
+.mask-overlay{opacity:0;transition:opacity .12s ease;}
+#photoViewport.painting .mask-overlay,.mask-overlay.force-visible{opacity:1;}
+@media(max-width:760px){.editor{grid-template-columns:1fr}.editor-panel{position:absolute;right:0;top:56px;bottom:0;width:min(88vw,360px);z-index:30}.editor-top-actions{margin-left:auto}.editor-title{max-width:45vw}}
