@@ -50,6 +50,7 @@ assert(html.includes('diagnosticOverlay')&&renderer.includes('renderDiagnosticOv
 assert(lib.includes('batchColor')&&html.includes('batchColor'),'color label culling workflow missing');
 assert(html.includes('batchAnalyze')&&html.includes('batchCompare')&&html.includes('batchRename'),'professional batch/culling controls missing');
 assert(!read('pro-tools.js').includes('Promise.all([renderPhotoForCompare'),'Compare renders must not race shared currentPhoto state');
+assert(renderer.includes('comparisonGeometryEdits'),'Before/after comparison must share the edited photo geometry');
 assert(ai.includes('depth-estimation')&&ai.includes('image-to-image'),'depth and on-device super-resolution pipelines missing');
 assert(editor.includes('image/avif')&&editor.includes('saveExportRecipe'),'professional export recipe/AVIF support missing');
 assert(editor.includes('imageLayers')&&renderer.includes('applyImageLayers'),'Pro image/raster layer workflow missing');
