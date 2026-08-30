@@ -78,24 +78,12 @@
       </div>
       <div id="batchBar" class="batch-bar hidden" aria-label="Selected photo actions">
         <b id="batchCount">0 selected</b>
-        <button id="batchSelectAll">Select all</button>
-        <button id="batchFavorite">♡ Favorite</button>
-        <button id="batchPick">⚑ Pick</button>
-        <button id="batchReject">⚐ Reject</button>
-        <button id="batchDelete" class="danger-text">Delete</button>
-        <select id="batchRating" aria-label="Batch rating"><option value="">Rating…</option><option value="0">Unrated</option><option value="1">★</option><option value="2">★★</option><option value="3">★★★</option><option value="4">★★★★</option><option value="5">★★★★★</option></select>
-        <select id="batchColor" aria-label="Batch color label"><option value="">Color…</option><option value="red">Red</option><option value="yellow">Yellow</option><option value="green">Green</option><option value="blue">Blue</option><option value="purple">Purple</option><option value="none">No label</option></select>
-        <select id="batchPreset" aria-label="Batch preset"><option value="">Preset…</option></select>
-        <button id="batchAuto">Auto</button>
-        <button id="batchPaste">Paste edits</button>
-        <button id="batchAlbum">Album</button>
-        <button id="batchMetadata">Metadata</button>
-        <button id="batchAnalyze">Analyze</button>
-        <button id="batchSimilar">Find similar</button>
-        <button id="batchCompare">Compare</button>
-        <button id="batchRename">Rename</button>
-        <select id="batchCombine" aria-label="Combine selected photos"><option value="">Combine…</option><option value="hdr">HDR Merge</option><option value="focus">Focus Stack</option><option value="noise">Noise Stack</option><option value="panorama">Panorama</option></select>
-        <button id="batchExport">Export</button>
+        <button id="batchSelectAll" title="Select every visible photo">Select all</button>
+        <details class="batch-group"><summary>Organize</summary><div class="batch-menu"><button id="batchFavorite">♡ Favorite</button><button id="batchPick">⚑ Pick</button><button id="batchReject">⚐ Reject</button><button id="batchDelete" class="danger-text">Delete</button><select id="batchRating" aria-label="Batch rating"><option value="">Rating…</option><option value="0">Unrated</option><option value="1">★</option><option value="2">★★</option><option value="3">★★★</option><option value="4">★★★★</option><option value="5">★★★★★</option></select><select id="batchColor" aria-label="Batch color label"><option value="">Color…</option><option value="red">Red</option><option value="yellow">Yellow</option><option value="green">Green</option><option value="blue">Blue</option><option value="purple">Purple</option><option value="none">No label</option></select><button id="batchAlbum">Add to album</button><button id="batchMetadata">Metadata</button><button id="batchRename">Rename</button></div></details>
+        <details class="batch-group"><summary>Edit</summary><div class="batch-menu"><select id="batchPreset" aria-label="Batch preset"><option value="">Preset…</option></select><button id="batchAuto">Auto Enhance</button><button id="batchPaste">Paste edits</button></div></details>
+        <details class="batch-group"><summary>Analyze</summary><div class="batch-menu"><button id="batchAnalyze" title="Measure sharpness and exposure for culling">Analyze quality</button><button id="batchSimilar">Find similar</button><button id="batchCompare">Compare</button></div></details>
+        <details class="batch-group"><summary>Combine</summary><div class="batch-menu"><select id="batchCombine" aria-label="Combine selected photos"><option value="">Choose operation…</option><option value="hdr">HDR Merge</option><option value="focus">Focus Stack</option><option value="noise">Noise Stack</option><option value="panorama">Panorama</option></select></div></details>
+        <button id="batchExport" title="Export selected photos">Export</button>
         <button id="batchDone">Done</button>
       </div>
       <div id="filterBar" class="filter-bar hidden">
