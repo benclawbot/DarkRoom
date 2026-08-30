@@ -40,6 +40,7 @@ async function openSinglePhoto(files){
 
 function bindFocusedApp(){
   $('#editorOpenPhoto')?.addEventListener('click',openFilePicker);
+  $('#topOpenPhoto')?.addEventListener('click',openFilePicker);
 
   const input=$('#fileInput');
   if(input)input.onchange=async e=>{const files=[...(e.target.files||[])];e.target.value='';await openSinglePhoto(files)};
