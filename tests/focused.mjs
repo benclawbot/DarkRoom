@@ -33,7 +33,7 @@ assert(refine.includes('syncSplitGeometry')&&refineCss.includes('#beforeSplitCan
 assert(app.includes('showExportSheet')&&app.includes('confirmExport'),'Compact export sheet missing');
 assert(app.includes('dragenter')&&app.includes("addEventListener('drop'"),'Drag-and-drop opening missing');
 assert(refineCss.includes('color-scheme:dark')&&refineCss.includes('.crop-aspect-line'),'Dark crop aspect selector styling missing');
-assert(sw.includes("darkroom-v26")&&sw.includes('refine-ui.js')&&sw.includes('presetpro-presets.js')&&sw.includes('crop-ui.js?v=26')&&sw.includes('performance-ui.js?v=1'),'Refined editor assets missing from offline shell');
+assert(sw.includes("darkroom-v27")&&sw.includes('refine-ui.js')&&sw.includes('presetpro-presets.js')&&sw.includes('crop-ui.js?v=26')&&sw.includes('performance-ui.js?v=2'),'Refined editor assets missing from offline shell');
 assert(!sw.includes('ai-runtime')&&!sw.includes('generative-runtime')&&!sw.includes('pro-tools'),'Unused advanced runtimes must not be cached');
 
 console.log('Single-photo DarkRoom refinement checks passed.');
