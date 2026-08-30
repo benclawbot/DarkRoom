@@ -9,7 +9,8 @@
   <title>DarkRoom</title>
   <link rel="icon" href="icon.svg" type="image/svg+xml" />
   <link rel="manifest" href="manifest.webmanifest" />
-  <link rel="stylesheet" href="styles.css?v=21" />
+  <link rel="stylesheet" href="styles.css?v=22" />
+  <link rel="stylesheet" href="ux.css?v=22" />
 </head>
 <body>
 <div id="app">
@@ -137,7 +138,11 @@
       <div class="editor-title"><b id="editorName">Photo</b><small id="editorMeta"></small></div>
       <div class="editor-history"><button id="undoBtn" title="Undo">↶</button><button id="redoBtn" title="Redo">↷</button><button id="beforeAfterBtn" title="Before / after">◐</button><button id="beforeSplitBtn" title="Split before / after">↔</button></div>
       <div class="mode-switcher" id="modeSwitcher" role="group" aria-label="Editing complexity">
-        <button data-mode="quick">Quick</button><button data-mode="advanced">Advanced</button><button data-mode="pro">Pro</button>
+        <button data-mode="quick">Quick</button>
+        <details class="mode-more">
+          <summary>More</summary>
+          <div class="mode-more-menu"><button data-mode="advanced">Advanced</button><button data-mode="pro">Pro</button></div>
+        </details>
       </div>
       <div class="editor-top-actions"><button id="fullscreenBtn" class="editor-icon" title="Picture only / fullscreen (F)" aria-label="Show picture only">⛶</button><button id="panelToggle" class="editor-icon" title="Show / hide tools" aria-label="Show or hide editing tools">☷</button><button id="favoriteBtn" class="editor-icon">♡</button><button id="exportBtn" class="export-button">Export</button></div>
     </header>
@@ -195,15 +200,15 @@
 
   <div id="toast" class="toast"></div>
 </div>
-<script src="engine-core.js?v=21"></script>
-<script src="ai-runtime.js?v=21"></script>
-<script src="raw-runtime.js?v=21"></script>
-<script src="generative-runtime.js?v=21"></script>
-<script src="core.js?v=21"></script>
-<script src="library.js?v=21"></script>
-<script src="renderer.js?v=21"></script>
-<script src="editor.js?v=21"></script>
-<script src="pro-tools.js?v=21"></script>
-<script src="app.js?v=21"></script>
+<script src="engine-core.js?v=22"></script>
+<script src="ai-runtime.js?v=22"></script>
+<script src="raw-runtime.js?v=22"></script>
+<script src="generative-runtime.js?v=22"></script>
+<script src="core.js?v=22"></script>
+<script src="library.js?v=22"></script>
+<script src="renderer.js?v=22"></script>
+<script src="editor.js?v=22"></script>
+<script src="pro-tools.js?v=22"></script>
+<script src="app.js?v=22"></script>
 </body>
 </html>
