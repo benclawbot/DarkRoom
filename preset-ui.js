@@ -5,8 +5,9 @@ const IMPORTED_PRESETS=new Set(['Style','Cinematic Grade','Insta Film','Kodachro
 const copy=value=>value===undefined?undefined:(typeof structuredClone==='function'?structuredClone(value):JSON.parse(JSON.stringify(value)));
 const same=(a,b)=>{if(a===b)return true;try{return JSON.stringify(a)===JSON.stringify(b)}catch{return false}};
 const html=value=>String(value??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[ch]));
+function cleanPresetBaseline(edits={},defaults={}){const next={...copy(defaults)};for(const key of EXCLUDED_PRESET_KEYS)if(key in edits)next[key]=copy(edits[key]);return next}
 function removePresetContribution(edits={},state,defaults={}){
- const next={...copy(defaults),...copy(edits)};
+ const next=state?.applied&&state?.base?{...copy(defaults),...copy(edits)}:cleanPresetBaseline(edits,defaults);
  if(!state?.applied||!state?.base)return next;
  for(const key of Object.keys(state.applied))if(same(next[key],state.applied[key]))next[key]=copy(state.base[key]);
  return next;
@@ -20,7 +21,7 @@ function buildPresetPayload(edits={},defaults={},excluded=EXCLUDED_PRESET_KEYS){
  const out={};for(const key of Object.keys(defaults)){if(excluded.has(key))continue;if(!same(edits[key],defaults[key]))out[key]=copy(edits[key])}return out;
 }
 function isPresetModified(edits={},state){if(!state?.applied)return false;return Object.keys(state.applied).some(key=>!same(edits[key],state.applied[key]))}
-root.DarkRoomPresetUI={EXCLUDED_PRESET_KEYS,removePresetContribution,applyPresetState,buildPresetPayload,isPresetModified};
+root.DarkRoomPresetUI={EXCLUDED_PRESET_KEYS,cleanPresetBaseline,removePresetContribution,applyPresetState,buildPresetPayload,isPresetModified};
 if(typeof document==='undefined')return;
 function presetNames(){return Object.keys(typeof allPresets==='function'?allPresets():presets)}
 function selectedPresetName(){const name=currentPhoto?.presetSelection?.name;return name&&presetNames().includes(name)?name:''}
