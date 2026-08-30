@@ -43,8 +43,7 @@ function syncCropFrame(){
   const frame=ensureCropFrame(),canvas=q('#editorCanvas'),wrap=q('#canvasWrap');if(!frame||!canvas||!wrap)return;
   const show=!!currentPhoto&&currentPanel==='transform'&&!q('#editorEmptyPicker:not(.hidden)');
   frame.classList.toggle('hidden',!show);if(!show)return;
-  const cr=canvas.getBoundingClientRect(),wr=wrap.getBoundingClientRect();
-  frame.style.left=`${cr.left-wr.left}px`;frame.style.top=`${cr.top-wr.top}px`;frame.style.width=`${cr.width}px`;frame.style.height=`${cr.height}px`;
+  frame.style.left=`${canvas.offsetLeft}px`;frame.style.top=`${canvas.offsetTop}px`;frame.style.width=`${canvas.offsetWidth}px`;frame.style.height=`${canvas.offsetHeight}px`;
 }
 
 function beginCropDrag(e){
