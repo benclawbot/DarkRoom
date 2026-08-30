@@ -1,96 +1,32 @@
-<p align="center">
-  <img src="docs/assets/hero-banner.webp" alt="DarkRoom — local-first professional photo editing with an editor preview" width="100%" />
-</p>
-
 # DarkRoom
 
-**DarkRoom is a local-first, nondestructive photo library and editor for desktop and mobile browsers.** It combines a photography workflow with advanced local masking, professional pixel-processing tools, optional on-device AI, RAW decoding, batch workflows, and an offline-capable PWA shell.
+**DarkRoom is a focused, local-first, nondestructive photo editor for desktop and mobile browsers.**
 
-There is **no account system and no cloud photo storage**. Imported originals, ratings, albums, masks, local edits, generated sources, and edit metadata are stored on the current device. Vercel hosts the application files only.
+The product is deliberately narrow: **open a photograph, edit it, export it.** It does not require an account, upload originals to a DarkRoom server, or ask photographers to work through a catalog, culling system, editing mode hierarchy, or assistant.
 
 ## Product principles
 
-- **Local first:** photos are not uploaded to DarkRoom servers.
-- **Nondestructive:** originals remain untouched; edits are stored as parameters, masks, layers, and operations.
-- **Progressive disclosure:** Quick, Advanced, and Pro modes expose increasing complexity without changing the underlying edit graph.
-- **Photo-first layout:** the image stays in the primary workspace; editing tools remain on the **right side** of the picture on desktop and mobile.
-- **Synchronized mobile zoom:** toolbar zoom, pinch-to-zoom, and one-finger panning move the visible preview and editing overlays together.
-- **One renderer:** preview and export use the same processing graph.
-- **Graceful capability fallback:** heavy AI features prefer WebGPU, fall back where possible, and never block ordinary editing.
-- **Upgrade-safe previews:** older library records are repaired on refresh when their cached thumbnail is missing, while the original blob remains the editing source.
-- **Consistent controls:** primary, mask, clone, and export sliders share the same track, knob, focus state, and keyboard behavior.
+- **Photo first.** The photograph occupies the workspace; controls stay secondary.
+- **One editor.** There is no Quick / Advanced / Pro choice. Professional controls are available through progressive disclosure in one interface.
+- **Nondestructive.** Originals remain untouched; edits are stored as parameters, masks, and operations.
+- **Local first.** Imported originals and edits stay in browser-managed local storage on the current device.
+- **Minimal workflow.** Open → Adjust → Export.
+- **Direct manipulation.** Crop, masks, healing, zoom, pan, and before/after are designed around the image rather than configuration screens.
+- **One renderer.** Preview and export evaluate the same editing graph.
 
-## Screenshots
+## Editing workspace
 
-Each screenshot below uses exactly one of the supplied sample photographs. The photos are also available inside the app through **Open sample set**; no synthetic or placeholder artwork is used in the examples.
+The right-hand editor has five jobs:
 
-### Library — mountain sunset sample
+1. **Adjust** — presets, Light, Color, Tone Curve, Color Mixer, Color Grading, Detail, Effects, Optics, Geometry, and LUT/film looks.
+2. **Crop** — crop ratios, straighten, rotate, flip, reposition, composition guides, and perspective geometry.
+3. **Mask** — brush, linear gradient, radial gradient, luminance range, color range, hue range, dodge, and burn.
+4. **Heal** — heal and clone painting.
+5. **Retouch** — restrained portrait and restoration controls.
 
-![DarkRoom library showing the supplied mountain sunset photo](docs/assets/library-desktop.webp)
+Only one tool is active at a time. Within a tool, sections expand only when needed.
 
-### In-app sample set
-
-Open the library and choose **Open sample set** to load the bundled landscape and motorsport examples directly into DarkRoom. The originals stay in this browser's local library and are available for testing edits, masks, compare, and export without adding a README image gallery.
-
-### Pro editor — race-car sample
-
-![DarkRoom desktop editor showing the supplied race-car photo](docs/assets/editor-desktop.webp)
-
-### Mobile editor — white-dunes sample
-
-<p align="center">
-  <img src="docs/assets/editor-mobile.webp" alt="DarkRoom mobile editor showing the supplied white dunes photo" width="390" />
-</p>
-
-### Culling workflow — one real sample photo
-
-![DarkRoom culling workflow with the supplied mountain sunset photo](docs/assets/compare-desktop.webp)
-
-## Editing modes
-
-DarkRoom uses the same nondestructive edit graph in every mode. Switching modes only changes what is visible.
-
-| Mode | Intended use | Typical tools |
-| --- | --- | --- |
-| **Quick** | Fast corrections and casual editing | Auto Enhance, presets, basic Light/Color, crop, simple remove, one-tap smart masks |
-| **Advanced** | Serious photography workflow | Curves, HSL, color grading, masking, dodge/burn, retouch, lens blur, detail, optics, geometry |
-| **Pro** | Maximum control and computational workflows | Layers, range masks, diagnostics, LUTs, reference look, local AI, RAW workflows, batch analysis/compare/merge |
-
-Each section in the right rail is independently collapsible. Section state is remembered locally. Pro mode can also use a solo-section workflow to reduce visual clutter.
-
-## Fullscreen / Focus View
-
-- Press **`F`** on desktop to toggle picture-only fullscreen visualization.
-- Use the fullscreen button on mobile.
-- Focus View hides the editing chrome while preserving the current image, zoom, pan, and edits.
-- Press `F` again or exit fullscreen to return to the editor.
-
-## Library and organization
-
-- Multi-photo device import.
-- JPG/JPEG, PNG, WebP, GIF, BMP, AVIF, SVG, and detected RAW extensions; the picker also accepts files whose MIME type is missing but whose extension is known.
-- Thumbnail-backed library rendering for responsive large collections.
-- Local IndexedDB persistence.
-- Browser-storage persistence request where supported.
-- All Photos, Recently Added, Favorites, Picked, and Albums.
-- Search by filename, album, date, favorite/flag state.
-- Sort by newest, oldest, filename, or rating.
-- 1–5 star ratings.
-- Pick / Reject flags.
-- Color labels.
-- Create, open, rename, and delete albums.
-- Add/remove photos from albums without duplicating originals.
-- Adjustable grid density.
-- Multi-photo selection.
-- Perceptual-hash **Find Similar** culling from a selected reference.
-- Local captions and keyword metadata.
-
-## Global editing
-
-### Presets and Light
-
-- Built-in photographic presets.
-- Save/delete reusable **custom local presets** from the current edit.
+## Professional editing controls
 
 ### Light
 
@@ -101,21 +37,24 @@ Each section in the right rail is independently collapsible. Section state is re
 - Whites
 - Blacks
 - Gamma / midtone processing
-- Tone analysis and Auto Enhance
 
-### Curves and color
+### Color
 
-- Tone-curve processing
-- Smooth Lightroom-style point curves: begin with two adjustable endpoints, click anywhere to add arbitrary points, drag any point to shape the curve, double-click an interior point to remove it, or use Reset curve. The five tonal controls stay synchronized with the same smooth curve, and every range control also accepts an exact numeric value with double-click reset.
-- RGB/HSL-aware pixel transformations
-- Hue, Saturation, and Luminance controls
-- Color grading
 - Temperature / Tint
 - Vibrance / Saturation
-- Reference-look matching
-- 3D LUT import and intensity control
+- RGB/HSL-aware transformations
+- Eight-band Color Mixer
+- Shadow / midtone / highlight color grading
 
-### Effects and detail
+### Tone Curve
+
+- Smooth point curve
+- Click to add points
+- Drag to edit
+- Double-click an interior point to remove it
+- Precise numeric tonal controls remain synchronized with the curve
+
+### Detail and effects
 
 - Texture
 - Clarity
@@ -123,264 +62,132 @@ Each section in the right rail is independently collapsible. Section state is re
 - Vignette
 - Grain
 - Sharpening
-- Luminance/chroma-style noise reduction
-- Deblur
-- Artifact reduction
-- Bloom / halation-style creative effects
+- Noise reduction
+- Deblur / artifact reduction controls
 
-### Geometry and crop
+### Optics and geometry
 
-- Crop ratios
-- Nondestructive crop position and zoom
-- **Auto Crop** using local subject analysis
+- Lens correction and defringe controls
 - Straighten
-- **Auto Straighten** horizon analysis
-- Rotate left/right
-- Flip horizontal/vertical
-- Horizontal/vertical geometry
-- Perspective-style transform
-- Geometry scale
-- Lens correction / defringe controls
-- Composition overlays: thirds, golden ratio, diagonal
+- Rotate / flip
+- Horizontal / vertical geometry
+- Aspect and scale
+- X/Y offset
+- Composition guides
 
-## Local edits and masking
+### LUTs and presets
 
-Local edits are first-class nondestructive graph nodes.
+- Built-in photographic presets
+- Save reusable local presets
+- Import `.cube` 3D LUT files
+- Adjustable LUT strength
 
-### Manual masks
+## Local editing
+
+DarkRoom supports manual, nondestructive local adjustments:
 
 - Brush
-- Erase
 - Linear gradient
 - Radial gradient
-- **Dodge**
-- **Burn**
-- Brush size, feather, flow, density, and opacity
-- Rename / duplicate / enable-disable / reorder masks
-- Add / subtract / intersect mask modifiers
-- Invert masks
-- Configurable overlay color
+- Luminance range
+- Color range
+- Hue / parametric ranges
+- Add / subtract / intersect components
+- Mask invert, feather, flow, density, and opacity
+- Local Light, Color, Detail, and texture controls
+- Dodge and Burn
 
-### Range masks
+## Heal and clone
 
-- Luminance
-- Hue
-- Color
-- Depth
-- Direct hue/color sampling from the image
+Healing is intentionally simple:
 
-### Smart masks
+- **Heal** blends nearby pixels into the painted region.
+- **Clone** copies pixels from an adjustable offset source.
 
-DarkRoom can generate local masks for:
+Both are stored nondestructively and can be removed later.
 
-- Subject
-- Object
-- Sky
-- Background
-- Person
-- Face
-- Skin
-- Hair
-- Eyes
-- Teeth
-- Lips
-- Clothing
-- Water
-- Vegetation
-- Architecture
-- Mountains
-- Snow
-- Ground / artificial ground
+## Working with several photographs
 
-Smart masks remain editable: manual add/erase strokes can refine the generated result.
+Opening multiple files creates a lightweight **session filmstrip** below the photograph. It is navigation, not a catalog.
 
-## Healing, clone, and generative tools
+- Click a thumbnail to move between photographs.
+- Use Left / Right Arrow to move through the session.
+- Each photograph keeps its own nondestructive edits.
+- Copy / Paste transfers editing settings between photographs.
 
-- Content-aware local removal.
-- Clone painting with source offset.
-- Prompt-aware fast generative-fill heuristic.
-- Dust/blemish-style retouch operations.
-- Nondestructive operation list.
+The landing screen only keeps a simple list of locally opened photographs so work can be resumed. There are no albums, favorites, star ratings, pick/reject flags, color labels, culling modes, quality analysis, or multi-image merge workflows.
 
-### High Quality Local AI inpainting
+## Before / after and navigation
 
-Pro mode includes an **optional WebGPU high-quality inpainting backend** based on Moebius-compatible ONNX models.
-
-- Runs in the browser.
-- Does not upload the photo.
-- Downloads model weights only when the user invokes the feature.
-- Caches weights in Cache Storage for later sessions.
-- Uses VAE encode/decode + UNet DDIM sampling.
-- Keeps the generated source nondestructively so ordinary DarkRoom edits remain editable on top.
-- A storage control can clear downloaded AI models.
-
-This backend is intentionally optional because its model download is large (roughly gigabyte-scale) and requires a WebGPU-capable browser/device. The normal content-aware remove path remains available without it.
-
-## On-device AI assistance
-
-DarkRoom loads browser AI runtimes only when required. Current pipelines include:
-
-- Semantic image segmentation.
-- Background/foreground matting.
-- Zero-shot object detection.
-- Depth estimation.
-- 2× super-resolution.
-- Smart subject/background/scene masks.
-
-The runtime prefers **WebGPU** and falls back to **WASM** where the selected model/runtime supports it. Models may be fetched from their public CDN/model host, but inference stays in the browser and the image itself is not sent to a DarkRoom backend.
-
-## Portrait and restoration
-
-- Blemish reduction
-- Skin smoothing / texture-aware portrait processing
-- Lips / contour adjustments
-- Face restoration
-- Red-eye correction
-- Frequency-style smoothing/detail controls
-- Deblur
-- Artifact reduction
-- Highlight/shadow restoration-style processing
-
-## Depth and relighting
-
-- Local depth-map generation.
-- Focus depth / focus range.
-- Lens blur.
-- Bokeh highlight control.
-- Foreground/background relighting.
-- Rim-light-style enhancement.
-- Relight warmth.
-
-## Layers and compositing
-
-Pro mode supports a lightweight photography-oriented layer system:
-
-- Nondestructive adjustment layers.
-- **Image/raster layers** sourced from the local library without duplicating their originals.
-- Opacity.
-- Blend modes.
-- Position / scale / rotation.
-- LUT application.
-- Local sky replacement using another image already in the library.
+- **Before / After** button toggles the original view.
+- **Split** provides a draggable before/after comparison.
+- Hold **`\`** to temporarily see the original; release to return to the edit.
+- `Ctrl/Cmd + Z` — Undo
+- `Ctrl/Cmd + Shift + Z` — Redo
+- `Ctrl/Cmd + 0` — Reset zoom
+- `F` — Picture-only fullscreen
+- `O` — Toggle mask overlay
+- Mouse wheel / pinch — Zoom
+- Drag — Pan
 
 ## RAW support
 
-DarkRoom detects common RAW extensions and can decode them in-browser through `libraw-wasm`.
+DarkRoom detects common RAW extensions and can decode them in-browser through `libraw-wasm` where supported.
 
-Supported extension detection includes DNG, CR2/CR3, NEF/NRW, ARW/SRF/SR2, RAF, ORF, RW2, PEF, RWL, 3FR, FFF, IIQ, MOS, MRW, and X3F.
+Detected extensions include DNG, CR2/CR3, NEF/NRW, ARW/SRF/SR2, RAF, ORF, RW2, PEF, RWL, 3FR, FFF, IIQ, MOS, MRW, and X3F.
 
-RAW decoding is local. Camera/lens rendering will not exactly match proprietary Adobe, Capture One, or DxO pipelines.
-
-## Batch and culling workflow
-
-Select multiple images directly in the library and use:
-
-- Select All
-- Favorite
-- Pick / Reject
-- Rating
-- Color label
-- Preset
-- Auto Enhance
-- Paste full edits, including masks/removal operations
-- Add to album
-- Quality analysis
-- Compare two images
-- Batch rename
-- Batch local caption/keyword metadata
-- Find Similar using a perceptual image hash
-- Batch export
-
-Quality analysis calculates local image metrics used for culling and compare metadata.
-
-## Computational multi-image tools
-
-Selected photos can be combined locally into derived images:
-
-- HDR merge
-- Focus stack
-- Noise/average stack
-- Panorama merge
-
-Derived photos are written back into the local library with source metadata.
-
-## Diagnostics
-
-Pro mode includes:
-
-- RGB/luminance histogram
-- Large live RGB histogram with luminance outline and shadow/highlight clipping percentages.
-- Highlight clipping overlay
-- Shadow clipping overlay
-- Focus/edge diagnostic overlay
-- Before / After toggle
-- **Draggable split Before / After** comparison
-- Compare view with synchronized rendering
+RAW decoding is local. Browser rendering will not exactly match proprietary camera pipelines.
 
 ## Export
 
-- Shared renderer between preview and export.
-- JPEG export.
-- PNG and WebP export.
-- AVIF where supported by the browser.
-- **Baseline TIFF export** from the finished local render.
-- Configurable size/quality controls.
-- Export recipes.
-- Web Share API file sharing on compatible mobile browsers.
-- Batch export.
+Export is presented as one compact sheet:
 
-## Keyboard shortcuts
+- JPEG
+- PNG
+- WebP
+- AVIF where supported by the browser
+- Baseline TIFF
+- Quality
+- Optional long-edge resize
+- Output sharpening for screen or print
 
-| Shortcut | Action |
-| --- | --- |
-| `F` | Toggle photo-only fullscreen / Focus View |
-| `Esc` | Close editor / finish an active paint interaction |
-| `Ctrl/Cmd + Z` | Undo |
-| `Ctrl/Cmd + Shift + Z` | Redo |
-| `Ctrl/Cmd + 0` | Reset zoom |
-| `1`–`5` | Set star rating |
-| `P` | Toggle Pick |
-| `X` | Toggle Reject |
+Preview and export use the same editing renderer.
 
-Mouse wheel zoom, double-click zoom, drag-pan, touch pan, and pinch zoom are also supported.
+## Mobile
+
+On small screens the editing panel becomes a bottom sheet:
+
+- The photograph remains full-width.
+- The five tools stay within thumb reach.
+- The panel can be collapsed to maximize the photograph.
+- Pinch zoom and pan continue to operate on the visible preview and overlays together.
 
 ## Privacy and storage
 
-DarkRoom stores user data in browser-managed local storage:
+DarkRoom has no account system and no DarkRoom cloud photo storage. Originals and edit metadata are stored in browser-managed storage on the current device.
 
-- Original image blobs
-- RAW-decoded local previews where applicable
-- Albums
-- Ratings / flags / labels
-- Global edits
-- Local masks and brush strokes
-- Heal / clone / generative operations
-- Layers / LUT metadata
-- Optional generated local source images
-
-The app requests persistent storage where the browser supports it, but **browser storage is not equivalent to a filesystem backup**. Clearing site data, browser cleanup, origin changes, or browser eviction can remove the local library. Export important originals/finished images outside DarkRoom.
+Browser storage is **not a filesystem backup**. Clearing site data, changing origin, browser cleanup, or storage eviction can remove locally stored photographs. Export important originals and finished work outside DarkRoom.
 
 ## Architecture
 
-DarkRoom is intentionally framework-light so its local image pipeline stays easy to inspect and deploy as static files.
+DarkRoom remains framework-light:
 
 ```text
 index.html
-├── core.js               IndexedDB, state normalization, defaults, import
-├── library.js            library, albums, selection, batch workflows
-├── engine-core.js        deterministic pixel/mask/image algorithms
-├── renderer.js           shared nondestructive preview/export graph
-├── editor.js             right-rail UX, masks, local edits, export
-├── pro-tools.js          culling, compare, merge/stack workflows
-├── ai-runtime.js         optional Transformers.js local AI pipelines
-├── generative-runtime.js optional WebGPU ONNX inpainting runtime
-├── raw-runtime.js        optional LibRaw WASM decoding
-├── app.js                event bindings / shortcuts / startup
-├── styles.css            desktop/mobile/right-rail/focus-view UI
-└── sw.js                 offline application-shell cache
+├── engine-core.js       deterministic pixel, mask, heal and image algorithms
+├── raw-runtime.js       optional RAW decoding
+├── core.js              local storage, edit defaults, import
+├── library.js           lightweight recent-photo session
+├── renderer.js          shared nondestructive preview/export graph
+├── editor.js            base editing engine and interactions
+├── focused-editor.js    focused professional editing surface
+├── app.js               focused application bindings
+├── styles.css           base renderer/editor styles
+├── focused-editor.css   focused desktop/mobile workspace
+└── sw.js                offline application shell
 ```
 
-The important invariant is that **the renderer owns image output**. UI controls change the edit graph; both editor preview and export evaluate that same graph.
+The central invariant is unchanged: **the renderer owns image output**. Controls update the edit graph; preview and export evaluate the same graph.
 
 ## Run locally
 
@@ -392,44 +199,26 @@ python -m http.server 4173
 
 Then open `http://localhost:4173`.
 
-Some browser APIs—service workers, Cache Storage, WebGPU, model caching, and storage persistence—behave differently on `file://`, so use HTTP/HTTPS for development.
-
 ## Tests
 
-### Static + engine regression suite
+Static, editing-engine, and focused-product checks:
 
 ```bash
 npm test
 ```
 
-This checks JavaScript syntax, HTML/control bindings, Quick/Advanced/Pro UX contracts, right-rail/accordion/fullscreen behavior, batch-edit data shape, shared rendering, masks, local edits, restoration, relighting, HSL, LUT/layers, merge algorithms, and related pixel-engine behavior.
+Focused browser workflow:
 
-## PWA / offline behavior
+```bash
+npm run test:browser
+```
 
-The service worker caches the local application shell and processing modules. Ordinary editing of already-imported photos can work offline after the app shell is cached.
+Full suite:
 
-AI/RAW modules and model weights that have never been downloaded before still require network access for their first load. Previously cached model files may continue to work offline depending on browser cache/storage retention.
+```bash
+npm run test:all
+```
 
 ## Deployment
 
-DarkRoom is a static application and can be deployed to Vercel or any equivalent static host. No database, authentication provider, object store, or server image-processing endpoint is required.
-
-Production project: **DarkRoom** on Vercel.
-
-### GitHub Actions deployment
-
-Every push to `main` runs the static and browser UX checks first. When all three Vercel repository secrets are configured, the workflow deploys the repository root to the linked Vercel project; otherwise it reports the CLI deploy as skipped so the quality checks remain visible. If the repository is connected in Vercel, that Git integration can deploy the same `main` push automatically. The required secrets are `VERCEL_TOKEN`, `VERCEL_ORG_ID`, and `VERCEL_PROJECT_ID`. Pull requests run the checks but do not deploy.
-
-
-## Known constraints
-
-- Browser RAW rendering cannot claim exact parity with proprietary camera pipelines.
-- WebGPU availability varies by browser/device.
-- First-use AI model downloads can be large.
-- Browser local storage can be cleared by the user/browser.
-- Advanced generative models are optional and slower than cloud GPU services on low-power devices.
-- DarkRoom intentionally has no cloud sync or cross-device account system.
-
-## License / third-party models
-
-Before redistribution, production packaging should continue to respect the licenses of browser runtimes, model weights, and RAW dependencies loaded by optional features. DarkRoom itself does not bundle proprietary Adobe assets or Adobe processing code.
+DarkRoom is a static application and can be deployed to Vercel or another static host. Pull requests run static/engine checks and a Chromium workflow covering open → edit → crop → mask → heal → compare → export plus the mobile bottom-sheet layout.
