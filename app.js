@@ -3,6 +3,11 @@ function simplifyLibraryUI(){
  style.id='simplified-library-ui';
  style.textContent=`
  .search-wrap{display:none!important}
+ .app-switcher.brand-combo{width:auto!important;height:42px!important;display:flex!important;align-items:center!important;gap:9px!important;border:0!important;background:transparent!important;padding:4px 7px!important;border-radius:7px!important;color:#f3f3f3!important;cursor:pointer!important}
+ .app-switcher.brand-combo:hover{background:#222!important}
+ .app-switcher.brand-combo .brand-logo{width:30px!important;height:30px!important;display:block!important;flex:0 0 30px!important;border-radius:7px!important}
+ .app-switcher.brand-combo .brand-label{font-size:16px!important;font-weight:650!important;line-height:1!important;white-space:nowrap!important;color:#f3f3f3!important}
+ .topbar>.brand{display:none!important}
  #fullscreenBtn,#favoriteBtn,#ratingButtons,.histogram-block>span{display:none!important}
  #closeEditor{position:relative!important;width:46px!important;height:46px!important;min-width:46px!important;border-radius:50%!important;background:#242424!important;border:1px solid #3a3a3a!important;color:transparent!important;font-size:0!important;line-height:0!important;padding:0!important;display:grid!important;place-items:center!important;overflow:hidden!important}
  #closeEditor::before{content:""!important;position:absolute!important;left:50%!important;top:50%!important;width:21px!important;height:3px!important;background:#fff!important;border-radius:999px!important;transform:translate(-42%,-50%)!important}
@@ -31,6 +36,7 @@ function simplifyLibraryUI(){
  #demoImport{display:none!important}
  `;
  document.head.appendChild(style);
+ const switcher=$('.app-switcher');if(switcher){switcher.classList.add('brand-combo');switcher.dataset.route='library';switcher.innerHTML='<img class="brand-logo" src="icon.svg" alt=""><span class="brand-label">DarkRoom</span>';switcher.setAttribute('aria-label','DarkRoom')}
  const select=$('#selectPhotosBtn');if(select){select.textContent='Delete';select.title='Choose photos to delete';select.setAttribute('aria-label','Choose photos to delete')}
 }
 function bind(){
