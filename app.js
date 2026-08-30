@@ -1,4 +1,5 @@
 function openFilePicker(){document.querySelector('#fileInput')?.click()}
+function syncLauncherState(){$('#recentPhotos')?.classList.toggle('hidden',!photos.length)}
 
 function showExportSheet(){
   if(!currentPhoto)return;
@@ -25,13 +26,13 @@ function bindFocusedApp(){
   for(const id of ['openPhotos','openPhotosTop','openMorePhotos'])$('#'+id)?.addEventListener('click',openFilePicker);
 
   const input=$('#fileInput');
-  if(input)input.onchange=async e=>{const files=[...(e.target.files||[])];e.target.value='';if(files.length)await importFiles(files)};
+  if(input)input.onchange=async e=>{const files=[...(e.target.files||[])];e.target.value='';if(files.length){await importFiles(files);syncLauncherState()}};
 
   const drop=$('#dropZone');
   if(drop){
     for(const name of ['dragenter','dragover'])drop.addEventListener(name,e=>{e.preventDefault();drop.classList.add('dragging')});
     for(const name of ['dragleave','drop'])drop.addEventListener(name,e=>{e.preventDefault();drop.classList.remove('dragging')});
-    drop.addEventListener('drop',async e=>{const files=[...(e.dataTransfer?.files||[])];if(files.length)await importFiles(files)});
+    drop.addEventListener('drop',async e=>{const files=[...(e.dataTransfer?.files||[])];if(files.length){await importFiles(files);syncLauncherState()}});
     drop.addEventListener('dblclick',openFilePicker);
   }
 
@@ -73,11 +74,7 @@ function bindFocusedApp(){
 
 async function start(){
   bindFocusedApp();
-  try{
-    await initDB();
-    if(!photos.length)$('#recentPhotos')?.classList.add('hidden');
-    else $('#recentPhotos')?.classList.remove('hidden');
-  }catch(error){console.error(error);toast('Could not open local photo storage')}
+  try{await initDB();syncLauncherState()}catch(error){console.error(error);toast('Could not open local photo storage')}
   if('serviceWorker'in navigator&&location.protocol!=='file:')navigator.serviceWorker.register('sw.js').catch(()=>{});
 }
 
