@@ -18,6 +18,7 @@ function simplifyLibraryUI(){
   .editor:not(.focus-view) #modeSwitcher button{display:block!important;font-size:9px!important;padding:4px 6px!important}
   .editor-top{position:relative!important}
  }
+ body:has(#albumActions:not([hidden])) #selectPhotosBtn{display:none!important}
  body:has(.main-nav .nav[data-route="library"].active) #filterToggle,
  body:has(.main-nav .nav[data-route="favorites"].active) #filterToggle,
  body:has(.main-nav .nav[data-route="library"].active) #filterBar,
