@@ -9,41 +9,17 @@
   <title>DarkRoom</title>
   <link rel="icon" href="icon.svg" type="image/svg+xml" />
   <link rel="manifest" href="manifest.webmanifest" />
-  <link rel="stylesheet" href="styles.css?v=23" />
-  <link rel="stylesheet" href="focused-editor.css?v=23" />
+  <link rel="stylesheet" href="styles.css?v=24" />
+  <link rel="stylesheet" href="focused-editor.css?v=24" />
+  <link rel="stylesheet" href="refine-ui.css?v=24" />
 </head>
 <body class="focused-darkroom">
-<a class="skip-link" href="#mainView">Skip to photos</a>
-<div id="app" class="focused-launch">
-  <header class="focused-launchbar">
-    <div class="focused-brand"><span class="focused-brandmark" aria-hidden="true">D</span><span>DarkRoom</span></div>
-    <button id="openPhotosTop" class="focused-open">＋ <span>Open Photos</span></button>
-  </header>
+<div id="app">
+  <input id="fileInput" type="file" accept="image/*,.dng,.cr2,.cr3,.nef,.nrw,.arw,.srf,.sr2,.raf,.orf,.rw2,.pef,.rwl,.3fr,.fff,.iiq,.mos,.mrw,.x3f" hidden />
 
-  <main id="mainView" tabindex="-1">
-    <section id="libraryView" class="view active" aria-label="Open photos">
-      <div id="emptyState" class="focused-empty">
-        <div id="dropZone" class="focused-dropzone">
-          <div class="drop-icon" aria-hidden="true">▧</div>
-          <h1>Edit your photograph.</h1>
-          <p>Drop a photo here or open files from this device. Edits are nondestructive and stay local to this browser.</p>
-          <button id="openPhotos" class="focused-open">Open Photos</button>
-          <small>JPEG · PNG · WebP · AVIF · TIFF-compatible browser images · common camera RAW</small>
-        </div>
-      </div>
-      <div id="recentPhotos" class="focused-recent">
-        <div class="focused-recent-head"><div><h1>Recent photos</h1><p>Choose a photograph to continue editing.</p></div><button id="openMorePhotos" class="focused-open">＋ Open</button></div>
-        <div id="photoGrid" class="photo-grid" hidden></div>
-      </div>
-    </section>
-  </main>
-
-  <input id="fileInput" type="file" accept="image/*,.dng,.cr2,.cr3,.nef,.nrw,.arw,.srf,.sr2,.raf,.orf,.rw2,.pef,.rwl,.3fr,.fff,.iiq,.mos,.mrw,.x3f" multiple hidden />
-
-  <div id="editor" class="editor hidden" aria-hidden="true">
+  <div id="editor" class="editor" aria-hidden="false">
     <header class="editor-top">
-      <button id="closeEditor" class="editor-icon" aria-label="Back to photos" title="Back">←</button>
-      <div class="editor-title"><b id="editorName">Photo</b><small id="editorMeta"></small></div>
+      <div class="editor-title empty"><b id="editorName">DarkRoom</b><small id="editorMeta">Single-photo editor</small></div>
       <div class="editor-history" aria-label="Edit history">
         <button id="undoBtn" title="Undo" aria-label="Undo">↶</button>
         <button id="redoBtn" title="Redo" aria-label="Redo">↷</button>
@@ -52,34 +28,35 @@
       </div>
       <div class="editor-top-actions">
         <button id="fullscreenBtn" class="editor-icon" title="Picture only (F)" aria-label="Show picture only" aria-pressed="false">⛶</button>
-        <button id="panelToggle" class="editor-icon" title="Show or hide tools" aria-label="Show or hide editing tools" aria-pressed="false">☷</button>
         <button id="exportBtn" class="export-button">Export</button>
       </div>
     </header>
 
     <section id="photoViewport" class="editor-stage" aria-label="Zoomable photo viewport">
+      <div id="editorEmptyPicker" class="editor-empty-picker">
+        <div class="editor-empty-card"><button id="editorOpenPhoto">＋ Open Photo</button><span>Choose one photo to start editing</span></div>
+      </div>
       <div id="editorFallbackImage" class="editor-image-fallback" role="img" aria-label="Photo preview" aria-hidden="true"></div>
       <div id="canvasWrap" class="canvas-wrap">
         <canvas id="editorCanvas"></canvas>
-        <canvas id="beforeSplitCanvas" class="before-split-canvas" aria-hidden="true"></canvas>
+        <canvas id="beforeSplitCanvas" class="before-split-canvas hidden" aria-hidden="true"></canvas>
         <canvas id="maskOverlay" class="mask-overlay" aria-hidden="true"></canvas>
         <canvas id="diagnosticOverlay" class="diagnostic-overlay" aria-hidden="true"></canvas>
         <div id="beforeSplitDivider" class="before-split-divider hidden"></div>
         <div id="compositionOverlay" class="composition-overlay none"></div>
       </div>
-      <input id="beforeSplitRange" class="before-split-range hidden" type="range" min="5" max="95" value="50" aria-label="Before and after split position" />
+      <input id="beforeSplitRange" class="before-split-range hidden" type="range" min="0" max="100" value="50" aria-label="Before and after split position" />
       <div id="paintHud" class="paint-hud hidden"><b>Edit on photo</b><span>Drag on photo · Esc to finish</span></div>
       <div id="renderStatus" class="render-status hidden" role="status">Rendering preview…</div>
       <div class="zoom-controls" aria-label="Zoom controls">
         <button id="zoomOut" aria-label="Zoom out">−</button><button id="zoomReset" aria-label="Reset zoom"><span id="zoomLabel">100%</span></button><button id="zoomIn" aria-label="Zoom in">＋</button>
       </div>
-      <div id="sessionFilmstrip" class="session-filmstrip" aria-label="Open photo session"></div>
       <button id="mobileFullscreenBtn" class="mobile-fullscreen-button hidden" aria-label="Picture only">⛶</button>
     </section>
 
     <aside id="editorPanel" class="editor-panel" aria-label="Editing tools">
       <div class="panel-header">
-        <div class="histogram-block"><span>Histogram</span><canvas id="histogramCanvas" width="320" height="76" aria-label="RGB histogram"></canvas><div id="histogramReadout" class="histogram-readout" aria-live="polite"><span>Shadows 0%</span><span>Range 0–100%</span><span>Highlights 0%</span></div></div>
+        <div class="histogram-block"><span>Histogram</span><canvas id="histogramCanvas" width="320" height="76" aria-label="RGB histogram"></canvas><div id="histogramToneStrip" class="histogram-tone-strip" aria-label="Tone range controls"><button class="hist-tone-handle" data-tone="shadows" title="Shadows" aria-label="Shadows"></button><button class="hist-tone-handle" data-tone="midtones" title="Midtones" aria-label="Midtones"></button><button class="hist-tone-handle" data-tone="highlights" title="Highlights" aria-label="Highlights"></button></div></div>
       </div>
       <div id="toolTabs" class="tool-tabs context-tools" aria-label="Editing tools"></div>
       <div id="controls" class="controls hidden"></div>
@@ -103,13 +80,16 @@
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
 </div>
 
-<script src="engine-core.js?v=23"></script>
-<script src="raw-runtime.js?v=23"></script>
-<script src="core.js?v=23"></script>
-<script src="library.js?v=23"></script>
-<script src="renderer.js?v=23"></script>
-<script src="editor.js?v=23"></script>
-<script src="focused-editor.js?v=23"></script>
-<script src="app.js?v=23"></script>
+<script src="engine-core.js?v=24"></script>
+<script src="raw-runtime.js?v=24"></script>
+<script src="core.js?v=24"></script>
+<script src="library.js?v=24"></script>
+<script src="renderer.js?v=24"></script>
+<script src="editor.js?v=24"></script>
+<script src="preset-engine.js?v=24"></script>
+<script src="presetpro-presets.js?v=24"></script>
+<script src="focused-editor.js?v=24"></script>
+<script src="refine-ui.js?v=24"></script>
+<script src="app.js?v=24"></script>
 </body>
 </html>
