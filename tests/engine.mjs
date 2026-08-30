@@ -49,6 +49,15 @@ const repaired=E.inpaint(new Uint8ClampedArray(data),w,h,heal,4);assert.equal(re
 const cloned=E.clonePaint(new Uint8ClampedArray(data),w,h,heal,-.25,0);assert(changed(cloned,data),'clone should copy pixels from source offset');
 const gen=E.generativeFill(new Uint8ClampedArray(data),w,h,heal,'blue replacement');assert(changed(gen,data),'generative fallback should change the selected region');
 
+// Advanced parametric masks and edge-aware brush masking
+const parametric={type:'parametric',lumaLo:.35,lumaHi:.9,useSaturation:true,satLo:.35,satHi:1,useHue:true,hue:220,hueTolerance:70,softness:.05,opacity:1,density:1};
+const paramBlue=E.maskValue(parametric,.5,.5,40,100,220,.45),paramGray=E.maskValue(parametric,.5,.5,120,120,120,.47);
+assert(paramBlue>paramGray,'parametric channel constraints should favor saturated target hues');
+const edgeBrush={type:'brush',opacity:1,density:1,strokes:[{size:.5,feather:.2,flow:1,autoMask:true,target:[220,60,50],edgeTolerance:70,points:[{x:.5,y:.5}]}]};
+assert(E.maskValue(edgeBrush,.5,.5,220,60,50,.4)>E.maskValue(edgeBrush,.5,.5,40,190,80,.4),'edge-aware brush should prefer sampled colors');
+const refined={type:'box',box:{xmin:.1,ymin:.1,xmax:.9,ymax:.9},feather:.03,refine:{edge:50,expand:20,feather:10},opacity:1,density:1};
+assert(Number.isFinite(E.maskValue(refined,.5,.5,100,100,100,.4)),'refined masks must remain finite');
+
 // Analysis and histogram
 const stats=E.analyzePixels(data);assert(stats.mean>0&&stats.mean<1);const auto=E.autoEdits(stats);assert(Number.isFinite(auto.exposure));const hist=E.histogram(data,32);assert.equal(hist.r.length,32);assert.equal(hist.l.reduce((a,b)=>a+b,0),w*h);
 console.log('Pixel engine tests passed: tone, HSL, grading, masks, local edits, smart masks, detail, retouch, restore, relight, remove/clone/generative.');
