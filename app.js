@@ -1,4 +1,35 @@
+function simplifyLibraryUI(){
+ const style=document.createElement('style');
+ style.id='simplified-library-ui';
+ style.textContent=`
+ .search-wrap{display:none!important}
+ body:has(.main-nav .nav[data-route="library"].active) #filterToggle,
+ body:has(.main-nav .nav[data-route="favorites"].active) #filterToggle,
+ body:has(.main-nav .nav[data-route="library"].active) #filterBar,
+ body:has(.main-nav .nav[data-route="favorites"].active) #filterBar,
+ body:has(.main-nav .nav[data-route="library"].active) #gridSizeBtn,
+ body:has(.main-nav .nav[data-route="favorites"].active) #gridSizeBtn{display:none!important}
+ body:has(.main-nav .nav[data-route="library"].active) #selectPhotosBtn,
+ body:has(.main-nav .nav[data-route="favorites"].active) #selectPhotosBtn{width:auto!important;min-width:68px!important;padding:0 12px!important;font-size:13px!important}
+ body:has(.main-nav .nav[data-route="library"].active) #batchBar,
+ body:has(.main-nav .nav[data-route="favorites"].active) #batchBar{overflow:visible!important;flex-wrap:wrap!important}
+ body:has(.main-nav .nav[data-route="library"].active) #batchBar>*:not(#batchCount):not(#batchDelete),
+ body:has(.main-nav .nav[data-route="favorites"].active) #batchBar>*:not(#batchCount):not(#batchDelete){display:none!important}
+ body:has(.main-nav .nav[data-route="library"].active) #batchBar details,
+ body:has(.main-nav .nav[data-route="favorites"].active) #batchBar details{display:contents!important}
+ body:has(.main-nav .nav[data-route="library"].active) #batchBar .batch-menu,
+ body:has(.main-nav .nav[data-route="favorites"].active) #batchBar .batch-menu{display:contents!important}
+ body:has(.main-nav .nav[data-route="library"].active) #batchBar .batch-menu>*:not(#batchDelete),
+ body:has(.main-nav .nav[data-route="favorites"].active) #batchBar .batch-menu>*:not(#batchDelete){display:none!important}
+ body:has(.main-nav .nav[data-route="library"].active) #batchDelete,
+ body:has(.main-nav .nav[data-route="favorites"].active) #batchDelete{display:inline-flex!important;align-items:center;justify-content:center}
+ #demoImport{display:none!important}
+ `;
+ document.head.appendChild(style);
+ const select=$('#selectPhotosBtn');if(select){select.textContent='Delete';select.title='Choose photos to delete';select.setAttribute('aria-label','Choose photos to delete')}
+}
 function bind(){
+ simplifyLibraryUI();
  $('#batchDelete').onclick=batchDelete;
  $$('[data-route]').forEach(b=>b.onclick=()=>route(b.dataset.route));
  $('#storageBtn').onclick=()=>route('storage');['#importTop','#sideAdd','#emptyImport','#mobileAdd','#homeImport'].forEach(s=>{const n=$(s);if(n)n.onclick=()=>$('#fileInput').click()});if($('#demoImport'))$('#demoImport').onclick=loadDemoPhotos;
