@@ -1,3 +1,5 @@
+let darkroomReady=Promise.resolve();
+
 function openFilePicker(){document.querySelector('#fileInput')?.click()}
 
 function showExportSheet(){
@@ -21,17 +23,24 @@ function saveExportSheet(){
   localStorage.setItem('darkroom-export-sharpen',$('#exportSharpen').value);
 }
 
+async function openSinglePhoto(files){
+  const one=[...(files||[])].slice(0,1);
+  if(!one.length)return;
+  await darkroomReady;
+  await importFiles(one);
+}
+
 function bindFocusedApp(){
   $('#editorOpenPhoto')?.addEventListener('click',openFilePicker);
 
   const input=$('#fileInput');
-  if(input)input.onchange=async e=>{const files=[...(e.target.files||[])].slice(0,1);e.target.value='';if(files.length)await importFiles(files)};
+  if(input)input.onchange=async e=>{const files=[...(e.target.files||[])];e.target.value='';await openSinglePhoto(files)};
 
   const viewport=$('#photoViewport');
   if(viewport){
     for(const name of ['dragenter','dragover'])viewport.addEventListener(name,e=>{e.preventDefault();viewport.classList.add('dragging')});
     for(const name of ['dragleave','drop'])viewport.addEventListener(name,e=>{e.preventDefault();viewport.classList.remove('dragging')});
-    viewport.addEventListener('drop',async e=>{const files=[...(e.dataTransfer?.files||[])].slice(0,1);if(files.length)await importFiles(files)});
+    viewport.addEventListener('drop',async e=>{await openSinglePhoto(e.dataTransfer?.files||[])});
   }
 
   $('#undoBtn').onclick=()=>currentPhoto&&undo();
@@ -71,7 +80,8 @@ function bindFocusedApp(){
 
 async function start(){
   bindFocusedApp();
-  try{await initDB()}catch(error){console.error(error);toast('Could not open local photo storage')}
+  darkroomReady=initDB().catch(error=>{console.error(error);toast('Could not open local photo storage');throw error});
+  try{await darkroomReady}catch{}
   if('serviceWorker'in navigator&&location.protocol!=='file:')navigator.serviceWorker.register('sw.js').catch(()=>{});
 }
 
