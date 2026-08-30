@@ -1,0 +1,103 @@
+/* Photo-first UX simplification layer.
+   Keeps the existing editing engine intact while reducing visible complexity. */
+
+/* Complexity control: Quick is always available; deeper modes are tucked under More. */
+.mode-switcher{align-items:center;overflow:visible}
+.mode-switcher>button[data-mode="quick"]{min-width:54px}
+.mode-more{position:relative}
+.mode-more>summary{list-style:none;cursor:pointer;color:#8e8e8e;padding:5px 9px;border-radius:3px;font-size:10px;user-select:none}
+.mode-more>summary::-webkit-details-marker{display:none}
+.mode-more>summary:after{content:'⌄';margin-left:5px;color:#666}
+.mode-more[open]>summary,.mode-more>summary:hover{background:#303030;color:#fff}
+.mode-more-menu{position:absolute;right:0;top:calc(100% + 6px);z-index:140;min-width:124px;padding:5px;background:#202020;border:1px solid #3a3a3a;border-radius:5px;box-shadow:0 12px 32px rgba(0,0,0,.45);display:grid;gap:3px}
+.mode-more-menu button{width:100%;text-align:left;border:0;background:transparent;color:#aaa;padding:7px 9px;border-radius:3px;font-size:10px;cursor:pointer}
+.mode-more-menu button:hover,.mode-more-menu button.active{background:#e6e6e6;color:#151515;font-weight:700}
+.mode-more:not([open]) .mode-more-menu{display:none}
+
+/* Desktop: emphasize the photograph and make the tool rail feel secondary. */
+@media(min-width:761px){
+  :root{--right:316px}
+  .editor-panel{box-shadow:-12px 0 32px rgba(0,0,0,.16)}
+  .tool-section-header{min-height:40px}
+  .tool-section:not(.open)>.tool-section-header{color:#929292}
+  .controls>.mode-help,.tool-section-body>.mode-help{border-left-color:#555;background:#1d1d1d;color:#858585}
+  .editor-footer button{opacity:.82}
+  .editor-footer button:hover{opacity:1}
+}
+
+/* Mobile library: prioritize the grid and primary actions. */
+@media(max-width:760px){
+  .topbar{background:rgba(24,24,24,.98);backdrop-filter:blur(12px)}
+  .search-wrap{height:34px}
+  .library-toolbar{gap:8px}
+  .library-toolbar>div:first-child{min-width:0}
+  .library-toolbar p:not(.eyebrow){max-width:72vw;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .toolbar-actions{gap:4px}
+  .square-button{width:36px;height:36px}
+  .mobile-nav{height:68px}
+  .mobile-nav button{min-width:0}
+
+  /* Mobile editor becomes a true photo-first vertical workspace. */
+  :root{--mobile-sheet:clamp(238px,39vh,350px)}
+  .editor{grid-template-columns:1fr!important;grid-template-rows:48px minmax(0,1fr) var(--mobile-sheet)!important}
+  .editor-top{grid-column:1!important;grid-row:1!important;height:48px;padding:0 6px;gap:4px}
+  .editor-stage{grid-column:1!important;grid-row:2!important;min-width:0;min-height:0}
+  .editor-stage canvas{max-width:calc(100vw - 12px)!important;max-height:calc(100vh - var(--mobile-sheet) - 60px)!important}
+  .mask-overlay,.diagnostic-overlay{max-width:calc(100vw - 12px)!important;max-height:calc(100vh - var(--mobile-sheet) - 60px)!important}
+  .editor-panel{grid-column:1!important;grid-row:3!important;width:100%;height:var(--mobile-sheet);border-left:0!important;border-top:1px solid #343434!important;transform:none!important;opacity:1;background:#191919;box-shadow:0 -14px 34px rgba(0,0,0,.35);grid-template-rows:30px minmax(0,1fr) auto!important}
+  .panel-header{height:30px;padding:0 8px}
+  .panel-header .histogram-block{display:none}
+  .rating{display:flex;gap:2px}
+  .rating button,.flags button{min-width:27px;min-height:27px}
+  #toolTabs.tool-accordion{height:auto!important;min-height:0!important;overflow-y:auto!important;overflow-x:hidden!important;overscroll-behavior:contain}
+  #toolTabs.tool-accordion .tool-section-header{height:40px!important;position:relative!important;top:auto!important;padding:0 12px!important;grid-template-columns:24px minmax(0,1fr) 18px!important;font-size:11px!important}
+  #toolTabs.tool-accordion .tool-section-body{padding:8px 10px 12px!important}
+  .tool-section-icon{font-size:16px}
+  .accordion-head{min-height:40px;padding:0 10px}
+  .accordion-head b{font-size:11px}
+  .accordion-body{padding:9px 10px 12px}
+  .control{padding:7px 0}
+  .control label{font-size:10px;margin-bottom:6px}
+  .editor-footer{min-height:44px!important;height:44px!important;display:flex!important;grid-template-columns:none!important;gap:2px;padding:4px 6px}
+  .editor-footer button{flex:1;padding:6px 3px;font-size:9px;white-space:nowrap}
+  .editor-footer #deletePhoto{flex:0 0 auto}
+  .zoom-controls{bottom:8px}
+  .mobile-fullscreen-button{right:10px;top:10px}
+
+  /* The top bar stays intentionally sparse on phones. */
+  .editor-title,.editor-history{display:none!important}
+  .mode-switcher{position:static!important;order:2;margin-left:0!important;padding:2px;gap:1px}
+  .mode-switcher>button[data-mode="quick"]{padding:5px 8px;font-size:9px}
+  .mode-more>summary{padding:5px 7px;font-size:9px}
+  .mode-more-menu{right:auto;left:0;top:calc(100% + 7px);min-width:118px}
+  .editor-top-actions{order:3;margin-left:auto!important;gap:2px}
+  .editor-top-actions #fullscreenBtn,.editor-top-actions #favoriteBtn{display:none!important}
+  .editor-top-actions #panelToggle{display:grid!important;width:32px;height:32px}
+  .export-button{padding:7px 10px;font-size:10px}
+
+  /* Existing panel toggle now collapses/expands the bottom sheet. */
+  .editor.tools-collapsed{grid-template-columns:1fr!important;grid-template-rows:48px minmax(0,1fr) 0!important}
+  .editor.tools-collapsed .editor-panel{transform:translateY(100%)!important;opacity:0!important;pointer-events:none}
+  .editor.tools-collapsed .editor-stage canvas{max-width:calc(100vw - 12px)!important;max-height:calc(100vh - 60px)!important}
+  .editor.tools-collapsed .mask-overlay,.editor.tools-collapsed .diagnostic-overlay{max-height:calc(100vh - 60px)!important}
+
+  /* Selection actions remain available but primary choices appear first. */
+  .batch-bar{gap:5px;padding:7px 8px;scroll-snap-type:x proximity}
+  .batch-bar>*{scroll-snap-align:start}
+  #batchCount{position:sticky;left:0;background:#202020;padding-right:8px;z-index:2}
+  #batchFavorite,#batchPick,#batchExport,#batchDone{order:-1}
+}
+
+@media(max-width:430px){
+  :root{--mobile-sheet:clamp(220px,38vh,300px)}
+  .editor-top{padding:0 4px}
+  #closeEditor{width:30px;height:30px}
+  .mode-switcher>button[data-mode="quick"]{min-width:46px;padding:5px 6px}
+  .mode-more>summary{padding:5px 5px}
+  .export-button{padding:6px 8px}
+  .editor-panel{grid-template-rows:28px minmax(0,1fr) 42px!important}
+  .panel-header{height:28px}
+  .rating button,.flags button{min-width:24px;min-height:24px;padding:0}
+  #toolTabs.tool-accordion .tool-section-header{height:38px!important;padding:0 9px!important}
+  .editor-footer{height:42px!important;min-height:42px!important}
+}
