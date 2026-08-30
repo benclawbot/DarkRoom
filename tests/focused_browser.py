@@ -34,16 +34,16 @@ def main():
         page=context.new_page();errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
         page.goto(url,wait_until='networkidle')
         assert page.title()=='DarkRoom'
-        assert page.locator('#openPhotos').is_visible()
-        assert page.locator('#modeSwitcher').count()==0
-        assert page.locator('text=AI').count()==0
+        assert page.locator('#editorOpenPhoto').is_visible()
+        assert page.locator('#photoGrid').count()==0
+        assert page.locator('#sessionFilmstrip').count()==0
+        assert page.locator('#panelToggle').count()==0
 
         page.set_input_files('#fileInput',{'name':'studio.png','mimeType':'image/png','buffer':sample_png()})
-        page.wait_for_selector('#editor:not(.hidden)',timeout=15000)
-        page.wait_for_function("document.querySelector('#editorCanvas').width>20 && !document.querySelector('#editorCanvas').hasAttribute('aria-busy')",timeout=15000)
-        assert page.locator('[data-tool-toggle="edit"]').is_visible()
+        page.wait_for_function("window.currentPhoto && document.querySelector('#editorCanvas').width>20",timeout=15000)
+        assert not page.locator('#editorEmptyPicker').is_visible()
         labels=page.locator('[data-tool-toggle] b').all_inner_texts()
-        assert labels==['Adjust','Crop','Mask','Heal','Retouch'],labels
+        assert labels==['Adjust','Crop','Mask','Retouch'],labels
 
         light=page.locator('[data-section="light"]')
         assert light.count()==1
@@ -54,26 +54,41 @@ def main():
         exposure.dblclick();page.wait_for_timeout(100)
         assert page.evaluate('currentPhoto.edits.exposure===0')
 
+        preset=page.locator('#presetList')
+        if not preset.is_visible():
+            section=page.locator('[data-section="presets"]')
+            if section.count() and not section.locator('.accordion-body').is_visible():section.locator('.accordion-head').click()
+        assert page.locator('#presetList').is_visible()
+        options=page.locator('#presetList option').all_inner_texts()
+        assert 'Kodachrome 64' in options and 'Fuji Film' in options
+
         page.click('[data-tool-toggle="transform"]')
         assert page.locator('#cropAspectSelect').is_visible()
+        assert page.locator('#cropGuideSelect').count()==0
         page.select_option('#cropAspectSelect','1:1')
         assert page.evaluate("currentPhoto.edits.cropAspect==='1:1'")
 
         page.click('[data-tool-toggle="masks"]')
-        page.click('[data-mask-new="brush"]')
+        size=page.locator('#newMaskSize');assert size.is_visible()
+        size.evaluate("el=>{el.value='12';el.dispatchEvent(new Event('input',{bubbles:true}))}")
+        page.click('#newBrushMask')
         canvas=page.locator('#editorCanvas').bounding_box();assert canvas
         page.mouse.move(canvas['x']+canvas['width']*.45,canvas['y']+canvas['height']*.45);page.mouse.down();page.mouse.move(canvas['x']+canvas['width']*.58,canvas['y']+canvas['height']*.55,steps=5);page.mouse.up()
-        page.wait_for_timeout(120)
+        page.wait_for_timeout(150)
         assert page.evaluate('currentPhoto.localEdits.length===1 && currentPhoto.localEdits[0].strokes.length>=1')
+        page.keyboard.press('Escape');page.wait_for_timeout(50)
+        assert page.locator('[data-mask-visibility]').count()==1
+        assert page.locator('[data-mask-delete-simple]').count()==1
 
-        page.click('[data-tool-toggle="heal"]');assert page.locator('#newHeal').is_visible();page.click('#newHeal');page.wait_for_timeout(50)
-        assert page.evaluate("currentPhoto.healOps.at(-1).mode==='remove'")
+        assert page.locator('[data-tool-toggle="heal"]').count()==0
 
-        page.click('#beforeAfterBtn');assert page.locator('#beforeAfterBtn').get_attribute('aria-pressed') in (None,'false') or True
-        page.click('#beforeAfterBtn')
-        page.click('#beforeSplitBtn');page.wait_for_timeout(250);assert page.locator('#beforeSplitRange').is_visible();page.click('#beforeSplitBtn')
+        page.click('#beforeSplitBtn');page.wait_for_timeout(300)
+        assert page.locator('#beforeSplitRange').is_visible()
+        geom=page.evaluate("()=>{const a=document.querySelector('#editorCanvas').getBoundingClientRect(),b=document.querySelector('#beforeSplitCanvas').getBoundingClientRect();return [a.x,a.y,a.width,a.height,b.x,b.y,b.width,b.height]}")
+        assert max(abs(geom[i]-geom[i+4]) for i in range(4))<1.5,geom
+        page.click('#beforeSplitBtn')
 
-        assert page.locator('#sessionFilmstrip .session-thumb').count()==1
+        assert page.locator('#histogramToneStrip .hist-tone-handle').count()==3
         page.click('#exportBtn');assert page.locator('#exportSheet').is_visible();page.select_option('#exportFormat','image/png');page.click('#cancelExport');assert not page.locator('#exportSheet').is_visible()
 
         context.close();browser.close()
@@ -83,9 +98,11 @@ def main():
         launch={'headless':True,'args':['--no-sandbox','--disable-dev-shm-usage']}
         if os.path.exists('/usr/bin/chromium'):launch['executable_path']='/usr/bin/chromium'
         browser=p.chromium.launch(**launch);context=browser.new_context(viewport={'width':390,'height':844},service_workers='block');page=context.new_page();page.goto(url,wait_until='networkidle')
-        page.set_input_files('#fileInput',{'name':'mobile.png','mimeType':'image/png','buffer':sample_png()});page.wait_for_selector('#editor:not(.hidden)',timeout=15000)
-        panel=page.locator('#editorPanel');box=panel.bounding_box();assert box and box['width']>=380 and box['y']>200,box
-        page.click('#panelToggle');page.wait_for_timeout(250);box2=panel.bounding_box();assert box2 and box2['y']>box['y'],(box,box2)
+        assert page.locator('#editorOpenPhoto').is_visible()
+        page.set_input_files('#fileInput',{'name':'mobile.png','mimeType':'image/png','buffer':sample_png()});page.wait_for_function("window.currentPhoto && document.querySelector('#editorCanvas').width>20",timeout=15000)
+        assert page.locator('#panelToggle').count()==0
+        assert page.locator('#sessionFilmstrip').count()==0
+        assert page.locator('#editorPanel').bounding_box() is not None
         context.close();browser.close()
 
 
