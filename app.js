@@ -1,77 +1,84 @@
-function simplifyLibraryUI(){
- const style=document.createElement('style');
- style.id='simplified-library-ui';
- style.textContent=`
- .search-wrap{display:none!important}
- .app-switcher.brand-combo{width:auto!important;height:42px!important;display:flex!important;align-items:center!important;gap:9px!important;border:0!important;background:transparent!important;padding:4px 7px!important;border-radius:7px!important;color:#f3f3f3!important;cursor:pointer!important}
- .app-switcher.brand-combo:hover{background:#222!important}
- .app-switcher.brand-combo .brand-logo{width:30px!important;height:30px!important;display:block!important;flex:0 0 30px!important;border-radius:7px!important}
- .app-switcher.brand-combo .brand-label{font-size:16px!important;font-weight:650!important;line-height:1!important;white-space:nowrap!important;color:#f3f3f3!important}
- .topbar>.brand{display:none!important}
- #fullscreenBtn,#favoriteBtn,#ratingButtons,.flags,.histogram-block>span{display:none!important}
- #closeEditor{position:relative!important;width:34px!important;height:34px!important;min-width:34px!important;border-radius:50%!important;background:#242424!important;border:1px solid #3a3a3a!important;color:transparent!important;font-size:0!important;line-height:0!important;padding:0!important;display:grid!important;place-items:center!important;overflow:hidden!important}
- #closeEditor::before{content:""!important;position:absolute!important;left:50%!important;top:50%!important;width:17px!important;height:2px!important;background:#fff!important;border-radius:999px!important;transform:translate(-42%,-50%)!important}
- #closeEditor::after{content:""!important;position:absolute!important;left:9px!important;top:50%!important;width:10px!important;height:10px!important;border-left:2px solid #fff!important;border-bottom:2px solid #fff!important;border-radius:2px!important;transform:translateY(-50%) rotate(45deg)!important;transform-origin:center!important}
- #closeEditor:hover,#closeEditor:focus-visible{background:#2d2d2d!important;border-color:#4a4a4a!important}
- @media(max-width:760px){
-  .editor:not(.focus-view) #modeSwitcher{display:flex!important;visibility:visible!important;opacity:1!important;position:absolute!important;left:50%!important;top:50%!important;transform:translate(-50%,-50%)!important;margin:0!important;z-index:5!important;white-space:nowrap!important}
-  .editor:not(.focus-view) #modeSwitcher button{display:block!important;font-size:9px!important;padding:4px 6px!important}
-  .editor-top{position:relative!important}
- }
- #closeEditor,#modeSwitcher,#exportBtn{height:34px!important;min-height:34px!important;box-sizing:border-box!important}
- #modeSwitcher{display:flex!important;align-items:stretch!important;padding:2px!important}
- #modeSwitcher button{height:28px!important;min-height:28px!important;padding-top:0!important;padding-bottom:0!important;display:flex!important;align-items:center!important;justify-content:center!important}
- #exportBtn{padding-top:0!important;padding-bottom:0!important;display:inline-flex!important;align-items:center!important;justify-content:center!important}
- body:has(#albumActions:not([hidden])) #selectPhotosBtn{display:none!important}
- body:has(.main-nav .nav[data-route="library"].active) #filterToggle,
- body:has(.main-nav .nav[data-route="favorites"].active) #filterToggle,
- body:has(.main-nav .nav[data-route="library"].active) #filterBar,
- body:has(.main-nav .nav[data-route="favorites"].active) #filterBar,
- body:has(.main-nav .nav[data-route="library"].active) #gridSizeBtn,
- body:has(.main-nav .nav[data-route="favorites"].active) #gridSizeBtn{display:none!important}
- body:has(.main-nav .nav[data-route="library"].active) #selectPhotosBtn,
- body:has(.main-nav .nav[data-route="favorites"].active) #selectPhotosBtn{width:auto!important;min-width:68px!important;padding:0 12px!important;font-size:13px!important}
- body:has(.main-nav .nav[data-route="library"].active) #batchBar,
- body:has(.main-nav .nav[data-route="favorites"].active) #batchBar{overflow:visible!important;flex-wrap:wrap!important}
- body:has(.main-nav .nav[data-route="library"].active) #batchBar>*:not(#batchCount):not(#batchDelete),
- body:has(.main-nav .nav[data-route="favorites"].active) #batchBar>*:not(#batchCount):not(#batchDelete){display:none!important}
- body:has(.main-nav .nav[data-route="library"].active) #batchBar details,
- body:has(.main-nav .nav[data-route="favorites"].active) #batchBar details{display:contents!important}
- body:has(.main-nav .nav[data-route="library"].active) #batchBar .batch-menu,
- body:has(.main-nav .nav[data-route="favorites"].active) #batchBar .batch-menu{display:contents!important}
- body:has(.main-nav .nav[data-route="library"].active) #batchBar .batch-menu>*:not(#batchDelete),
- body:has(.main-nav .nav[data-route="favorites"].active) #batchBar .batch-menu>*:not(#batchDelete){display:none!important}
- body:has(.main-nav .nav[data-route="library"].active) #batchDelete,
- body:has(.main-nav .nav[data-route="favorites"].active) #batchDelete{display:inline-flex!important;align-items:center;justify-content:center}
- #demoImport{display:none!important}
- `;
- document.head.appendChild(style);
- const switcher=$('.app-switcher');if(switcher){switcher.classList.add('brand-combo');switcher.dataset.route='library';switcher.innerHTML='<img class="brand-logo" src="icon.svg" alt=""><span class="brand-label">DarkRoom</span>';switcher.setAttribute('aria-label','DarkRoom')}
- const select=$('#selectPhotosBtn');if(select){select.textContent='Delete';select.title='Choose photos to delete';select.setAttribute('aria-label','Choose photos to delete')}
+function openFilePicker(){document.querySelector('#fileInput')?.click()}
+
+function showExportSheet(){
+  if(!currentPhoto)return;
+  const sheet=$('#exportSheet'),settings=exportSettings();
+  if(!sheet)return;
+  $('#exportFormat').value=settings.format;
+  $('#exportQuality').value=Math.round(settings.quality*100);
+  $('#exportQualityValue').textContent=Math.round(settings.quality*100)+'%';
+  $('#exportLongEdge').value=settings.longEdge||'';
+  $('#exportSharpen').value=settings.sharpen;
+  sheet.classList.remove('hidden');
+  $('#exportFormat').focus();
 }
-function bind(){
- simplifyLibraryUI();
- $('#batchDelete').onclick=batchDelete;
- $$('[data-route]').forEach(b=>b.onclick=()=>route(b.dataset.route));
- $('#storageBtn').onclick=()=>route('storage');['#importTop','#sideAdd','#emptyImport','#mobileAdd','#homeImport'].forEach(s=>{const n=$(s);if(n)n.onclick=()=>$('#fileInput').click()});if($('#demoImport'))$('#demoImport').onclick=loadDemoPhotos;
- $('#fileInput').onchange=e=>{importFiles(e.target.files);e.target.value=''};$('#searchInput').oninput=()=>{if(!['library','recent','favorites','flagged','album'].includes(currentRoute))route('library');else renderPhotos()};
- $('#sortSelect').onchange=renderPhotos;$('#gridSizeBtn').onclick=()=>{gridMode=gridMode===5?4:gridMode===4?6:5;renderPhotos()};$('#selectPhotosBtn').onclick=()=>setSelectionMode(!selectionMode);
- $('#batchDone').onclick=()=>setSelectionMode(false);$('#batchSelectAll').onclick=batchSelectAll;$('#batchFavorite').onclick=batchFavorite;$('#batchPick').onclick=batchPick;$('#batchReject').onclick=batchReject;$('#batchRating').onchange=e=>{batchRate(e.target.value);e.target.value=''};$('#batchColor').onchange=e=>{batchColor(e.target.value);e.target.value=''};$('#batchPreset').onchange=e=>{batchApplyPreset(e.target.value);e.target.value=''};$('#batchAuto').onclick=batchAuto;$('#batchPaste').onclick=batchPaste;$('#batchAlbum').onclick=showBatchAlbum;$('#batchAnalyze').onclick=batchAnalyze;$('#batchSimilar').onclick=findSimilarPhotos;$('#batchCompare').onclick=showCompare;$('#batchMetadata').onclick=batchMetadata;$('#batchRename').onclick=showRenameModal;$('#batchCombine').onchange=e=>{const v=e.target.value;e.target.value='';if(v)batchCombinePhotos(v)};$('#batchExport').onclick=batchExport;$('#cancelBatchAlbum').onclick=()=>$('#batchAlbumBackdrop').classList.add('hidden');$('#closeCompare').onclick=closeCompare;$('#cancelRename').onclick=()=>$('#renameBackdrop').classList.add('hidden');$('#applyRename').onclick=batchRename;$('#cancelMerge').onclick=()=>$('#mergeBackdrop').classList.add('hidden');$$('[data-merge]').forEach(b=>b.onclick=()=>mergeSelected(b.dataset.merge));
- $('#filterToggle').onclick=()=>$('#filterBar').classList.toggle('hidden');$$('[data-filter]').forEach(b=>b.onclick=()=>{activeFilter=b.dataset.filter;$$('[data-filter]').forEach(x=>x.classList.toggle('active',x===b));renderPhotos()});
- ['#newAlbumBtn','#newAlbumMini'].forEach(s=>$(s).onclick=showAlbumModal);$('#cancelModal').onclick=hideAlbumModal;$('#createAlbum').onclick=createAlbum;$('#albumName').onkeydown=e=>{if(e.key==='Enter')createAlbum()};$('#modalBackdrop').onclick=e=>{if(e.target===$('#modalBackdrop'))hideAlbumModal()};$('#renameAlbum').onclick=renameAlbum;$('#deleteAlbum').onclick=deleteAlbum;
- $('#closeEditor').onclick=closeEditor;$('#exportBtn').onclick=()=>exportPhoto();$('#favoriteBtn').onclick=()=>{captureHistory();currentPhoto.favorite=!currentPhoto.favorite;captureHistory();syncEditorMeta();debouncedSave()};$('#pickBtn').onclick=()=>setFlag('picked');$('#rejectBtn').onclick=()=>setFlag('rejected');
- $$('[data-mode]').forEach(b=>b.onclick=()=>setEditorMode(b.dataset.mode));
- $$('#toolTabs button').forEach(b=>b.onclick=()=>{currentPanel=b.dataset.panel;stopPainting();renderControls()});
- $('#resetEdits').onclick=()=>{captureHistory();currentPhoto.edits=defaultEdits();currentPhoto.presetSelection=null;currentPhoto.adjustmentLayers=[];currentPhoto.imageLayers=[];currentPhoto.lut=null;currentPhoto.skyReplacementId=null;currentPhoto.localEdits=[];currentPhoto.healOps=[];activeLocalId=null;activeLayerId=null;captureHistory();renderControls();renderCanvas($('#editorCanvas'));debouncedSave();toast('Edits reset')};
- $$('#ratingButtons button').forEach(b=>b.onclick=()=>{captureHistory();currentPhoto.rating=+b.dataset.rate===currentPhoto.rating?0:+b.dataset.rate;captureHistory();updateRating();debouncedSave()});
- $('#copyEdits').onclick=()=>{editClipboard={edits:clone(currentPhoto.edits),presetSelection:clone(currentPhoto.presetSelection||null),adjustmentLayers:clone(currentPhoto.adjustmentLayers||[]),imageLayers:clone(currentPhoto.imageLayers||[]),lut:clone(currentPhoto.lut||null),skyReplacementId:currentPhoto.skyReplacementId||null,localEdits:clone(currentPhoto.localEdits||[]),healOps:clone(currentPhoto.healOps||[])};toast('Edits copied')};$('#pasteEdits').onclick=()=>{if(!editClipboard)return toast('No copied edits');captureHistory();currentPhoto.edits={...defaultEdits(),...clone(editClipboard.edits||editClipboard)};currentPhoto.presetSelection=clone(editClipboard.presetSelection||null);currentPhoto.adjustmentLayers=clone(editClipboard.adjustmentLayers||[]);currentPhoto.imageLayers=clone(editClipboard.imageLayers||[]);currentPhoto.lut=clone(editClipboard.lut||null);currentPhoto.skyReplacementId=editClipboard.skyReplacementId||null;currentPhoto.localEdits=clone(editClipboard.localEdits||[]);currentPhoto.healOps=clone(editClipboard.healOps||[]);captureHistory();renderControls();renderCanvas($('#editorCanvas'));debouncedSave();toast('Edits pasted')};
- $('#beforeAfterBtn').onclick=()=>{beforeMode=!beforeMode;if(beforeMode&&beforeSplit){beforeSplit=false;updateBeforeSplit()}syncEditorMeta();renderCanvas($('#editorCanvas'),1400,beforeMode)};$('#beforeSplitBtn').onclick=()=>{beforeSplit=!beforeSplit;if(beforeSplit&&beforeMode)beforeMode=false;$('#beforeSplitBtn').classList.toggle('active',beforeSplit);renderCanvas($('#editorCanvas'));updateBeforeSplit()};$('#beforeSplitRange').oninput=e=>{beforeSplitPct=+e.target.value;applyBeforeSplitClip()};$('#undoBtn').onclick=undo;$('#redoBtn').onclick=redo;
- $('#deletePhoto').onclick=async()=>{if(!confirm('Delete this photo from DarkRoom local storage?'))return;const id=currentPhoto.id;await exitPhotoOnly(false);$('#editor').classList.add('hidden');currentPhoto=null;await del('photos',id);await refreshData();toast('Photo deleted')};$('#clearAICache').onclick=async()=>{if(!confirm('Remove downloaded local AI model files? They can be downloaded again later.'))return;try{await DarkRoomGenerative?.clearCache?.();for(const key of await caches.keys())if(/transformers|huggingface|onnx/i.test(key))await caches.delete(key);toast('Downloaded AI model cache cleared');updateStorage()}catch(e){console.warn(e);toast('Could not clear every AI cache')}};$('#clearLibrary').onclick=async()=>{if(!confirm('Delete every photo and album stored by DarkRoom in this browser? This cannot be undone.'))return;await clearStore('photos');await clearStore('albums');await refreshData();toast('Local library deleted')};
- $('#panelToggle').onclick=()=>{$('#editor').classList.toggle('tools-collapsed');$('#panelToggle').classList.toggle('active',$('#editor').classList.contains('tools-collapsed'))};$('#fullscreenBtn').onclick=()=>togglePhotoOnly();$('#mobileFullscreenBtn').onclick=()=>togglePhotoOnly();
- $$('[data-mobile-tool]').forEach(b=>b.onclick=()=>{const tool=b.dataset.mobileTool;if(tool==='more'){ $('#editor').classList.toggle('mobile-sheet-open'); return } $('#editor').classList.add('mobile-sheet-open');$$('[data-mobile-tool]').forEach(x=>x.classList.toggle('active',x===b));const section=document.querySelector(`[data-tool-section="${tool}"]`);if(section&&!section.classList.contains('open'))section.querySelector('[data-tool-toggle]')?.click();section?.scrollIntoView({block:'nearest'})});
- $('#zoomIn').onclick=()=>{zoom=Math.min(8,zoom*1.25);applyTransform()};$('#zoomOut').onclick=()=>{zoom=Math.max(.25,zoom/1.25);applyTransform()};$('#zoomReset').onclick=resetZoom;
- window.addEventListener('keydown',e=>{const editing=currentPhoto&&!$('#editor').classList.contains('hidden'),tag=document.activeElement?.tagName;if((e.key==='f'||e.key==='F')&&editing&&!['INPUT','TEXTAREA','SELECT'].includes(tag)){e.preventDefault();togglePhotoOnly();return}if(e.key==='Escape'&&editing){if(photoOnly){exitPhotoOnly();return}if(paintMode){stopPainting();return}closeEditor();return}if(!currentPhoto)return;if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='z'){e.preventDefault();e.shiftKey?redo():undo()}if((e.ctrlKey||e.metaKey)&&e.key==='0'){e.preventDefault();resetZoom()}if(e.key>='1'&&e.key<='5'&&!['INPUT','TEXTAREA','SELECT'].includes(tag)){captureHistory();currentPhoto.rating=+e.key;captureHistory();updateRating();debouncedSave()}if((e.key==='p'||e.key==='P')&&!['INPUT','TEXTAREA'].includes(tag))setFlag('picked');if((e.key==='x'||e.key==='X')&&!['INPUT','TEXTAREA'].includes(tag))setFlag('rejected')});
- window.addEventListener('resize',()=>{renderPhotos();if(currentPhoto){drawMaskOverlay();updateCompositionOverlay()}});initZoom();applyEditorMode(false)
+function hideExportSheet(){$('#exportSheet')?.classList.add('hidden')}
+
+function saveExportSheet(){
+  localStorage.setItem('darkroom-export-format',$('#exportFormat').value);
+  localStorage.setItem('darkroom-export-quality',String(+(+$('#exportQuality').value/100).toFixed(2)));
+  localStorage.setItem('darkroom-export-long-edge',String(Math.max(0,+$('#exportLongEdge').value||0)));
+  localStorage.setItem('darkroom-export-sharpen',$('#exportSharpen').value);
 }
-function startDarkRoom(){bind();if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(console.error));initDB().catch(e=>{console.error(e);toast('Could not open local storage')})}
-if(location.protocol==='about:')startDarkRoom();else (async()=>{for(const src of ['./preset-engine.js?v=22','./presetpro-presets.js?v=22','./preset-ui.js?v=22','./preset-keyboard.js?v=22'])await new Promise(resolve=>{const script=document.createElement('script');script.src=src;script.async=false;script.onload=()=>resolve();script.onerror=()=>{console.error(`Could not load ${src}`);resolve()};document.head.appendChild(script)});startDarkRoom()})();
+
+function bindFocusedApp(){
+  for(const id of ['openPhotos','openPhotosTop','openMorePhotos'])$('#'+id)?.addEventListener('click',openFilePicker);
+
+  const input=$('#fileInput');
+  if(input)input.onchange=async e=>{const files=[...(e.target.files||[])];e.target.value='';if(files.length)await importFiles(files)};
+
+  const drop=$('#dropZone');
+  if(drop){
+    for(const name of ['dragenter','dragover'])drop.addEventListener(name,e=>{e.preventDefault();drop.classList.add('dragging')});
+    for(const name of ['dragleave','drop'])drop.addEventListener(name,e=>{e.preventDefault();drop.classList.remove('dragging')});
+    drop.addEventListener('drop',async e=>{const files=[...(e.dataTransfer?.files||[])];if(files.length)await importFiles(files)});
+    drop.addEventListener('dblclick',openFilePicker);
+  }
+
+  $('#closeEditor').onclick=closeEditor;
+  $('#undoBtn').onclick=undo;$('#redoBtn').onclick=redo;
+  $('#beforeAfterBtn').onclick=()=>{beforeMode=!beforeMode;if(beforeMode&&beforeSplit){beforeSplit=false;updateBeforeSplit()}syncEditorMeta();renderCanvas($('#editorCanvas'),EDITOR_PREVIEW_MAX_SIZE,beforeMode)};
+  $('#beforeSplitBtn').onclick=()=>{beforeSplit=!beforeSplit;if(beforeSplit&&beforeMode)beforeMode=false;$('#beforeSplitBtn').classList.toggle('active',beforeSplit);renderCanvas($('#editorCanvas'));updateBeforeSplit()};
+  $('#beforeSplitRange').oninput=e=>{beforeSplitPct=+e.target.value;applyBeforeSplitClip()};
+
+  $('#resetEdits').onclick=()=>{if(!currentPhoto)return;captureHistory();currentPhoto.edits=defaultEdits();currentPhoto.presetSelection=null;currentPhoto.adjustmentLayers=[];currentPhoto.imageLayers=[];currentPhoto.lut=null;currentPhoto.skyReplacementId=null;currentPhoto.localEdits=[];currentPhoto.healOps=[];activeLocalId=null;activeLayerId=null;captureHistory();renderControls();renderCanvas($('#editorCanvas'));debouncedSave();toast('Edits reset')};
+  $('#copyEdits').onclick=()=>{if(!currentPhoto)return;editClipboard={edits:clone(currentPhoto.edits),presetSelection:clone(currentPhoto.presetSelection||null),lut:clone(currentPhoto.lut||null),localEdits:clone(currentPhoto.localEdits||[]),healOps:clone((currentPhoto.healOps||[]).filter(o=>o.mode!=='generative'))};toast('Edits copied')};
+  $('#pasteEdits').onclick=()=>{if(!currentPhoto)return;if(!editClipboard)return toast('No copied edits');captureHistory();currentPhoto.edits={...defaultEdits(),...clone(editClipboard.edits||editClipboard)};currentPhoto.presetSelection=clone(editClipboard.presetSelection||null);currentPhoto.lut=clone(editClipboard.lut||null);currentPhoto.localEdits=clone(editClipboard.localEdits||[]);currentPhoto.healOps=clone(editClipboard.healOps||[]);captureHistory();renderControls();renderCanvas($('#editorCanvas'));debouncedSave();toast('Edits pasted')};
+
+  $('#panelToggle').onclick=()=>{const editor=$('#editor'),panel=$('#editorPanel');if(innerWidth<=760){panel.classList.toggle('sheet-collapsed');return}editor.classList.toggle('tools-collapsed');$('#panelToggle').classList.toggle('active',editor.classList.contains('tools-collapsed'));};
+  $('#fullscreenBtn').onclick=()=>togglePhotoOnly();
+  $('#mobileFullscreenBtn').onclick=()=>togglePhotoOnly();
+  $('#zoomIn').onclick=()=>{zoom=Math.min(8,zoom*1.25);applyTransform()};
+  $('#zoomOut').onclick=()=>{zoom=Math.max(.25,zoom/1.25);applyTransform()};
+  $('#zoomReset').onclick=resetZoom;
+
+  $('#exportBtn').onclick=showExportSheet;
+  $('#closeExportSheet').onclick=hideExportSheet;$('#cancelExport').onclick=hideExportSheet;
+  $('#exportQuality').oninput=e=>$('#exportQualityValue').textContent=e.target.value+'%';
+  $('#confirmExport').onclick=async()=>{saveExportSheet();hideExportSheet();await exportPhoto()};
+  $('#exportSheet').addEventListener('click',e=>{if(e.target.id==='exportSheet')hideExportSheet()});
+
+  window.addEventListener('keydown',e=>{
+    const editing=currentPhoto&&!$('#editor').classList.contains('hidden'),tag=document.activeElement?.tagName;
+    if(e.key==='Escape'&&!$('#exportSheet').classList.contains('hidden')){e.preventDefault();hideExportSheet();return}
+    if((e.key==='f'||e.key==='F')&&editing&&!['INPUT','TEXTAREA','SELECT'].includes(tag)){e.preventDefault();togglePhotoOnly();return}
+    if(e.key==='Escape'&&editing){if(photoOnly){exitPhotoOnly();return}if(paintMode){stopPainting();return}closeEditor();return}
+    if(!currentPhoto)return;
+    if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='z'){e.preventDefault();e.shiftKey?redo():undo()}
+    if((e.ctrlKey||e.metaKey)&&e.key==='0'){e.preventDefault();resetZoom()}
+  });
+
+  initZoom();applyEditorMode(false);
+}
+
+async function start(){
+  bindFocusedApp();
+  try{
+    await initDB();
+    if(!photos.length)$('#recentPhotos')?.classList.add('hidden');
+    else $('#recentPhotos')?.classList.remove('hidden');
+  }catch(error){console.error(error);toast('Could not open local photo storage')}
+  if('serviceWorker'in navigator&&location.protocol!=='file:')navigator.serviceWorker.register('sw.js').catch(()=>{});
+}
+
+start();
