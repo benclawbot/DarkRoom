@@ -1,0 +1,29 @@
+/* Crop workspace inspired by direct-manipulation mobile editors. */
+.canvas-wrap{position:relative}
+.crop-mode-strip{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;margin:2px 0 14px}
+.crop-mode-strip button{min-height:64px;border:1px solid #343439;border-radius:9px;background:#19191c;color:#a9a9b0;display:grid;place-items:center;align-content:center;gap:4px;cursor:pointer;padding:7px 4px}
+.crop-mode-strip button:hover,.crop-mode-strip button.active{background:#26262a;color:#fff;border-color:#505057}
+.crop-mode-strip button.active{box-shadow:inset 0 0 0 1px #a9a9af}
+.crop-mode-strip b{font-size:10px;font-weight:650}.crop-tool-icon{font-size:20px;line-height:1}
+.crop-direct-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 12px}
+.crop-direct-head>div{display:grid;gap:2px}.crop-direct-head b{font-size:12px}.crop-direct-head span{font-size:10px;color:#818188}
+.crop-direct-head>button{border:1px solid #343439;border-radius:7px;background:#1a1a1d;color:#bbb;padding:7px 10px;cursor:pointer}
+.crop-aspect-simple{display:grid!important;grid-template-columns:minmax(0,1fr) 38px;gap:7px;align-items:end;margin:0 0 12px}
+.crop-aspect-simple label{display:grid;gap:5px;font-size:10px;color:#888890}
+.crop-aspect-simple select{appearance:auto;width:100%;height:38px;border:1px solid #39393f;border-radius:8px;background:#18181b;color:#f0f0f2;padding:0 10px;color-scheme:dark}
+.crop-aspect-simple>button{height:38px;border:1px solid #39393f;border-radius:8px;background:#18181b;color:#ccc;cursor:pointer}
+.crop-straighten-control{padding-top:2px;border-top:1px solid #28282c}
+.direct-crop-frame{position:absolute;z-index:9;border:1.5px solid rgba(255,255,255,.95);box-shadow:0 0 0 9999px rgba(0,0,0,.22),0 0 0 1px rgba(0,0,0,.45);pointer-events:none;transform:translateZ(0)}
+.direct-crop-frame.hidden{display:none}.direct-crop-frame.dragging{box-shadow:0 0 0 9999px rgba(0,0,0,.3),0 0 0 1px rgba(0,0,0,.55)}
+.crop-grid{position:absolute;display:block;background:rgba(255,255,255,.3);pointer-events:none}.crop-grid-v{top:0;bottom:0;width:1px}.crop-grid-h{left:0;right:0;height:1px}.crop-grid-v.v1{left:33.333%}.crop-grid-v.v2{left:66.666%}.crop-grid-h.h1{top:33.333%}.crop-grid-h.h2{top:66.666%}
+.crop-handle{position:absolute;z-index:2;border:0!important;background:transparent!important;padding:0!important;margin:0!important;pointer-events:auto;touch-action:none}
+.crop-handle:before,.crop-handle:after{content:"";position:absolute;background:#fff;border-radius:2px;box-shadow:0 0 0 1px rgba(0,0,0,.35)}
+.crop-nw,.crop-ne,.crop-se,.crop-sw{width:34px;height:34px}
+.crop-nw{left:-9px;top:-9px;cursor:nwse-resize}.crop-ne{right:-9px;top:-9px;cursor:nesw-resize}.crop-se{right:-9px;bottom:-9px;cursor:nwse-resize}.crop-sw{left:-9px;bottom:-9px;cursor:nesw-resize}
+.crop-nw:before,.crop-ne:before,.crop-se:before,.crop-sw:before{width:23px;height:4px;top:8px}.crop-nw:after,.crop-ne:after,.crop-se:after,.crop-sw:after{width:4px;height:23px;top:8px}
+.crop-nw:before,.crop-sw:before{left:8px}.crop-ne:before,.crop-se:before{right:8px}.crop-nw:after,.crop-sw:after{left:8px}.crop-ne:after,.crop-se:after{right:8px}
+.crop-se:before,.crop-sw:before{top:auto;bottom:8px}.crop-se:after,.crop-sw:after{top:auto;bottom:8px}
+.crop-n,.crop-s{left:25%;right:25%;height:28px;cursor:ns-resize}.crop-n{top:-14px}.crop-s{bottom:-14px}.crop-e,.crop-w{top:25%;bottom:25%;width:28px;cursor:ew-resize}.crop-e{right:-14px}.crop-w{left:-14px}
+.crop-n:before,.crop-s:before{width:34px;height:4px;left:50%;transform:translateX(-50%)}.crop-n:before{top:12px}.crop-s:before{bottom:12px}.crop-n:after,.crop-s:after{display:none}
+.crop-e:before,.crop-w:before{width:4px;height:34px;top:50%;transform:translateY(-50%)}.crop-e:before{right:12px}.crop-w:before{left:12px}.crop-e:after,.crop-w:after{display:none}
+@media(max-width:760px){.crop-mode-strip{gap:5px;margin:0 0 10px}.crop-mode-strip button{min-height:58px;border-radius:8px}.crop-tool-icon{font-size:18px}.crop-direct-head span{display:none}.crop-aspect-simple select{height:40px}.crop-aspect-simple>button{height:40px}.direct-crop-frame{border-width:2px}.crop-grid{background:rgba(255,255,255,.25)}}
