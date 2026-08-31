@@ -19,6 +19,7 @@ function syncMaskOverlayVisibility(){
   const visible=!!m&&(m.uiVisible===true||strokeActive);
   overlay.classList.toggle('force-visible',visible);
   overlay.style.setProperty('opacity',visible?'1':'0','important');
+  overlay.style.setProperty('visibility',visible?'visible':'hidden','important');
   overlay.setAttribute('aria-hidden',visible?'false':'true');
 }
 
