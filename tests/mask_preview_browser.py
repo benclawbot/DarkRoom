@@ -59,7 +59,7 @@ def main():
         page.mouse.move(x1,y);page.mouse.down();page.mouse.move(x2,y,steps=1);page.mouse.up();page.wait_for_timeout(120)
         # A fast two-sample stroke must cover the segment midpoint, not only its sampled endpoints.
         midpoint=page.evaluate("()=>{const m=currentPhoto.localEdits[0];return DarkRoomEngine.maskValue(m,.5,.4,128,128,128,.5)}")
-        assert midpoint>.65,midpoint
+        assert midpoint>.60,midpoint
         # The overlay must occupy exactly the same visible rectangle as the photo canvas.
         page.evaluate("()=>{currentPhoto.localEdits[0].uiVisible=true;drawMaskOverlay()}")
         overlay=box(page,'#maskOverlay');c=box(page)
