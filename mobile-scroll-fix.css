@@ -1,0 +1,24 @@
+@media (max-width: 760px) {
+  .editor-panel {
+    max-height: calc(100dvh - var(--focused-top)) !important;
+  }
+
+  .focused-tools.tool-accordion {
+    min-height: 0 !important;
+  }
+
+  .focused-tools .tool-section-body {
+    min-height: 0 !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: contain;
+    touch-action: pan-y;
+    scrollbar-gutter: stable;
+    padding-bottom: max(96px, calc(80px + env(safe-area-inset-bottom))) !important;
+  }
+
+  .editor-footer {
+    padding-bottom: max(9px, env(safe-area-inset-bottom));
+  }
+}
