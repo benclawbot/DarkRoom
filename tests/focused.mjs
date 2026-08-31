@@ -28,7 +28,8 @@ assert(refine.includes('newBrushMask')&&refine.includes('newLassoMask')&&refine.
 assert(refineCss.includes('.mask-brush-size input[type=range]')&&refineCss.includes('#newBrushMask::before')&&refineCss.includes('#newLassoMask::before')&&refineCss.includes('.mask-methods button.primary-action'),'Mask creation controls must match the compact editor style and retain brush/lasso icons');
 assert(refine.includes('data-mask-visibility')&&refine.includes('data-mask-delete-simple'),'Mask visibility/deletion controls missing');
 assert(maskFeather.includes('DEFAULT_DRAWN_FEATHER_PERCENT=1.5')&&maskFeather.includes('maskEdgeFeather'),'Variable mask edge feathering missing');
-assert(html.includes('mask-feather.js?v=1'),'Mask feather runtime must be loaded by the editor');
+assert(html.includes('mask-interaction.js?v=1')&&html.includes('mask-feather.js?v=1'),'Mask interaction and feather runtimes must be loaded by the editor');
+assert(html.includes('preview-geometry.js?v=1'),'Stable preview geometry runtime must be loaded by the editor');
 assert(!refine.includes('cropGuideSelect'),'Crop guides must stay removed');
 assert(refine.includes('groupedPresetOptions')&&refine.includes('deleteSelectedPreset'),'Preset listbox and individual user-preset deletion missing');
 assert(presetPack.includes('Kodachrome 64')&&presetPack.includes('Cinematic Grade')&&presetPack.includes('Fuji Film'),'Specialised imported preset pack missing');
@@ -37,7 +38,7 @@ assert(refine.includes('syncSplitGeometry')&&refineCss.includes('#beforeSplitCan
 assert(app.includes('showExportSheet')&&app.includes('confirmExport'),'Compact export sheet missing');
 assert(app.includes('dragenter')&&app.includes("addEventListener('drop'"),'Drag-and-drop opening missing');
 assert(refineCss.includes('color-scheme:dark')&&refineCss.includes('.crop-aspect-line'),'Dark crop aspect selector styling missing');
-assert(sw.includes("darkroom-v28")&&sw.includes('refine-ui.js')&&sw.includes('presetpro-presets.js')&&sw.includes('mask-feather.js?v=1')&&sw.includes('crop-ui.js?v=26')&&sw.includes('performance-ui.js?v=2'),'Refined editor assets missing from offline shell');
+assert(sw.includes("darkroom-v29")&&sw.includes('refine-ui.js')&&sw.includes('presetpro-presets.js')&&sw.includes('mask-interaction.js?v=1')&&sw.includes('mask-feather.js?v=1')&&sw.includes('crop-ui.js?v=26')&&sw.includes('performance-ui.js?v=2')&&sw.includes('preview-geometry.js?v=1'),'Refined editor assets missing from offline shell');
 assert(!sw.includes('ai-runtime')&&!sw.includes('generative-runtime')&&!sw.includes('pro-tools'),'Unused advanced runtimes must not be cached');
 
 console.log('Single-photo DarkRoom refinement checks passed.');
