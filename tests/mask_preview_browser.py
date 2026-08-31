@@ -65,6 +65,19 @@ def main():
         overlay=box(page,'#maskOverlay');c=box(page)
         assert max(abs(overlay[k]-c[k]) for k in ['x','y','width','height'])<1.5,(c,overlay)
 
+        # Turning the eye off must win even though brush paint mode deliberately stays active between strokes.
+        eye=page.locator('[data-mask-visibility]').first;assert eye.is_visible();eye.click();page.wait_for_timeout(80)
+        hidden=page.evaluate("()=>({visible:currentPhoto.localEdits[0].uiVisible,paint:paintMode,opacity:getComputedStyle(document.querySelector('#maskOverlay')).opacity,aria:document.querySelector('#maskOverlay').getAttribute('aria-hidden')})")
+        assert hidden['visible'] is False,hidden
+        assert hidden['paint']=='add',hidden
+        assert float(hidden['opacity'])<.01,hidden
+        assert hidden['aria']=='true',hidden
+        # While a new stroke is physically down the overlay may appear temporarily; release restores the eye preference.
+        page.mouse.move(c['x']+c['width']*.35,c['y']+c['height']*.62);page.mouse.down();page.wait_for_timeout(40)
+        during=float(page.evaluate("getComputedStyle(document.querySelector('#maskOverlay')).opacity"));assert during>.99,during
+        page.mouse.move(c['x']+c['width']*.48,c['y']+c['height']*.64,steps=2);page.mouse.up();page.wait_for_timeout(80)
+        restored=float(page.evaluate("getComputedStyle(document.querySelector('#maskOverlay')).opacity"));assert restored<.01,restored
+
         page.keyboard.press('Escape');page.wait_for_timeout(50)
         page.click('#newLassoMask')
         c=box(page);pts=[(.30,.28),(.72,.28),(.72,.72),(.30,.72),(.30,.28)]
