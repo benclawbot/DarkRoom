@@ -4,18 +4,26 @@
   }
 
   .focused-tools.tool-accordion {
+    position: relative !important;
     min-height: 0 !important;
+    overflow: hidden !important;
   }
 
-  .focused-tools .tool-section-body {
+  .focused-tools .tool-section.open .tool-section-body {
+    position: absolute !important;
+    left: 0 !important;
+    right: 0 !important;
+    top: 58px !important;
+    bottom: 0 !important;
+    display: block !important;
     min-height: 0 !important;
-    overflow-y: auto !important;
+    max-height: none !important;
+    overflow-y: scroll !important;
     overflow-x: hidden !important;
     -webkit-overflow-scrolling: touch;
     overscroll-behavior-y: contain;
     touch-action: pan-y;
-    scrollbar-gutter: stable;
-    padding-bottom: max(96px, calc(80px + env(safe-area-inset-bottom))) !important;
+    padding-bottom: max(112px, calc(96px + env(safe-area-inset-bottom))) !important;
   }
 
   .editor-footer {
