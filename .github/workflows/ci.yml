@@ -28,6 +28,7 @@ jobs:
       - run: pip install playwright pillow
       - run: python -m playwright install --with-deps chromium
       - run: python tests/focused_browser.py
+      - run: python tests/mobile_menu_scroll.py
 
   deploy:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
