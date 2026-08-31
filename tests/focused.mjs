@@ -25,6 +25,7 @@ for(const label of ['Adjust','Crop','Mask','Retouch'])assert(refine.includes(`la
 assert(!refine.includes("label:'Heal'"),'Heal tool must remain removed');
 for(const section of ['Presets','Light','Color','Tone Curve','Color Mixer','Color Grading','Detail','Effects','Optics','Geometry','LUT & Film'])assert(focused.includes(`'${section}'`),`Missing ${section} adjustment section`);
 assert(refine.includes('newBrushMask')&&refine.includes('newLassoMask')&&refine.includes('newMaskSize'),'Simplified brush/lasso mask creation missing');
+assert(refineCss.includes('.mask-brush-size input[type=range]')&&refineCss.includes('#newBrushMask::before')&&refineCss.includes('#newLassoMask::before')&&refineCss.includes('.mask-methods button.primary-action'),'Mask creation controls must match the compact editor style and retain brush/lasso icons');
 assert(refine.includes('data-mask-visibility')&&refine.includes('data-mask-delete-simple'),'Mask visibility/deletion controls missing');
 assert(maskFeather.includes('DEFAULT_DRAWN_FEATHER_PERCENT=1.5')&&maskFeather.includes('maskEdgeFeather'),'Variable mask edge feathering missing');
 assert(html.includes('mask-feather.js?v=1'),'Mask feather runtime must be loaded by the editor');
